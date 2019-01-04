@@ -118,8 +118,13 @@ dependencies {
     implementation 'android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha09'
     implementation 'android.arch.navigation:navigation-ui-ktx:1.0.0-alpha09'
 
-    implementation 'android.arch.work:work-runtime-ktx:1.0.0-beta01'
-    implementation 'android.arch.work:work-rxjava2:1.0.0-beta01'
+    implementation('android.arch.work:work-runtime-ktx:1.0.0-beta01') {
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+
+    }
+    implementation('android.arch.work:work-rxjava2:1.0.0-beta01') {
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
     androidTestImplementation 'android.arch.work:work-testing:1.0.0-beta01'
 
     implementation "com.twitter.serial:serial:0.1.6"
