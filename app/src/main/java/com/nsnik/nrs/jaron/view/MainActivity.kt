@@ -1,7 +1,8 @@
-package com.nsnik.nrs.jaron
+package com.nsnik.nrs.jaron.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.nsnik.nrs.jaron.R
 
 class MainActivity : AppCompatActivity() {
 
