@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun initialize() {
         setSupportActionBar(mainToolbar)
-        //actionBar?.title = getCurrentMonth()
     }
 
     override fun onDestroy() {
