@@ -20,6 +20,6 @@ interface ExpenseDao {
     fun updateExpenses(expenseEntity: List<ExpenseEntity>): Int
 
     @Delete
-    fun deleteExpense(expenseEntity: List<ExpenseEntity>)
+    fun deleteExpenses(expenseEntity: List<ExpenseEntity>)
 
 }
