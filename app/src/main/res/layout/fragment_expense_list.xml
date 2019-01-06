@@ -1,0 +1,19 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/matchParent"
+    tools:context="com.nsnik.nrs.jaron.view.fragments.ExpenseListFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/expenseFragmentExpenseList"
+        style="@style/matchParent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/expenseFragmentAddExpense"
+        style="@style/wrapContent"
+        android:layout_margin="@dimen/sixteen"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
