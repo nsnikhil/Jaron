@@ -1,0 +1,7 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/matchParent"
+    tools:context="com.nsnik.nrs.jaron.view.fragments.dialogs.AddExpenseFragment">
+
+    
+</androidx.constraintlayout.widget.ConstraintLayout>
