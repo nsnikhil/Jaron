@@ -1,7 +1,99 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/matchParent"
+    android:padding="@dimen/eight"
     tools:context="com.nsnik.nrs.jaron.view.fragments.dialogs.AddExpenseFragment">
 
-    
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/newExpenseValueContainer"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/eight"
+        android:hint="@string/newExpenseAmount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/newExpenseValue"
+            style="@style/matchParent"
+            android:inputType="numberDecimal" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/newExpenseTitleContainer"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/eight"
+        android:hint="@string/newExpenseTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/newExpenseValueContainer">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/newExpenseTitle"
+            style="@style/matchParent"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/newExpenseDescriptionContainer"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/eight"
+        android:hint="@string/newExpenseDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/newExpenseTitleContainer">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/newExpenseDescription"
+            style="@style/matchParent"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/newExpenseTagsContainer"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/eight"
+        android:hint="@string/newExpenseTags"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/newExpenseDescriptionContainer">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/newExpenseTags"
+            style="@style/matchParent"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/newExpenseCreate"
+        style="@style/wrapContent"
+        android:layout_margin="@dimen/eight"
+        android:text="@string/newExpenseCreate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/newExpenseTagsContainer" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/newExpenseCancel"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/eight"
+        android:text="@string/newExpenseCancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/newExpenseTagsContainer" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Jaron</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--New Expense Dialog-->
+    <string name="newExpenseAmount">Amount</string>
+    <string name="newExpenseTitle">For…</string>
+    <string name="newExpenseDescription">Description…</string>
+    <string name="newExpenseTags">Tags…</string>
+    <string name="newExpenseDialogTitle">New Expense</string>
+    <string name="newExpenseCreate">Create</string>
+    <string name="newExpenseCancel">Cancel</string>
+
 </resources>
