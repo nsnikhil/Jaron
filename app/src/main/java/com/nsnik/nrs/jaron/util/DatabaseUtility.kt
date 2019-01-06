@@ -1,6 +1,7 @@
 package com.nsnik.nrs.jaron.util
 
 import androidx.lifecycle.LiveData
+import com.nsnik.nrs.jaron.dagger.scopes.ApplicationScope
 import com.nsnik.nrs.jaron.data.ExpenseDatabase
 import com.nsnik.nrs.jaron.data.ExpenseEntity
 import io.reactivex.Completable
@@ -14,6 +15,7 @@ import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
+@ApplicationScope
 class DatabaseUtility @Inject constructor(private val expenseDatabase: ExpenseDatabase) {
 
     fun getAllExpenses(): LiveData<List<ExpenseEntity>> = expenseDatabase.expenseDao.getAllExpenses()
