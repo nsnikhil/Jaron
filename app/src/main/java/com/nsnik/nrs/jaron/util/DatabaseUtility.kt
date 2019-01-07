@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.nsnik.nrs.jaron.dagger.scopes.ApplicationScope
 import com.nsnik.nrs.jaron.data.ExpenseDatabase
 import com.nsnik.nrs.jaron.data.ExpenseEntity
+import com.nsnik.nrs.jaron.data.TagEntity
 import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.Single
@@ -23,10 +24,38 @@ class DatabaseUtility @Inject constructor(private val expenseDatabase: ExpenseDa
     fun getExpenseForDate(date: Date): LiveData<List<ExpenseEntity>> =
         expenseDatabase.expenseDao.getExpenseForDate(date)
 
-    fun insertExpenses(expenseEntity: List<ExpenseEntity>) {
-        val single = Single.fromCallable { expenseDatabase.expenseDao.insertExpenses(expenseEntity) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    fun getAllTags(): LiveData<List<TagEntity>> = expenseDatabase.tagDao.getAllTags()
+
+    fun getTagByValue(value: String): LiveData<TagEntity> = expenseDatabase.tagDao.getTagByValue(value)
+
+    fun insertExpenses(expenseEntity: List<ExpenseEntity>) =
+        singleInsertSubscriber(singleInsert(expenseDatabase.expenseDao.insertExpenses(expenseEntity)))
+
+    fun insertTag(tagEntity: List<TagEntity>) =
+        singleInsertSubscriber(singleInsert(expenseDatabase.tagDao.insertTags(tagEntity)))
+
+    fun updateExpenses(expenseEntity: List<ExpenseEntity>) =
+        singleUpdateSubscriber(singleUpdate(expenseDatabase.expenseDao.updateExpenses(expenseEntity)))
+
+    fun udpateTags(tagEntity: List<TagEntity>) =
+        singleUpdateSubscriber(singleUpdate(expenseDatabase.tagDao.updateTags(tagEntity)))
+
+    fun deleteExpenses(expenseEntity: List<ExpenseEntity>) =
+        completeDeleteSubscriber(completeDelete(expenseDatabase.expenseDao.deleteExpenses(expenseEntity)))
+
+    fun deleteTags(tagEntity: List<TagEntity>) =
+        completeDeleteSubscriber(completeDelete(expenseDatabase.tagDao.deleteTags(tagEntity)))
+
+    private fun singleInsert(longArray: LongArray) =
+        Single.fromCallable { longArray }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+
+    private fun singleUpdate(integer: Int) =
+        Single.fromCallable { integer }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+
+    private fun completeDelete(value: Any) =
+        Completable.fromCallable { value }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+
+    private fun singleInsertSubscriber(single: Single<LongArray>) =
         single.subscribe(object : SingleObserver<LongArray> {
             override fun onSuccess(t: LongArray) {
                 t.forEach {
@@ -43,31 +72,22 @@ class DatabaseUtility @Inject constructor(private val expenseDatabase: ExpenseDa
             }
 
         })
-    }
 
-    fun updateExpenses(expenseEntity: List<ExpenseEntity>) {
-        val single = Single.fromCallable { expenseDatabase.expenseDao.updateExpenses(expenseEntity) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-        single.subscribe(object : SingleObserver<Int> {
-            override fun onSuccess(t: Int) {
-                Timber.d(t.toString())
-            }
+    private fun singleUpdateSubscriber(single: Single<Int>) = single.subscribe(object : SingleObserver<Int> {
+        override fun onSuccess(t: Int) {
+            Timber.d(t.toString())
+        }
 
-            override fun onSubscribe(d: Disposable) {
+        override fun onSubscribe(d: Disposable) {
 
-            }
+        }
 
-            override fun onError(e: Throwable) {
-                Timber.d(e)
-            }
-        })
-    }
+        override fun onError(e: Throwable) {
+            Timber.d(e)
+        }
+    })
 
-    fun deleteExpenses(expenseEntity: List<ExpenseEntity>) {
-        val completable = Completable.fromCallable { expenseDatabase.expenseDao.deleteExpenses(expenseEntity) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    private fun completeDeleteSubscriber(completable: Completable) =
         completable.subscribe(object : CompletableObserver {
             override fun onComplete() {
                 Timber.d("Deletion successful")
@@ -82,6 +102,5 @@ class DatabaseUtility @Inject constructor(private val expenseDatabase: ExpenseDa
             }
 
         })
-    }
 
 }
