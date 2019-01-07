@@ -3,6 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/horizontal"
     android:layout_height="?listPreferredItemHeightLarge"
+    android:background="?selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
     android:padding="@dimen/eight">
 
     <TextView
@@ -18,9 +22,9 @@
     <TextView
         android:id="@+id/singleExpenseTitle"
         style="@style/wrapContent"
+        android:layout_marginStart="@dimen/sixteen"
         android:text="@string/app_name"
         android:textSize="14sp"
-        android:layout_marginStart="@dimen/sixteen"
         app:layout_constraintBottom_toTopOf="@id/singleExpenseDescription"
         app:layout_constraintStart_toEndOf="@id/singleExpenseValue"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,9 +32,9 @@
     <TextView
         android:id="@+id/singleExpenseDescription"
         style="@style/wrapContent"
+        android:layout_marginStart="@dimen/sixteen"
         android:text="@string/app_name"
         android:textSize="12sp"
-        android:layout_marginStart="@dimen/sixteen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/singleExpenseValue"
         app:layout_constraintTop_toBottomOf="@id/singleExpenseTitle" />
