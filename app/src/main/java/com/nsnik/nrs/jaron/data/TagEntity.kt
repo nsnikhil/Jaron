@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 class TagEntity {
 
     @PrimaryKey
-    var tagValue: String? = null
+    var tagValue: String = ""
 
 }

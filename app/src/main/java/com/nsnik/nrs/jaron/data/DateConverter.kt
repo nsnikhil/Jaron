@@ -11,5 +11,4 @@ class DateConverter {
     @TypeConverter
     fun dateToLong(date: Date?): Long? = date?.time
 
-
 }

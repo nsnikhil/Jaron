@@ -14,5 +14,10 @@ class ExpenseEntity {
     var description: String? = null
     var date: Date? = null
     var tags: List<String?>? = null
+    var paymentType: PaymentType = PaymentType.Credit
 
+}
+
+enum class PaymentType {
+    Debit, Credit
 }

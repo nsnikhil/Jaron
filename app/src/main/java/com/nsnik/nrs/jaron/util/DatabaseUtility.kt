@@ -29,51 +29,60 @@ class DatabaseUtility @Inject constructor(private val expenseDatabase: ExpenseDa
     fun getTagByValue(value: String): LiveData<TagEntity> = expenseDatabase.tagDao.getTagByValue(value)
 
     fun insertExpenses(expenseEntity: List<ExpenseEntity>) =
-        singleInsertSubscriber(singleInsert(expenseDatabase.expenseDao.insertExpenses(expenseEntity)))
+        Single.fromCallable { expenseDatabase.expenseDao.insertExpenses(expenseEntity) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(getSingleInsertObserver())
+
 
     fun insertTag(tagEntity: List<TagEntity>) =
-        singleInsertSubscriber(singleInsert(expenseDatabase.tagDao.insertTags(tagEntity)))
+        Single.fromCallable { expenseDatabase.tagDao.insertTags(tagEntity) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(getSingleInsertObserver())
 
     fun updateExpenses(expenseEntity: List<ExpenseEntity>) =
-        singleUpdateSubscriber(singleUpdate(expenseDatabase.expenseDao.updateExpenses(expenseEntity)))
+        Single.fromCallable { expenseDatabase.expenseDao.updateExpenses(expenseEntity) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(getSingleUpdateObserver())
 
-    fun udpateTags(tagEntity: List<TagEntity>) =
-        singleUpdateSubscriber(singleUpdate(expenseDatabase.tagDao.updateTags(tagEntity)))
+    fun updateTags(tagEntity: List<TagEntity>) =
+        Single.fromCallable { expenseDatabase.tagDao.updateTags(tagEntity) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(getSingleUpdateObserver())
 
     fun deleteExpenses(expenseEntity: List<ExpenseEntity>) =
-        completeDeleteSubscriber(completeDelete(expenseDatabase.expenseDao.deleteExpenses(expenseEntity)))
+        Completable.fromCallable { expenseDatabase.expenseDao.deleteExpenses(expenseEntity) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(getCompletableDeleteObserver())
 
     fun deleteTags(tagEntity: List<TagEntity>) =
-        completeDeleteSubscriber(completeDelete(expenseDatabase.tagDao.deleteTags(tagEntity)))
+        Completable.fromCallable { expenseDatabase.tagDao.deleteTags(tagEntity) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(getCompletableDeleteObserver())
 
-    private fun singleInsert(longArray: LongArray) =
-        Single.fromCallable { longArray }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-
-    private fun singleUpdate(integer: Int) =
-        Single.fromCallable { integer }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-
-    private fun completeDelete(value: Any) =
-        Completable.fromCallable { value }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-
-    private fun singleInsertSubscriber(single: Single<LongArray>) =
-        single.subscribe(object : SingleObserver<LongArray> {
-            override fun onSuccess(t: LongArray) {
-                t.forEach {
-                    Timber.d(it.toString())
-                }
+    private fun getSingleInsertObserver() = object : SingleObserver<LongArray> {
+        override fun onSuccess(t: LongArray) {
+            t.forEach {
+                Timber.d(it.toString())
             }
+        }
 
-            override fun onSubscribe(d: Disposable) {
+        override fun onSubscribe(d: Disposable) {
 
-            }
+        }
 
-            override fun onError(e: Throwable) {
-                Timber.d(e)
-            }
+        override fun onError(e: Throwable) {
+            Timber.d(e)
+        }
 
-        })
+    }
 
-    private fun singleUpdateSubscriber(single: Single<Int>) = single.subscribe(object : SingleObserver<Int> {
+    private fun getSingleUpdateObserver() = object : SingleObserver<Int> {
         override fun onSuccess(t: Int) {
             Timber.d(t.toString())
         }
@@ -85,10 +94,10 @@ class DatabaseUtility @Inject constructor(private val expenseDatabase: ExpenseDa
         override fun onError(e: Throwable) {
             Timber.d(e)
         }
-    })
+    }
 
-    private fun completeDeleteSubscriber(completable: Completable) =
-        completable.subscribe(object : CompletableObserver {
+    private fun getCompletableDeleteObserver() =
+        object : CompletableObserver {
             override fun onComplete() {
                 Timber.d("Deletion successful")
             }
@@ -101,6 +110,6 @@ class DatabaseUtility @Inject constructor(private val expenseDatabase: ExpenseDa
                 Timber.d(e)
             }
 
-        })
+        }
 
 }
