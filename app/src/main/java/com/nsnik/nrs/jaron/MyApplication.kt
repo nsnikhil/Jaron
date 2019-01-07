@@ -4,6 +4,9 @@ import android.app.Application
 import android.content.Context
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
+import com.nsnik.nrs.jaron.dagger.components.DaggerDatabaseComponent
+import com.nsnik.nrs.jaron.dagger.modules.ContextModule
+import com.nsnik.nrs.jaron.util.DatabaseUtility
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 import timber.log.Timber
@@ -24,6 +27,8 @@ class MyApplication : Application() {
     }
 
     private var refWatcher: RefWatcher? = null
+    private val contextModule: ContextModule = ContextModule(this)
+    lateinit var databaseUtility: DatabaseUtility
 
     override fun onCreate() {
         super.onCreate()
@@ -42,7 +47,11 @@ class MyApplication : Application() {
     }
 
     private fun moduleSetter() {
+        setDatabaseComponent()
+    }
 
+    private fun setDatabaseComponent() {
+        databaseUtility = DaggerDatabaseComponent.builder().contextModule(contextModule).build().databaseUtility
     }
 
 }

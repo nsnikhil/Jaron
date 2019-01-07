@@ -13,7 +13,7 @@ class ApplicationUtility {
         private fun getDate(): Date = Calendar.getInstance().time
 
         fun getFormattedText(text: String?) =
-            Html.fromHtml("<font color='#0500ff'>$text</font>", Html.FROM_HTML_MODE_LEGACY)
+            Html.fromHtml("<font color='#0500ff'>$text</font>", Html.FROM_HTML_MODE_LEGACY)!!
 
     }
 

@@ -1,6 +1,8 @@
 package com.nsnik.nrs.jaron
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -25,6 +27,13 @@ class ExpenseFragmentListTest {
     @Test
     fun shouldHaveExpenseList(){
         onView(withId(R.id.expenseFragmentExpenseList)).check(matches(isDisplayed()))
+    }
+
+
+    @Test
+    fun shouldDisplayCreateExpenseDialog(){
+        onView(withId(R.id.expenseFragmentAddExpense)).perform(click())
+        onView(withId(R.id.newExpenseValue)).check(matches(isDisplayed()))
     }
 
 }

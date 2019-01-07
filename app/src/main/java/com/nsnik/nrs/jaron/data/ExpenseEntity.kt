@@ -8,11 +8,11 @@ import java.util.*
 class ExpenseEntity {
 
     @PrimaryKey(autoGenerate = true)
-    var id : Int = 0
+    var id: Int = 0
     var value: Double = 0.0
     var title: String? = null
     var description: String? = null
     var date: Date? = null
-    var tags: MutableList<String>? = null
+    var tags: List<String?>? = null
 
 }
