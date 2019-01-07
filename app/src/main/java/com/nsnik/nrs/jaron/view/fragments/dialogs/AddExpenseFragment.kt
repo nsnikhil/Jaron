@@ -10,14 +10,19 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxbinding2.view.RxView
+import com.jakewharton.rxbinding2.widget.RxTextView
 import com.nsnik.nrs.jaron.R
+import com.nsnik.nrs.jaron.util.ApplicationUtility
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getFormattedText
 import com.nsnik.nrs.jaron.util.FieldValidator.Companion.validateFrom
 import com.nsnik.nrs.jaron.util.factory.ExpenseEntityFactory
 import com.nsnik.nrs.jaron.viewModel.ExpenseListViewModel
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_add_expense.*
+import timber.log.Timber
 import java.util.*
+import java.util.concurrent.TimeUnit
+import java.util.function.Consumer
 
 
 class AddExpenseFragment : DialogFragment() {
@@ -59,7 +64,14 @@ class AddExpenseFragment : DialogFragment() {
             RxView.clicks(newExpenseCreate).subscribe {
                 addExpense()
                 dismiss()
-            }
+            },
+            RxTextView.textChanges(newExpenseTags)
+                .debounce(2, TimeUnit.SECONDS)
+                .subscribe {
+                    ApplicationUtility.formatTag(it.toString()).forEach(Consumer { s ->
+                        Timber.d(s)
+                    })
+                }
         )
     }
 

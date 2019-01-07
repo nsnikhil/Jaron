@@ -15,6 +15,11 @@ class ApplicationUtility {
         fun getFormattedText(text: String?) =
             Html.fromHtml("<font color='#0500ff'>$text</font>", Html.FROM_HTML_MODE_LEGACY)!!
 
+        fun formatTag(tags: String): List<String> {
+            return tags.split("\\s".toRegex())
+
+        }
+
     }
 
 }
