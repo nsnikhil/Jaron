@@ -6,8 +6,15 @@ class FieldValidator {
 
     companion object {
 
-        fun validateFrom(value: Double, title: String, description: String, date: Date, tags: List<String>): Boolean =
-            validateValue(value) && validateTitle(title) && validateDescription(description) && validateDate(date) && validateTags(tags)
+        fun validateFrom(value: String, title: String, description: String, date: Date, tags: List<String>): Boolean =
+            validateValueString(value) &&
+                    validateValue(value.toDouble()) &&
+                    validateTitle(title) &&
+                    validateDescription(description) &&
+                    validateDate(date) &&
+                    validateTags(tags)
+
+        private fun validateValueString(value: String): Boolean = value.isNotEmpty()
 
         private fun validateValue(value: Double): Boolean = value > 0
 

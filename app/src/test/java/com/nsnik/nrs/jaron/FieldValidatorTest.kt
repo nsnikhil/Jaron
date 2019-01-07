@@ -13,7 +13,7 @@ class FieldValidatorTest {
     fun shouldReturnTrueIfValueTitleAndDescriptionIsPresent() {
         assertTrue(
             FieldValidator.validateFrom(
-                100.00,
+                "100.00",
                 "Grocery",
                 "Daily shopping",
                 Date.from(Instant.now()),
@@ -26,7 +26,20 @@ class FieldValidatorTest {
     fun shouldReturnFalseIfValueIsLessThanOREqualsZero() {
         assertFalse(
             FieldValidator.validateFrom(
-                0.00,
+                "0.00",
+                "Grocery",
+                "Daily shopping",
+                Date.from(Instant.now()),
+                Collections.emptyList()
+            )
+        )
+    }
+
+    @Test
+    fun shouldReturnFalseIfValueIsEmpty() {
+        assertFalse(
+            FieldValidator.validateFrom(
+                "",
                 "Grocery",
                 "Daily shopping",
                 Date.from(Instant.now()),
@@ -39,7 +52,7 @@ class FieldValidatorTest {
     fun shouldReturnFalseIfTitleIsEmpty() {
         assertFalse(
             FieldValidator.validateFrom(
-                100.00,
+                "100.00",
                 "",
                 "Daily shopping",
                 Date.from(Instant.now()),
@@ -52,7 +65,7 @@ class FieldValidatorTest {
     fun shouldReturnFalseIfDescriptionIsEmpty() {
         assertFalse(
             FieldValidator.validateFrom(
-                100.00,
+                "100.00",
                 "Grocery",
                 "",
                 Date.from(Instant.now()),

@@ -79,7 +79,7 @@ class AddExpenseFragment : DialogFragment() {
 
     private fun validateEntries(): Boolean {
         return validateFrom(
-            textViewToString(newExpenseValue).toDouble(),
+            textViewToString(newExpenseValue),
             textViewToString(newExpenseTitle),
             textViewToString(newExpenseDescription),
             Calendar.getInstance().time,
