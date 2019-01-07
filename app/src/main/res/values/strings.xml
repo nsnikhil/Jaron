@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Jaron</string>
 
+    <!--Menu Items-->
+    <string name="menuItemAbout">About</string>
+
     <!--New Expense Dialog-->
     <string name="newExpenseAmount">Amount</string>
     <string name="newExpenseTitle">For…</string>
