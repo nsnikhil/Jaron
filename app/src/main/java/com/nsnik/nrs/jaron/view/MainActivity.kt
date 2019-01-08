@@ -49,6 +49,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
+            R.id.menuItemSearch -> {
+
+            }
+            R.id.menuItemSettings -> {
+
+            }
             R.id.menuItemAbout -> {
             }
         }

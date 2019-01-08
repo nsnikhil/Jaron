@@ -36,9 +36,11 @@ import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.util.ApplicationUtility
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.formatTag
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getFormattedText
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.listToTag
 import com.nsnik.nrs.jaron.util.FieldValidator.Companion.validateFrom
-import com.nsnik.nrs.jaron.util.factory.ExpenseEntityFactory
+import com.nsnik.nrs.jaron.util.factory.ExpenseEntityFactory.Companion.createExpenseEntity
 import com.nsnik.nrs.jaron.viewModel.ExpenseListViewModel
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_add_expense.*
@@ -85,7 +87,7 @@ class AddExpenseFragment : DialogFragment() {
                 dismiss()
             },
             RxView.clicks(newExpenseCreate).subscribe {
-                addExpense()
+                addEntries()
                 dismiss()
             },
             RxTextView.textChanges(newExpenseTags)
@@ -98,33 +100,36 @@ class AddExpenseFragment : DialogFragment() {
         )
     }
 
-    private fun addExpense() {
-        if (validateEntries()) expenseListViewModel.insertExpenses(
-            listOf(
-                ExpenseEntityFactory.createExpenseEntity(
-                    textViewToString(newExpenseValue).toDouble(),
-                    textViewToString(newExpenseTitle),
-                    textViewToString(newExpenseDescription),
-                    Calendar.getInstance().time,
-                    Collections.emptyList()
-                )
+    private fun addEntries() {
+        if (validateEntries()) {
+            addExpense()
+            addTags()
+        }
+    }
+
+    private fun addExpense() = expenseListViewModel.insertExpenses(
+        listOf(
+            createExpenseEntity(
+                newExpenseValue.text().toDouble(),
+                newExpenseTitle.text(),
+                newExpenseDescription.text(),
+                Calendar.getInstance().time,
+                formatTag(newExpenseTags.text())
             )
         )
-    }
+    )
 
-    private fun validateEntries(): Boolean {
-        return validateFrom(
-            textViewToString(newExpenseValue),
-            textViewToString(newExpenseTitle),
-            textViewToString(newExpenseDescription),
-            Calendar.getInstance().time,
-            Collections.emptyList()
-        )
-    }
+    private fun addTags() = expenseListViewModel.insertTag(listToTag(formatTag(newExpenseTags.text())))
 
-    private fun textViewToString(textView: TextView): String {
-        return textView.text.toString()
-    }
+    private fun validateEntries(): Boolean = validateFrom(
+        newExpenseValue.text(),
+        newExpenseTitle.text(),
+        newExpenseDescription.text(),
+        Calendar.getInstance().time,
+        formatTag(newExpenseTags.text())
+    )
+
+    private fun TextView.text() = text.toString()
 
     override fun onResume() {
         super.onResume()

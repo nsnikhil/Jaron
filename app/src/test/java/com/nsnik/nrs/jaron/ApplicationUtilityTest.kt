@@ -30,8 +30,8 @@ import org.junit.Test
 class ApplicationUtilityTest {
 
     @Test
-    fun testReturnCurrentMonth(){
-        assertEquals(ApplicationUtility.getCurrentMonth(),"January")
+    fun testReturnCurrentMonth() {
+        assertEquals(ApplicationUtility.getCurrentMonth(), "January")
     }
 
 }

@@ -38,9 +38,7 @@ import com.nsnik.nrs.jaron.view.fragments.adapters.ExpenseListAdapter
 import com.nsnik.nrs.jaron.view.fragments.dialogs.AddExpenseFragment
 import com.nsnik.nrs.jaron.viewModel.ExpenseListViewModel
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.fragment_expense_list.*
-
 
 class ExpenseListFragment : Fragment() {
 
