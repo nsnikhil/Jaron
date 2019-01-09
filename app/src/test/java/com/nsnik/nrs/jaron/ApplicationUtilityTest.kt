@@ -23,15 +23,25 @@
 
 package com.nsnik.nrs.jaron
 
-import com.nsnik.nrs.jaron.util.ApplicationUtility
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getCurrentMonth
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getCurrentMonthAndYear
 import junit.framework.Assert.assertEquals
 import org.junit.Test
+import java.util.*
 
 class ApplicationUtilityTest {
 
     @Test
     fun testReturnCurrentMonth() {
-        assertEquals(ApplicationUtility.getCurrentMonth(), "January")
+        assertEquals(getCurrentMonth(), "January")
+    }
+
+    @Test
+    fun testGetDateWithCurrentMonthAndYear() {
+        val calendar = Calendar.getInstance()
+        calendar.time = getCurrentMonthAndYear()
+        assertEquals(calendar.get(Calendar.MONTH), 0)
+        assertEquals(calendar.get(Calendar.YEAR), 2019)
     }
 
 }

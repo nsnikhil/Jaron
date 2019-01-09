@@ -88,7 +88,6 @@ class AddExpenseFragment : DialogFragment() {
             },
             RxView.clicks(newExpenseCreate).subscribe {
                 addEntries()
-                dismiss()
             },
             RxTextView.textChanges(newExpenseTags)
                 .debounce(2, TimeUnit.SECONDS)
@@ -100,12 +99,16 @@ class AddExpenseFragment : DialogFragment() {
         )
     }
 
-    private fun addEntries() {
+    private fun addEntries() =
         if (validateEntries()) {
             addExpense()
-            addTags()
+            val strings = formatTag(newExpenseTags.text())
+            if (strings.isNotEmpty()) addTags(strings)
+            dismiss()
+        } else {
+            showError()
         }
-    }
+
 
     private fun addExpense() = expenseListViewModel.insertExpenses(
         listOf(
@@ -119,7 +122,7 @@ class AddExpenseFragment : DialogFragment() {
         )
     )
 
-    private fun addTags() = expenseListViewModel.insertTag(listToTag(formatTag(newExpenseTags.text())))
+    private fun addTags(strings: List<String>) = expenseListViewModel.insertTag(listToTag(strings))
 
     private fun validateEntries(): Boolean = validateFrom(
         newExpenseValue.text(),
@@ -130,6 +133,10 @@ class AddExpenseFragment : DialogFragment() {
     )
 
     private fun TextView.text() = text.toString()
+
+    private fun showError() {
+
+    }
 
     override fun onResume() {
         super.onResume()

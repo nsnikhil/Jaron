@@ -25,7 +25,6 @@ package com.nsnik.nrs.jaron.util
 
 import android.text.Html
 import com.nsnik.nrs.jaron.data.TagEntity
-import com.nsnik.nrs.jaron.util.factory.TagEntityFactory
 import com.nsnik.nrs.jaron.util.factory.TagEntityFactory.Companion.createTagEntity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,7 +36,9 @@ class ApplicationUtility {
 
         fun getCurrentMonth(): String = SimpleDateFormat("MMMM", Locale.ENGLISH).format(getDate())
 
-        private fun getDate(): Date = Calendar.getInstance().time
+        private fun getDate(): Date = getCalendar().time
+
+        private fun getCalendar(): Calendar = Calendar.getInstance()
 
         fun getFormattedText(text: String?) =
             Html.fromHtml("<font color='#0500ff'>$text</font>", Html.FROM_HTML_MODE_LEGACY)!!
@@ -47,6 +48,15 @@ class ApplicationUtility {
         fun listToTag(strings: List<String>): List<TagEntity> = strings.stream()
             .map { createTagEntity(it) }
             .collect(Collectors.toList())
+
+        fun getCurrentMonthAndYear(): Date = getCurrentMonthAndYearUtil(getCalendar())
+
+
+        private fun getCurrentMonthAndYearUtil(calendar: Calendar): Date {
+            calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR))
+            calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH))
+            return calendar.time
+        }
 
     }
 
