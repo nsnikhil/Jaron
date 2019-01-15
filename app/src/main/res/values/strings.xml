@@ -44,6 +44,17 @@
     <string name="monthYearPickerDialogTabMonth">Month</string>
     <string name="monthYearPickerDialogTabYear">Year</string>
 
+    <!-- aboutStrings-->
+    <string name="aboutLibraries">Third party library used</string>
+    <string name="aboutLibrariesHead">Notes is built with the help of these great libraries</string>
+    <string name="aboutLicense">License Info</string>
+    <string name="aboutLicenseUrl" translatable="false">https://github.com/nsnikhil/Jaron/blob/master/LICENSE</string>
+    <string name="aboutApp">Money management application</string>
+
+    <string name="aboutNikhil" translatable="false">Jaron is written by Nikhil Soni\n
+                   <a href="https://twitter.com/imnsnik">Twitter</a>|<a href="https://github.com/nsnikhil/">Github</a> </string>
+
+    <string name="aboutSourceCode" translatable="false">The source code is available on <a href="https://github.com/nsnikhil/Jaron">Github</a></string>
 
     <string-array name="months">
         <item>January</item>

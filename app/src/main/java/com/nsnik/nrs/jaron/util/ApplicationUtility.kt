@@ -23,7 +23,9 @@
 
 package com.nsnik.nrs.jaron.util
 
+import android.content.Context
 import android.text.Html
+import androidx.core.content.ContextCompat
 import com.nsnik.nrs.jaron.data.TagEntity
 import com.nsnik.nrs.jaron.util.factory.TagEntityFactory.Companion.createTagEntity
 import java.text.SimpleDateFormat
@@ -97,6 +99,13 @@ class ApplicationUtility {
             calendar.set(Calendar.MONTH, getMonthNumberFromName(month))
             return calendar.time
         }
+
+        fun getString(id: Int, context: Context) = context.resources.getString(id)
+
+        fun getColor(id: Int, context: Context) = ContextCompat.getColor(context, id)
+
+        fun getDrawable(id: Int, context: Context) = ContextCompat.getDrawable(context, id)
+
     }
 
 }

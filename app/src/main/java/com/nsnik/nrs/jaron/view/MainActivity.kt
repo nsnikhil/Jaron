@@ -32,6 +32,7 @@ import com.nsnik.nrs.jaron.BuildConfig
 import com.nsnik.nrs.jaron.MyApplication
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getCurrentMonth
+import com.nsnik.nrs.jaron.view.fragments.dialogs.AboutFragment
 import com.nsnik.nrs.jaron.view.fragments.dialogs.MonthYearPickerFragment
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
@@ -58,8 +59,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menuItemSettings -> {
             }
-            R.id.menuItemAbout -> {
-            }
+            R.id.menuItemAbout -> AboutFragment().show(supportFragmentManager, "about")
         }
         return super.onOptionsItemSelected(item)
     }
