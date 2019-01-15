@@ -29,9 +29,11 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/mainToolbar"
-        style="@style/matchParent"
+        style="@style/horizontal"
         android:layout_height="?actionBarSize"
-        android:elevation="4dp" />
+        android:elevation="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <fragment
         android:id="@+id/mainNavHost"

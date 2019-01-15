@@ -27,31 +27,98 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
+import com.nsnik.nrs.jaron.model.MonthSummary
+import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatTotal
+import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatTotalLeft
+import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatTotalSpend
+import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatWithPercent
+import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.toTwoDecimal
+import com.nsnik.nrs.jaron.view.fragments.ExpenseListFragment
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.month_summary_layout.view.*
 import kotlinx.android.synthetic.main.single_expense_item.view.*
+import timber.log.Timber
 
 
-class ExpenseListAdapter : ListAdapter<ExpenseEntity, ExpenseListAdapter.MyViewHolder>(ExpenseEntityDiffUtil()) {
+class ExpenseListAdapter(val expenseListFragment: ExpenseListFragment) :
+    ListAdapter<ExpenseEntity, RecyclerView.ViewHolder>(ExpenseEntityDiffUtil()) {
 
+    private val summaryViewType = 0
+    private val itemViewType = 1
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+    private val summary: MutableLiveData<MonthSummary> = MutableLiveData()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_expense_item, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == summaryViewType)
+            return SummaryViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.month_summary_layout,
+                    parent,
+                    false
+                )
+            )
+        return ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_expense_item, parent, false))
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (position == 0) bindSummaryHolder(holder = (holder as SummaryViewHolder), position = position)
+        else bindItemHolder(holder = (holder as ItemViewHolder), position = position - 1)
+    }
+
+
+    private fun bindSummaryHolder(holder: SummaryViewHolder, position: Int) {
+        summary.observe(expenseListFragment, Observer(function = {
+            holder.total.text = formatTotal(expenseListFragment.context!!, it.total)
+            holder.spend.text = formatTotalSpend(expenseListFragment.context!!, it.totalSpend)
+            holder.left.text = formatTotalLeft(expenseListFragment.context!!, it.totalLeft)
+            holder.percentageSpend.text = formatWithPercent(toTwoDecimal(it.percentageSpend))
+        }))
+    }
+
+    private fun bindItemHolder(holder: ItemViewHolder, position: Int) {
         val expenseEntity = getItem(position)
+        Timber.d(expenseEntity.title)
         holder.value.text = expenseEntity.value.toString()
         holder.title.text = expenseEntity.title
         holder.description.text = expenseEntity.description
     }
 
-    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    override fun getItemViewType(position: Int): Int {
+        if (position == 0) return summaryViewType
+        return itemViewType
+    }
+
+    override fun getItemCount(): Int {
+        return super.getItemCount() + 1
+    }
+
+    fun submitSummary(summary: MonthSummary) {
+        this.summary.postValue(summary)
+    }
+
+    inner class SummaryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val total: TextView = itemView.summaryTotalHave
+        val left: TextView = itemView.summaryTotalLeft
+        val spend: TextView = itemView.summaryTotalSpend
+        val percentageSpend: TextView = itemView.summaryPercentageProgress
+
+        init {
+            compositeDisposable.addAll(
+                RxView.clicks(itemView).subscribe {
+
+                }
+            )
+        }
+    }
+
+    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val value: TextView = itemView.singleExpenseValue
         val title: TextView = itemView.singleExpenseTitle
         val description: TextView = itemView.singleExpenseDescription

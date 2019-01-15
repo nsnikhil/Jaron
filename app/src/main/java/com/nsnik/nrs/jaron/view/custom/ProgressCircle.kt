@@ -21,18 +21,19 @@
  * <https://www.gnu.org/licenses/why-not-lgpl.html>.
  */
 
-package com.nsnik.nrs.jaron.util.events
+package com.nsnik.nrs.jaron.view.custom
 
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import android.content.Context
+import android.graphics.Canvas
+import android.view.View
 
-// Use object so we have a singleton instance
-object RxBus {
+class ProgressCircle(context: Context): View(context){
 
-    private val publisher = PublishSubject.create<Any>()
+    private val canvas = Canvas()
 
-    fun publish(event: Any) = publisher.onNext(event)
 
-    fun <T> listen(eventType: Class<T>): Observable<T> = publisher.ofType(eventType)
+    override fun draw(canvas: Canvas?) {
+        super.draw(canvas)
+    }
+
 }
-

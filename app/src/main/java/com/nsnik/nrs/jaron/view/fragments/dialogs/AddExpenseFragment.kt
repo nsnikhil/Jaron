@@ -78,7 +78,7 @@ class AddExpenseFragment : DialogFragment() {
     }
 
     private fun initialize() {
-        expenseListViewModel = ViewModelProviders.of(this).get(ExpenseListViewModel::class.java)
+        expenseListViewModel = ViewModelProviders.of(activity!!).get(ExpenseListViewModel::class.java)
     }
 
     private fun listeners() {

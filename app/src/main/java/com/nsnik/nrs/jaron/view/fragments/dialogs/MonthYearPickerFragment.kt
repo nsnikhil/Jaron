@@ -31,12 +31,16 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.R
+import com.nsnik.nrs.jaron.util.ApplicationUtility
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.formatText
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getFormattedCurrentDate
-import com.nsnik.nrs.jaron.util.events.RxBus
-import com.nsnik.nrs.jaron.util.events.RxEvent
+import com.nsnik.nrs.jaron.util.eventbus.RxBus
+import com.nsnik.nrs.jaron.util.eventbus.RxEvent
+import com.nsnik.nrs.jaron.viewModel.ExpenseListViewModel
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_month_year_picker.*
 
@@ -44,6 +48,8 @@ import kotlinx.android.synthetic.main.fragment_month_year_picker.*
 class MonthYearPickerFragment : DialogFragment() {
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+//    private lateinit var expenseListViewModel: ExpenseListViewModel
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_month_year_picker, container, false)
@@ -56,6 +62,12 @@ class MonthYearPickerFragment : DialogFragment() {
     }
 
     private fun initialize() {
+
+//        expenseListViewModel = ViewModelProviders.of(activity!!).get(ExpenseListViewModel::class.java)
+//
+//        expenseListViewModel.getCurrentDate().observe(this, Observer {
+//            ApplicationUtility.getMonth(it)
+//        })
 
         monthYearPickerMonthList.apply {
             adapter = getAdapter(getMonthList()!!)

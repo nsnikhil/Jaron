@@ -35,11 +35,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
-import com.nsnik.nrs.jaron.util.ApplicationUtility
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.filteredListByDate
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getCurrentMonthAndYear
-import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.isSameDate
-import com.nsnik.nrs.jaron.util.events.RxBus
-import com.nsnik.nrs.jaron.util.events.RxEvent
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getDateFromString
+import com.nsnik.nrs.jaron.util.eventbus.RxBus
+import com.nsnik.nrs.jaron.util.eventbus.RxEvent
+import com.nsnik.nrs.jaron.util.factory.MonthSummaryFactory.Companion.getMonthSummary
 import com.nsnik.nrs.jaron.view.fragments.adapters.ExpenseListAdapter
 import com.nsnik.nrs.jaron.view.fragments.dialogs.AddExpenseFragment
 import com.nsnik.nrs.jaron.viewModel.ExpenseListViewModel
@@ -47,7 +48,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_expense_list.*
 import java.util.*
-import java.util.stream.Collectors
 
 class ExpenseListFragment : Fragment() {
 
@@ -67,8 +67,8 @@ class ExpenseListFragment : Fragment() {
     }
 
     private fun initialize() {
-        expenseListViewModel = ViewModelProviders.of(this).get(ExpenseListViewModel::class.java)
-        expenseListAdapter = ExpenseListAdapter()
+        expenseListViewModel = ViewModelProviders.of(activity!!).get(ExpenseListViewModel::class.java)
+        expenseListAdapter = ExpenseListAdapter(this)
 
         expenseFragmentExpenseList.apply {
             layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
@@ -78,16 +78,20 @@ class ExpenseListFragment : Fragment() {
         observeViewModel(getCurrentMonthAndYear())
 
         dateDisposable = RxBus.listen(RxEvent.NewDataSelectedEvent::class.java).subscribe {
-            observeViewModel(ApplicationUtility.getDateFromString(it.dateString))
+            val date = getDateFromString(it.dateString)
+            observeViewModel(date)
+            expenseListViewModel.getCurrentDate().postValue(date)
         }
     }
 
     private fun observeViewModel(date: Date) =
         expenseListViewModel.getAllExpenses().observe(this, Observer { modifyList(it, date) })
 
-    private fun modifyList(list: List<ExpenseEntity>, date: Date) = expenseListAdapter.submitList(list.stream()
-        .filter { t -> isSameDate(t.date!!, date) }
-        .collect(Collectors.toList()))
+    private fun modifyList(list: List<ExpenseEntity>, date: Date) {
+        val filteredList = filteredListByDate(list, date)
+        expenseListAdapter.submitList(filteredList)
+        expenseListAdapter.submitSummary(getMonthSummary(filteredList))
+    }
 
 
     private fun listeners() {
@@ -108,5 +112,4 @@ class ExpenseListFragment : Fragment() {
         super.onDestroy()
         cleanUp()
     }
-
 }

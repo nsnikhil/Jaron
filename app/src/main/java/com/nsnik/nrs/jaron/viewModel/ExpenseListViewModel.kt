@@ -39,7 +39,7 @@ class ExpenseListViewModel(application: Application) : AndroidViewModel(applicat
 
     private val currentDate: MutableLiveData<Date> = MutableLiveData()
 
-    fun getCurrentDate(): LiveData<Date> {
+    fun getCurrentDate(): MutableLiveData<Date> {
         currentDate.postValue(getCurrentMonthAndYear())
         return currentDate
     }

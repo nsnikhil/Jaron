@@ -24,6 +24,10 @@
 <resources>
     <string name="app_name">Jaron</string>
 
+    <!--Expense Utility-->
+    <string name="expenseTotalAvailable">Total</string>
+    <string name="expenseTotalSpend">Spend</string>
+    <string name="expenseTotalLeft">Left</string>
 
     <!--Menu Items-->
     <string name="menuItemSearch">Search</string>

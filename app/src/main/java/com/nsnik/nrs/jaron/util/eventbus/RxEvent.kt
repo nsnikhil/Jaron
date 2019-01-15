@@ -21,7 +21,7 @@
  * <https://www.gnu.org/licenses/why-not-lgpl.html>.
  */
 
-package com.nsnik.nrs.jaron.util.events
+package com.nsnik.nrs.jaron.util.eventbus
 
 class RxEvent {
     data class NewDataSelectedEvent(val dateString: String)

@@ -27,25 +27,38 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.BuildConfig
 import com.nsnik.nrs.jaron.MyApplication
 import com.nsnik.nrs.jaron.R
-import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getCurrentMonth
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getFormattedCurrentDate
 import com.nsnik.nrs.jaron.view.fragments.dialogs.AboutFragment
 import com.nsnik.nrs.jaron.view.fragments.dialogs.MonthYearPickerFragment
+import com.nsnik.nrs.jaron.viewModel.ExpenseListViewModel
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+    private lateinit var expenseListViewModel: ExpenseListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        title = getCurrentMonth()
+        setToolBarDate()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initialize()
+    }
+
+    private fun setToolBarDate() {
+        expenseListViewModel = ViewModelProviders.of(this).get(ExpenseListViewModel::class.java)
+        expenseListViewModel.getCurrentDate().observe(this, Observer {
+            title = getFormattedCurrentDate(it)
+            Timber.d(title.toString())
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

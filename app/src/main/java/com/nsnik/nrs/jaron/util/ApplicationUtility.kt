@@ -26,11 +26,14 @@ package com.nsnik.nrs.jaron.util
 import android.content.Context
 import android.text.Html
 import androidx.core.content.ContextCompat
+import com.nsnik.nrs.jaron.data.ExpenseEntity
 import com.nsnik.nrs.jaron.data.TagEntity
 import com.nsnik.nrs.jaron.util.factory.TagEntityFactory.Companion.createTagEntity
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.stream.Collectors
+import java.util.stream.Stream
+import kotlin.streams.toList
 
 class ApplicationUtility {
 
@@ -46,9 +49,11 @@ class ApplicationUtility {
 
         private fun getCalendar(): Calendar = Calendar.getInstance()
 
-        fun getFormattedCurrentDate() = StringBuilder(getSimpleDateFormatter("MMMM").format(getDate()))
+        fun getFormattedCurrentDate() = getFormattedCurrentDate(getDate())
+
+        fun getFormattedCurrentDate(date: Date) = StringBuilder(getSimpleDateFormatter("MMMM").format(date))
             .append(", ")
-            .append(getSimpleDateFormatter("YYYY").format(getDate()))
+            .append(getSimpleDateFormatter("YYYY").format(date))
             .toString()
 
 
@@ -105,6 +110,23 @@ class ApplicationUtility {
         fun getColor(id: Int, context: Context) = ContextCompat.getColor(context, id)
 
         fun getDrawable(id: Int, context: Context) = ContextCompat.getDrawable(context, id)
+
+        fun getYear(date: Date): Int {
+            val calendar = getCalendar()
+            calendar.time = date
+            return calendar.get(Calendar.YEAR)
+        }
+
+        fun getMonth(date: Date): Int {
+            val calendar = getCalendar()
+            calendar.time = date
+            return calendar.get(Calendar.MONTH)
+        }
+
+
+        fun filteredListByDate(list: List<ExpenseEntity>, date: Date): List<ExpenseEntity> = list.stream()
+            .filter { t -> isSameDate(t.date!!, date) }
+            .toList()
 
     }
 
