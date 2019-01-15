@@ -36,7 +36,7 @@ class ExpenseUtility {
             .map { it -> it.value }
             .reduce(0.0) { t, u -> t + u }
 
-        fun getTotalAmount(): Double = 52000.0
+        fun getTotalAmount(): Double = 47000.0
 
         fun getAmountLeft(list: List<ExpenseEntity>) = getTotalAmount() - getAmountSpend(list)
 
