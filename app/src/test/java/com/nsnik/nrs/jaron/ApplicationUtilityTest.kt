@@ -25,7 +25,10 @@ package com.nsnik.nrs.jaron
 
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getCurrentMonth
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getCurrentMonthAndYear
-import junit.framework.Assert.assertEquals
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getCurrentYear
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getDateFromString
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.isSameDate
+import junit.framework.Assert.*
 import org.junit.Test
 import java.util.*
 
@@ -37,11 +40,41 @@ class ApplicationUtilityTest {
     }
 
     @Test
+    fun testReturnCurrentYear() {
+        assertEquals(getCurrentYear(), "2019")
+    }
+
+    @Test
     fun testGetDateWithCurrentMonthAndYear() {
         val calendar = Calendar.getInstance()
         calendar.time = getCurrentMonthAndYear()
         assertEquals(calendar.get(Calendar.MONTH), 0)
         assertEquals(calendar.get(Calendar.YEAR), 2019)
+    }
+
+    @Test
+    fun testTwoDateEqualIfSameMonthAndYear() {
+        assertTrue(
+            isSameDate(Calendar.getInstance().time, getCurrentMonthAndYear())
+        )
+    }
+
+    @Test
+    fun testTwoDateEqualIfDifferentMonthAndYear() {
+        val calendar = Calendar.getInstance()
+        calendar.set(2018, 1, 9)
+        assertFalse(
+            isSameDate(calendar.time, getCurrentMonthAndYear())
+        )
+    }
+
+    @Test
+    fun testGetCalendarFromString() {
+        val string = "March, 2020"
+        val calendar = Calendar.getInstance()
+        calendar.time = getDateFromString(string)
+        assertEquals(calendar.get(Calendar.MONTH), 2)
+        assertEquals(calendar.get(Calendar.YEAR), 2020)
     }
 
 }

@@ -37,10 +37,10 @@ class ExpenseEntity {
     var description: String? = null
     var date: Date? = null
     var tags: List<String?>? = null
-    var paymentType: PaymentType = PaymentType.Credit
+    var paymentType: PaymentType = PaymentType.Paid
 
 }
 
 enum class PaymentType {
-    Debit, Credit
+    Received, Paid
 }

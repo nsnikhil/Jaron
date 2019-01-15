@@ -21,34 +21,18 @@
  * <https://www.gnu.org/licenses/why-not-lgpl.html>.
  */
 
-package com.nsnik.nrs.jaron.util.factory
+package com.nsnik.nrs.jaron.util.events
 
-import com.nsnik.nrs.jaron.data.ExpenseEntity
-import com.nsnik.nrs.jaron.data.PaymentType
-import java.util.*
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
-class ExpenseEntityFactory {
+// Use object so we have a singleton instance
+object RxBus {
 
-    companion object {
+    private val publisher = PublishSubject.create<Any>()
 
-        fun createExpenseEntity(
-            value: Double,
-            title: String,
-            description: String,
-            date: Date,
-            tags: List<String>,
-            paymentType: PaymentType = PaymentType.Paid
-        ): ExpenseEntity {
-            val expenseEntity = ExpenseEntity()
-            expenseEntity.value = value
-            expenseEntity.title = title
-            expenseEntity.description = description
-            expenseEntity.date = date
-            expenseEntity.tags = tags
-            expenseEntity.paymentType = paymentType
-            return expenseEntity
-        }
+    fun publish(event: Any) = publisher.onNext(event)
 
-    }
-
+    fun <T> listen(eventType: Class<T>): Observable<T> = publisher.ofType(eventType)
 }
+

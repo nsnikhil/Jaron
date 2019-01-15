@@ -44,13 +44,18 @@ class MainActivityScreenTest {
     var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
 
     @Test
-    fun shouldDisplayToolbarInView(){
+    fun shouldDisplayToolbarInView() {
         onView(withId(R.id.mainToolbar)).check(matches(isDisplayed()))
     }
 
     @Test
-    fun shouldDisplayCurrentMonthInToolbar(){
-        onView(allOf(instanceOf(TextView::class.java), withParent(withId(R.id.mainToolbar)))).check(matches(withText("January")))
+    fun shouldDisplayCurrentMonthInToolbar() {
+        onView(
+            allOf(
+                instanceOf(TextView::class.java),
+                withParent(withId(R.id.mainToolbar))
+            )
+        ).check(matches(withText("January")))
     }
 
 }

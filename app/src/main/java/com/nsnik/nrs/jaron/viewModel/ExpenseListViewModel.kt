@@ -26,14 +26,23 @@ package com.nsnik.nrs.jaron.viewModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.nsnik.nrs.jaron.MyApplication
 import com.nsnik.nrs.jaron.data.ExpenseEntity
 import com.nsnik.nrs.jaron.data.TagEntity
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getCurrentMonthAndYear
 import java.util.*
 
 class ExpenseListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val databaseUtility = (application as MyApplication).databaseUtility
+
+    private val currentDate: MutableLiveData<Date> = MutableLiveData()
+
+    fun getCurrentDate(): LiveData<Date> {
+        currentDate.postValue(getCurrentMonthAndYear())
+        return currentDate
+    }
 
     fun getAllExpenses() = databaseUtility.getAllExpenses()
 

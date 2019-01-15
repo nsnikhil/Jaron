@@ -41,4 +41,5 @@ class SplashActivity : AppCompatActivity() {
         super.onDestroy()
         if (BuildConfig.DEBUG) MyApplication.getRefWatcher(this)?.watch(this)
     }
+
 }

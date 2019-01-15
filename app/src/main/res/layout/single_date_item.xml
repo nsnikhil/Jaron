@@ -21,8 +21,15 @@
   ~ <https://www.gnu.org/licenses/why-not-lgpl.html>.
   -->
 
-<resources>
-    <color name="colorPrimary">#fafafa</color>
-    <color name="colorPrimaryDark">#f0f0f0</color>
-    <color name="colorAccent">#0500ff</color>
-</resources>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/singleDateItem"
+    style="@style/horizontal"
+    android:layout_height="?listPreferredItemHeightLarge"
+    android:layout_gravity="center"
+    android:background="?selectableItemBackgroundBorderless"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center"
+    android:padding="@dimen/sixteen"
+    android:text="@string/app_name"
+    android:textSize="18sp" />

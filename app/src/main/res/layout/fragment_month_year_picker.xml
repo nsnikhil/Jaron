@@ -1,0 +1,71 @@
+<!--
+  ~     Jaron  Copyright (C) 2019  Nikhil Soni
+  ~     This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+  ~     This is free software, and you are welcome to redistribute it
+  ~     under certain conditions; type `show c' for details.
+  ~
+  ~ The hypothetical commands `show w' and `show c' should show the appropriate
+  ~ parts of the General Public License.  Of course, your program's commands
+  ~ might be different; for a GUI interface, you would use an "about box".
+  ~
+  ~   You should also get your employer (if you work as a programmer) or school,
+  ~ if any, to sign a "copyright disclaimer" for the program, if necessary.
+  ~ For more information on this, and how to apply and follow the GNU GPL, see
+  ~ <https://www.gnu.org/licenses/>.
+  ~
+  ~   The GNU General Public License does not permit incorporating your program
+  ~ into proprietary programs.  If your program is a subroutine library, you
+  ~ may consider it more useful to permit linking proprietary applications with
+  ~ the library.  If this is what you want to do, use the GNU Lesser General
+  ~ Public License instead of this License.  But first, please read
+  ~ <https://www.gnu.org/licenses/why-not-lgpl.html>.
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/matchParent"
+    tools:context="com.nsnik.nrs.jaron.view.fragments.dialogs.MonthYearPickerFragment">
+
+    <TextView
+        android:id="@+id/monthYearPickerCurrentDate"
+        style="@style/horizontal"
+        android:layout_height="?listPreferredItemHeight"
+        android:gravity="center_vertical"
+        android:background="@color/colorAccent"
+        android:padding="@dimen/sixteen"
+        android:text="@string/app_name"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:layout_marginTop="@dimen/sixteen"
+        android:id="@+id/monthYearPickerMonthList"
+        app:layout_constraintTop_toBottomOf="@id/monthYearPickerCurrentDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/monthYearPickerYearList"
+        style="@style/wrapContent"/>
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/monthYearPickerYearList"
+        android:layout_marginTop="@dimen/sixteen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/monthYearPickerCurrentDate"
+        app:layout_constraintStart_toEndOf="@id/monthYearPickerMonthList"
+        style="@style/wrapContent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/monthYearPickerOk"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/sixteen"
+        android:text="@string/monthYearPickerDialogOkay"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/monthYearPickerYearList" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

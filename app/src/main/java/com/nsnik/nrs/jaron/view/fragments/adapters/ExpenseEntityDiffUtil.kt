@@ -29,11 +29,11 @@ import com.nsnik.nrs.jaron.data.ExpenseEntity
 class ExpenseEntityDiffUtil : DiffUtil.ItemCallback<ExpenseEntity>() {
 
     override fun areItemsTheSame(oldItem: ExpenseEntity, newItem: ExpenseEntity): Boolean {
-        return false
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: ExpenseEntity, newItem: ExpenseEntity): Boolean {
-        return false
+        return oldItem == newItem
     }
 
 }

@@ -34,11 +34,21 @@ class ApplicationUtility {
 
     companion object {
 
-        fun getCurrentMonth(): String = SimpleDateFormat("MMMM", Locale.ENGLISH).format(getDate())
+        fun getCurrentMonth(): String = getSimpleDateFormatter("MMMM").format(getDate())
+
+        fun getCurrentYear(): String = getSimpleDateFormatter("YYYY").format(getDate())
+
+        private fun getSimpleDateFormatter(format: String) = SimpleDateFormat(format, Locale.ENGLISH)
 
         private fun getDate(): Date = getCalendar().time
 
         private fun getCalendar(): Calendar = Calendar.getInstance()
+
+        fun getFormattedCurrentDate() = StringBuilder(getSimpleDateFormatter("MMMM").format(getDate()))
+            .append(", ")
+            .append(getSimpleDateFormatter("YYYY").format(getDate()))
+            .toString()
+
 
         fun getFormattedText(text: String?) =
             Html.fromHtml("<font color='#0500ff'>$text</font>", Html.FROM_HTML_MODE_LEGACY)!!
@@ -51,13 +61,42 @@ class ApplicationUtility {
 
         fun getCurrentMonthAndYear(): Date = getCurrentMonthAndYearUtil(getCalendar())
 
-
         private fun getCurrentMonthAndYearUtil(calendar: Calendar): Date {
             calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR))
             calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH))
             return calendar.time
         }
 
+        fun isSameDate(thisDate: Date, todayDate: Date): Boolean {
+            val thisCalendar = Calendar.getInstance()
+            thisCalendar.time = thisDate
+            val todayCalendar = Calendar.getInstance()
+            todayCalendar.time = todayDate
+            return thisCalendar.get(Calendar.MONTH) == todayCalendar.get(Calendar.MONTH) &&
+                    thisCalendar.get(Calendar.YEAR) == todayCalendar.get(Calendar.YEAR)
+        }
+
+        fun formatText(originalString: String, newValue: String): String {
+            if (newValue.contains("20"))
+                return originalString.substring(0, originalString.indexOf(" ") + 1) + newValue
+            return newValue + originalString.substring(originalString.indexOf(","))
+        }
+
+
+        private fun getMonthNumberFromName(value: String): Int {
+            val calendar = getCalendar()
+            calendar.time = SimpleDateFormat("MMMM", Locale.ENGLISH).parse(value)
+            return calendar.get(Calendar.MONTH)
+        }
+
+        fun getDateFromString(dateString: String): Date {
+            val month = dateString.substring(0, dateString.indexOf(","))
+            val year = dateString.substring(dateString.indexOf(" ") + 1)
+            val calendar = getCalendar()
+            calendar.set(Calendar.YEAR, year.toInt())
+            calendar.set(Calendar.MONTH, getMonthNumberFromName(month))
+            return calendar.time
+        }
     }
 
 }

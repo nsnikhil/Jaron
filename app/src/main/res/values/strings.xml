@@ -24,7 +24,8 @@
 <resources>
     <string name="app_name">Jaron</string>
 
-    <!--Menu Items-->\
+
+    <!--Menu Items-->
     <string name="menuItemSearch">Search</string>
     <string name="menuItemSettings">Settings</string>
     <string name="menuItemAbout">About</string>
@@ -37,5 +38,26 @@
     <string name="newExpenseDialogTitle">New Expense</string>
     <string name="newExpenseCreate">Create</string>
     <string name="newExpenseCancel">Cancel</string>
+
+    <!--Month Year Picker Dialog-->
+    <string name="monthYearPickerDialogOkay">Okay</string>
+    <string name="monthYearPickerDialogTabMonth">Month</string>
+    <string name="monthYearPickerDialogTabYear">Year</string>
+
+
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
 
 </resources>

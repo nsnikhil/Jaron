@@ -27,13 +27,18 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.BuildConfig
 import com.nsnik.nrs.jaron.MyApplication
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getCurrentMonth
+import com.nsnik.nrs.jaron.view.fragments.dialogs.MonthYearPickerFragment
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         title = getCurrentMonth()
@@ -50,10 +55,8 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menuItemSearch -> {
-
             }
             R.id.menuItemSettings -> {
-
             }
             R.id.menuItemAbout -> {
             }
@@ -63,10 +66,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun initialize() {
         setSupportActionBar(mainToolbar)
+        compositeDisposable.addAll(
+            RxView.clicks(mainToolbar).subscribe {
+                MonthYearPickerFragment().show(supportFragmentManager, "picker")
+            }
+        )
+    }
+
+    private fun cleanUp() {
+        compositeDisposable.clear()
+        compositeDisposable.dispose()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        cleanUp()
         if (BuildConfig.DEBUG) MyApplication.getRefWatcher(this)?.watch(this)
     }
 
