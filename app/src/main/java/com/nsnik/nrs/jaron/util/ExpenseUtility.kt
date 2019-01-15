@@ -47,15 +47,16 @@ class ExpenseUtility {
         fun toTwoDecimal(double: Double) = String.format("%.2f", double).toDouble()
 
         fun formatTotal(context: Context, double: Double) =
-            formatWithTitle(getString(R.string.expenseTotalAvailable, context), double)
+            formatWithTitle(context, getString(R.string.expenseTotalAvailable, context), double)
 
         fun formatTotalSpend(context: Context, double: Double) =
-            formatWithTitle(getString(R.string.expenseTotalSpend, context), double)
+            formatWithTitle(context, getString(R.string.expenseTotalSpend, context), double)
 
         fun formatTotalLeft(context: Context, double: Double) =
-            formatWithTitle(getString(R.string.expenseTotalLeft, context), double)
+            formatWithTitle(context, getString(R.string.expenseTotalLeft, context), double)
 
-        private fun formatWithTitle(title: String, double: Double) = String.format("%s %.2f", title, double)
+        private fun formatWithTitle(context: Context, title: String, double: Double) =
+            String.format("%s %s%.2f", title, getString(R.string.expenseCurrencySymbol, context), double)
 
         fun formatWithPercent(double: Double) = StringBuilder(double.toString()).append("%").toString()
 

@@ -28,6 +28,7 @@
     <string name="expenseTotalAvailable">Total</string>
     <string name="expenseTotalSpend">Spend</string>
     <string name="expenseTotalLeft">Left</string>
+    <string name="expenseCurrencySymbol">₹</string>
 
     <!--Menu Items-->
     <string name="menuItemSearch">Search</string>

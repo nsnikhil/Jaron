@@ -84,7 +84,6 @@ class ExpenseListAdapter(val expenseListFragment: ExpenseListFragment) :
 
     private fun bindItemHolder(holder: ItemViewHolder, position: Int) {
         val expenseEntity = getItem(position)
-        Timber.d(expenseEntity.title)
         holder.value.text = expenseEntity.value.toString()
         holder.title.text = expenseEntity.title
         holder.description.text = expenseEntity.description
