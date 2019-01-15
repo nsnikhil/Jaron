@@ -22,7 +22,8 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#fafafa</color>
-    <color name="colorPrimaryDark">#f0f0f0</color>
-    <color name="colorAccent">#0500ff</color>
+    <color name="colorPrimary">#311b92</color>
+    <color name="colorPrimaryDark">#000063</color>
+    <color name="colorAccent">#ffa000</color>
+
 </resources>
