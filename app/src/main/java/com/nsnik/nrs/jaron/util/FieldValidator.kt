@@ -23,31 +23,59 @@
 
 package com.nsnik.nrs.jaron.util
 
+import android.content.Context
+import android.widget.TextView
+import com.nsnik.nrs.jaron.R
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getString
 import java.util.*
 
 class FieldValidator {
 
     companion object {
 
-        fun validateFrom(value: String, title: String, description: String, date: Date, tags: List<String>): Boolean =
-            validateValueString(value) &&
-                    validateValue(value.toDouble()) &&
-                    validateTitle(title) &&
-                    validateDescription(description) &&
-                    validateDate(date) &&
-                    validateTags(tags)
+        fun validateFrom(
+            context: Context,
+            value: TextView,
+            title: TextView,
+            description: TextView,
+            date: Date,
+            tags: List<String>
+        ): Boolean = validateValueString(context, value) &&
+                validateTitle(context, title) &&
+                validateDescription(context, description) &&
+                validateDate(date) &&
+                validateTags(tags)
 
-        private fun validateValueString(value: String): Boolean = value.isNotEmpty()
+        private fun validateValueString(context: Context, textView: TextView) =
+            checkEmpty(context, textView, R.string.newExpenseErrorNoValue) &&
+                    checkNonZero(context, textView, R.string.newExpenseErrorNegativeValue)
 
-        private fun validateValue(value: Double): Boolean = value > 0
 
-        private fun validateTitle(title: String): Boolean = title.isNotEmpty()
+        private fun validateTitle(context: Context, textView: TextView): Boolean =
+            checkEmpty(context, textView, R.string.newExpenseErrorNoTitle)
 
-        private fun validateDescription(description: String): Boolean = description.isNotEmpty()
+        private fun validateDescription(context: Context, textView: TextView): Boolean =
+            checkEmpty(context, textView, R.string.newExpenseErrorNoDescription)
 
         private fun validateDate(date: Date): Boolean = true
 
         private fun validateTags(tags: List<String>): Boolean = true
+
+        private fun checkEmpty(context: Context, textView: TextView, stringId: Int) =
+            checkCondition(context, textView, stringId, textView.text.toString().isEmpty())
+
+        private fun checkNonZero(context: Context, textView: TextView, stringId: Int) =
+            checkCondition(context, textView, stringId, textView.text.toString().toDouble() <= 0)
+
+        private fun checkCondition(context: Context, textView: TextView, stringId: Int, condition: Boolean): Boolean {
+            if (condition) return setError(textView, getString(stringId, context))
+            return true
+        }
+
+        private fun setError(textView: TextView, errorMessage: String): Boolean {
+            textView.error = errorMessage
+            return false
+        }
 
     }
 

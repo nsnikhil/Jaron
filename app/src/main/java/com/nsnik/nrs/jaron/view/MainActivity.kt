@@ -56,8 +56,7 @@ class MainActivity : AppCompatActivity() {
     private fun setToolBarDate() {
         expenseListViewModel = ViewModelProviders.of(this).get(ExpenseListViewModel::class.java)
         expenseListViewModel.getCurrentDate().observe(this, Observer {
-            title = getFormattedCurrentDate(it)
-            Timber.d(title.toString())
+            title = String.format("%s %s",getFormattedCurrentDate(it), "▼")
         })
     }
 

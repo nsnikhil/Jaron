@@ -81,23 +81,22 @@ class AddExpenseFragment : DialogFragment() {
         expenseListViewModel = ViewModelProviders.of(activity!!).get(ExpenseListViewModel::class.java)
     }
 
-    private fun listeners() {
-        compositeDisposable.addAll(
-            RxView.clicks(newExpenseCancel).subscribe {
-                dismiss()
-            },
-            RxView.clicks(newExpenseCreate).subscribe {
-                addEntries()
-            },
-            RxTextView.textChanges(newExpenseTags)
-                .debounce(2, TimeUnit.SECONDS)
-                .subscribe {
-                    ApplicationUtility.formatTag(it.toString()).forEach(Consumer { s ->
-                        Timber.d(s)
-                    })
-                }
-        )
-    }
+    private fun listeners() = compositeDisposable.addAll(
+        RxView.clicks(newExpenseCancel).subscribe {
+            dismiss()
+        },
+        RxView.clicks(newExpenseCreate).subscribe {
+            addEntries()
+        },
+        RxTextView.textChanges(newExpenseTags)
+            .debounce(2, TimeUnit.SECONDS)
+            .subscribe {
+                ApplicationUtility.formatTag(it.toString()).forEach(Consumer { s ->
+                    Timber.d(s)
+                })
+            }
+    )
+
 
     private fun addEntries() =
         if (validateEntries()) {
@@ -125,9 +124,10 @@ class AddExpenseFragment : DialogFragment() {
     private fun addTags(strings: List<String>) = expenseListViewModel.insertTag(listToTag(strings))
 
     private fun validateEntries(): Boolean = validateFrom(
-        newExpenseValue.text(),
-        newExpenseTitle.text(),
-        newExpenseDescription.text(),
+        activity!!,
+        newExpenseValue,
+        newExpenseTitle,
+        newExpenseDescription,
         Calendar.getInstance().time,
         formatTag(newExpenseTags.text())
     )

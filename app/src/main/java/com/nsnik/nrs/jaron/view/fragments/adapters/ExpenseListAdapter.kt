@@ -44,7 +44,6 @@ import com.nsnik.nrs.jaron.view.fragments.ExpenseListFragment
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.month_summary_layout.view.*
 import kotlinx.android.synthetic.main.single_expense_item.view.*
-import timber.log.Timber
 
 
 class ExpenseListAdapter(val expenseListFragment: ExpenseListFragment) :

@@ -43,6 +43,10 @@
     <string name="newExpenseDialogTitle">New Expense</string>
     <string name="newExpenseCreate">Create</string>
     <string name="newExpenseCancel">Cancel</string>
+    <string name="newExpenseErrorNoValue">Please enter the amount</string>
+    <string name="newExpenseErrorNegativeValue">Amount should be greater than zero</string>
+    <string name="newExpenseErrorNoTitle">Please enter the title for the expense</string>
+    <string name="newExpenseErrorNoDescription">Please enter the description for the expense</string>
 
     <!--Month Year Picker Dialog-->
     <string name="monthYearPickerDialogOkay">Okay</string>
