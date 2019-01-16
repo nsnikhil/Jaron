@@ -24,6 +24,7 @@
 package com.nsnik.nrs.jaron.util
 
 import android.content.Context
+import com.nsnik.nrs.jaron.MyApplication
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getString
@@ -36,13 +37,19 @@ class ExpenseUtility {
             .map { it -> it.value }
             .reduce(0.0) { t, u -> t + u }
 
-        fun getTotalAmount(): Double = 47000.0
+        fun getTotalAmount(context: Context): Double =
+            (context.applicationContext as MyApplication)
+                .sharedPreferences
+                .getFloat(getString(R.string.sharedPreferenceKeyTotalAmount, context), 47000F)
+                .toDouble()
 
-        fun getAmountLeft(list: List<ExpenseEntity>) = getTotalAmount() - getAmountSpend(list)
+        fun getAmountLeft(context: Context, list: List<ExpenseEntity>) = getTotalAmount(context) - getAmountSpend(list)
 
-        fun getPercentageSpend(list: List<ExpenseEntity>) = (getAmountSpend(list) / getTotalAmount()) * 100
+        fun getPercentageSpend(context: Context, list: List<ExpenseEntity>) =
+            (getAmountSpend(list) / getTotalAmount(context)) * 100
 
-        fun getPercentageLeft(list: List<ExpenseEntity>) = (getAmountLeft(list) / getTotalAmount()) * 100
+        fun getPercentageLeft(context: Context, list: List<ExpenseEntity>) =
+            (getAmountLeft(context, list) / getTotalAmount(context)) * 100
 
         fun toTwoDecimal(double: Double) = String.format("%.2f", double).toDouble()
 

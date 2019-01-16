@@ -21,8 +21,15 @@
  * <https://www.gnu.org/licenses/why-not-lgpl.html>.
  */
 
-package com.nsnik.nrs.jaron.view.fragments.adapters.listeners
+package com.nsnik.nrs.jaron.dagger.components
 
-interface MonthYearPickerListener {
-    fun onNewItemSelected(value: String)
+import android.content.SharedPreferences
+import com.nsnik.nrs.jaron.dagger.modules.SharedPreferencesModule
+import com.nsnik.nrs.jaron.dagger.scopes.ApplicationScope
+import dagger.Component
+
+@ApplicationScope
+@Component(modules = [(SharedPreferencesModule::class)])
+interface SharedPreferencesComponent {
+    val sharedPreferences: SharedPreferences
 }

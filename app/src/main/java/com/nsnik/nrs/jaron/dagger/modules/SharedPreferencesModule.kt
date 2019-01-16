@@ -21,14 +21,23 @@
  * <https://www.gnu.org/licenses/why-not-lgpl.html>.
  */
 
-package com.nsnik.nrs.jaron.view.fragments.adapters
+package com.nsnik.nrs.jaron.dagger.modules
 
-import androidx.recyclerview.widget.DiffUtil
+import android.content.Context
+import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
+import com.nsnik.nrs.jaron.dagger.qualifiers.ApplicationQualifier
+import com.nsnik.nrs.jaron.dagger.scopes.ApplicationScope
+import dagger.Module
+import dagger.Provides
 
-class MonthYearDiffUtil : DiffUtil.ItemCallback<String>() {
+@Module(includes = [(ContextModule::class)])
+class SharedPreferencesModule {
 
-    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean = oldItem == newItem
-
-    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean = oldItem == newItem
+    @ApplicationScope
+    @Provides
+    fun provideSharedPreferences(@ApplicationQualifier context: Context): SharedPreferences {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+    }
 
 }

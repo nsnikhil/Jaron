@@ -35,6 +35,7 @@ import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
 import com.nsnik.nrs.jaron.model.MonthSummary
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getString
 import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatTotal
 import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatTotalLeft
 import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatTotalSpend
@@ -46,7 +47,7 @@ import kotlinx.android.synthetic.main.month_summary_layout.view.*
 import kotlinx.android.synthetic.main.single_expense_item.view.*
 
 
-class ExpenseListAdapter(val expenseListFragment: ExpenseListFragment) :
+class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
     ListAdapter<ExpenseEntity, RecyclerView.ViewHolder>(ExpenseEntityDiffUtil()) {
 
     private val summaryViewType = 0
@@ -83,7 +84,8 @@ class ExpenseListAdapter(val expenseListFragment: ExpenseListFragment) :
 
     private fun bindItemHolder(holder: ItemViewHolder, position: Int) {
         val expenseEntity = getItem(position)
-        holder.value.text = expenseEntity.value.toString()
+        holder.value.text = String.format("%s%.2f",
+            getString(R.string.expenseCurrencySymbol,expenseListFragment.context!!), expenseEntity.value)
         holder.title.text = expenseEntity.title
         holder.description.text = expenseEntity.description
     }

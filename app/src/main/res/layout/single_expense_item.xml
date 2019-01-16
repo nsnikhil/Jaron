@@ -27,17 +27,18 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/horizontal"
-    android:layout_height="?listPreferredItemHeight"
+    android:layout_height="?listPreferredItemHeightLarge"
     android:layout_margin="@dimen/eight"
     android:padding="@dimen/eight"
     app:cardCornerRadius="4dp"
     app:cardElevation="2dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    ¬<androidx.constraintlayout.widget.ConstraintLayout
         style="@style/matchParent"
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
+        android:padding="@dimen/eight"
         android:foreground="?selectableItemBackground">
 
         <TextView
@@ -58,7 +59,7 @@
             style="@style/wrapContent"
             android:layout_marginStart="@dimen/sixteen"
             android:text="@string/app_name"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/singleExpenseDescription"
             app:layout_constraintStart_toEndOf="@id/singleExpenseValue"

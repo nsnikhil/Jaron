@@ -39,7 +39,6 @@ import com.nsnik.nrs.jaron.view.fragments.dialogs.MonthYearPickerFragment
 import com.nsnik.nrs.jaron.viewModel.ExpenseListViewModel
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 

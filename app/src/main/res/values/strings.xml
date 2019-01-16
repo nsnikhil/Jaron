@@ -60,8 +60,10 @@
     <string name="aboutLicenseUrl" translatable="false">https://github.com/nsnikhil/Jaron/blob/master/LICENSE</string>
     <string name="aboutApp">Money management application</string>
 
-    <string name="aboutNikhil" translatable="false">Jaron is written by Nikhil Soni\n
-                   <a href="https://twitter.com/imnsnik">Twitter</a>|<a href="https://github.com/nsnikhil/">Github</a> </string>
+    <!--<string name="aboutNikhil" translatable="false">Jaron is written by Nikhil Soni\n-->
+                   <!--<a href="https://twitter.com/imnsnik">Twitter</a>|<a href="https://github.com/nsnikhil/">Github</a> </string>-->
+
+    <string name="aboutNikhil">Jaron  Copyright © 2019  Nikhil Soni</string>
 
     <string name="aboutSourceCode" translatable="false">The source code is available on <a href="https://github.com/nsnikhil/Jaron">Github</a></string>
 
@@ -79,5 +81,8 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+
+    <!--Shared Preferences Key-->
+    <string name="sharedPreferenceKeyTotalAmount">sharedPreferenceKeyTotalAmount</string>
 
 </resources>

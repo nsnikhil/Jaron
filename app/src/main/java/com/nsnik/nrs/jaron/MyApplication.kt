@@ -25,9 +25,11 @@ package com.nsnik.nrs.jaron
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
 import com.nsnik.nrs.jaron.dagger.components.DaggerDatabaseComponent
+import com.nsnik.nrs.jaron.dagger.components.DaggerSharedPreferencesComponent
 import com.nsnik.nrs.jaron.dagger.modules.ContextModule
 import com.nsnik.nrs.jaron.util.DatabaseUtility
 import com.squareup.leakcanary.LeakCanary
@@ -52,6 +54,8 @@ class MyApplication : Application() {
     private var refWatcher: RefWatcher? = null
     private val contextModule: ContextModule = ContextModule(this)
     lateinit var databaseUtility: DatabaseUtility
+    lateinit var sharedPreferences: SharedPreferences
+
 
     override fun onCreate() {
         super.onCreate()
@@ -71,10 +75,15 @@ class MyApplication : Application() {
 
     private fun moduleSetter() {
         setDatabaseComponent()
+        setSharedPrefComponent()
     }
 
     private fun setDatabaseComponent() {
         databaseUtility = DaggerDatabaseComponent.builder().contextModule(contextModule).build().databaseUtility
+    }
+
+    private fun setSharedPrefComponent() {
+        sharedPreferences = DaggerSharedPreferencesComponent.builder().contextModule(contextModule).build().sharedPreferences
     }
 
 }

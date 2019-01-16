@@ -28,16 +28,18 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/matchParent"
-        android:layout_gravity="center"
-        android:padding="@dimen/eight">
+        android:layout_gravity="center">
 
         <TextView
             android:id="@+id/aboutNikhil"
-            style="@style/wrapContent"
-            android:layout_marginTop="@dimen/sixteen"
+            style="@style/horizontal"
+            android:layout_height="?listPreferredItemHeight"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
             android:text="@string/aboutNikhil"
             android:textAlignment="center"
-            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -58,6 +60,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/aboutLibraries"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -70,6 +73,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/aboutLicense"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

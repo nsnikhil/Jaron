@@ -90,7 +90,9 @@ class ExpenseListFragment : Fragment() {
     private fun modifyList(list: List<ExpenseEntity>, date: Date) {
         val filteredList = filteredListByDate(list, date)
         expenseListAdapter.submitList(filteredList)
-        expenseListAdapter.submitSummary(getMonthSummary(filteredList))
+        expenseListAdapter.submitSummary(getMonthSummary(activity!!, filteredList))
+        //TODO fix this
+        expenseListAdapter.notifyDataSetChanged()
     }
 
 

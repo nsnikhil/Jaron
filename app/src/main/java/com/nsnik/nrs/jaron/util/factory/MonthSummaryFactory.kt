@@ -23,6 +23,7 @@
 
 package com.nsnik.nrs.jaron.util.factory
 
+import android.content.Context
 import com.nsnik.nrs.jaron.data.ExpenseEntity
 import com.nsnik.nrs.jaron.model.MonthSummary
 import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.getAmountLeft
@@ -35,13 +36,13 @@ class MonthSummaryFactory {
 
     companion object {
 
-        fun getMonthSummary(list: List<ExpenseEntity>): MonthSummary {
+        fun getMonthSummary(context: Context, list: List<ExpenseEntity>): MonthSummary {
             return MonthSummary(
-                total = getTotalAmount(),
+                total = getTotalAmount(context),
                 totalSpend = getAmountSpend(list),
-                totalLeft = getAmountLeft(list),
-                percentageSpend = getPercentageSpend(list),
-                percentageLeft = getPercentageLeft(list)
+                totalLeft = getAmountLeft(context, list),
+                percentageSpend = getPercentageSpend(context, list),
+                percentageLeft = getPercentageLeft(context, list)
             )
         }
 
