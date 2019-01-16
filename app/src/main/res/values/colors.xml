@@ -21,9 +21,8 @@
   ~ <https://www.gnu.org/licenses/why-not-lgpl.html>.
   -->
 
-<resources>
-    <color name="colorPrimary">#311b92</color>
-    <color name="colorPrimaryDark">#000063</color>
-    <color name="colorAccent">#ffa000</color>
-
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="colorPrimary">#212121</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#009688</color>
 </resources>

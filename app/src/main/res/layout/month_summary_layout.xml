@@ -43,9 +43,9 @@
             android:text="@string/app_name"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/summaryTotalLeft"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/summaryTotalLeft"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/summaryTotalLeft"
@@ -53,9 +53,9 @@
             android:text="@string/app_name"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/summaryTotalHave"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/summaryTotalSpend"
-            app:layout_constraintBottom_toTopOf="@id/summaryTotalHave"/>
+            app:layout_constraintTop_toBottomOf="@id/summaryTotalSpend" />
 
         <TextView
             android:id="@+id/summaryTotalHave"
@@ -63,20 +63,36 @@
             android:text="@string/app_name"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/summaryTotalLeft"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/summaryTotalLeft" />
+
+        <ProgressBar
+            android:id="@+id/summaryPercentage"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_centerInParent="true"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="65"
+            android:progressDrawable="@drawable/circular_progress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:secondaryProgress="100" />
 
         <TextView
             android:id="@+id/summaryPercentageProgress"
             android:layout_width="@dimen/summaryProgressBarSize"
             android:layout_height="@dimen/summaryProgressBarSize"
-            tools:text="12%"
-            android:textSize="36sp"
             android:gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="28sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="@id/summaryPercentage"
+            app:layout_constraintEnd_toEndOf="@id/summaryPercentage"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12%" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

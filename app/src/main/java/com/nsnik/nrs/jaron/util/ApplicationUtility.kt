@@ -57,7 +57,7 @@ class ApplicationUtility {
 
 
         fun getFormattedText(text: String?) =
-            Html.fromHtml("<font color='#0500ff'>$text</font>", Html.FROM_HTML_MODE_LEGACY)!!
+            Html.fromHtml("<font color='#009688'>$text</font>", Html.FROM_HTML_MODE_LEGACY)!!
 
         fun formatTag(tags: String): List<String> = tags.toLowerCase(Locale.ENGLISH).split("\\s".toRegex())
 

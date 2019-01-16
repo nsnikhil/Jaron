@@ -26,6 +26,7 @@ package com.nsnik.nrs.jaron.view.fragments.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -79,6 +80,7 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
             holder.spend.text = formatTotalSpend(expenseListFragment.context!!, it.totalSpend)
             holder.left.text = formatTotalLeft(expenseListFragment.context!!, it.totalLeft)
             holder.percentageSpend.text = formatWithPercent(toTwoDecimal(it.percentageSpend))
+            holder.percentageProgress.progress = it.percentageSpend.toInt()
         }))
     }
 
@@ -108,6 +110,7 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
         val left: TextView = itemView.summaryTotalLeft
         val spend: TextView = itemView.summaryTotalSpend
         val percentageSpend: TextView = itemView.summaryPercentageProgress
+        val percentageProgress: ProgressBar = itemView.summaryPercentage
 
         init {
             compositeDisposable.addAll(

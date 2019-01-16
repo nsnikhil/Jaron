@@ -36,7 +36,7 @@
         android:elevation="4dp"
         app:layout_constraintStart_toStartOf="parent"
         android:theme="@style/toolbarLight"
-        app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
+        app:popupTheme="@style/Theme.AppCompat.NoActionBar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <fragment

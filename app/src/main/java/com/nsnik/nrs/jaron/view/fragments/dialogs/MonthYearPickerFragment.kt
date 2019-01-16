@@ -48,8 +48,6 @@ import kotlinx.android.synthetic.main.fragment_month_year_picker.*
 class MonthYearPickerFragment : DialogFragment() {
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-//    private lateinit var expenseListViewModel: ExpenseListViewModel
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_month_year_picker, container, false)
@@ -62,12 +60,6 @@ class MonthYearPickerFragment : DialogFragment() {
     }
 
     private fun initialize() {
-
-//        expenseListViewModel = ViewModelProviders.of(activity!!).get(ExpenseListViewModel::class.java)
-//
-//        expenseListViewModel.getCurrentDate().observe(this, Observer {
-//            ApplicationUtility.getMonth(it)
-//        })
 
         monthYearPickerMonthList.apply {
             adapter = getAdapter(getMonthList()!!)
