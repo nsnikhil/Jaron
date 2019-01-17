@@ -28,19 +28,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.MyApplication
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.util.ApplicationUtility
-import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.goToIntro
-import com.nsnik.nrs.jaron.util.ExpenseUtility
 import com.nsnik.nrs.jaron.util.FieldValidator.Companion.validateValueString
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_intro.*
-import timber.log.Timber
 
-class IntroFragment : androidx.fragment.app.Fragment() {
+class IntroFragment : Fragment() {
 
     private val compositeDisposable = CompositeDisposable()
 

@@ -43,9 +43,11 @@ import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatTotalSpend
 import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatWithPercent
 import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.toTwoDecimal
 import com.nsnik.nrs.jaron.view.fragments.ExpenseListFragment
+import com.nsnik.nrs.jaron.view.fragments.listeners.ExpenseItemClickListener
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.month_summary_layout.view.*
 import kotlinx.android.synthetic.main.single_expense_item.view.*
+import timber.log.Timber
 
 
 class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
@@ -55,6 +57,7 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
     private val itemViewType = 1
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val summary: MutableLiveData<MonthSummary> = MutableLiveData()
+    private val expenseItemClickListener: ExpenseItemClickListener = expenseListFragment
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == summaryViewType)
@@ -86,8 +89,11 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
 
     private fun bindItemHolder(holder: ItemViewHolder, position: Int) {
         val expenseEntity = getItem(position)
-        holder.value.text = String.format("%s%.2f",
-            getString(R.string.expenseCurrencySymbol,expenseListFragment.context!!), expenseEntity.value)
+        Timber.d(expenseEntity.title)
+        holder.value.text = String.format(
+            "%s%.2f",
+            getString(R.string.expenseCurrencySymbol, expenseListFragment.context!!), expenseEntity.value
+        )
         holder.title.text = expenseEntity.title
         holder.description.text = expenseEntity.description
     }
@@ -127,13 +133,18 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
         val description: TextView = itemView.singleExpenseDescription
 
         init {
+
             compositeDisposable.addAll(
                 RxView.clicks(itemView).subscribe {
-
+                    expenseItemClickListener.onClick(getItem(adapterPosition - 1))
+                },
+                RxView.longClicks(itemView).subscribe {
+                    expenseItemClickListener.onLongClick(getItem(adapterPosition - 1), itemView)
                 }
             )
         }
     }
+
 
     private fun cleanUp() {
         compositeDisposable.clear()

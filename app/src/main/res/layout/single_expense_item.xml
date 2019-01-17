@@ -33,11 +33,9 @@
     app:cardCornerRadius="4dp"
     app:cardElevation="2dp">
 
-    ¬<androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/matchParent"
         android:background="?selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
         android:padding="@dimen/eight"
         android:foreground="?selectableItemBackground">
 

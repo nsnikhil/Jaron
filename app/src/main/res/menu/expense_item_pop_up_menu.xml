@@ -21,8 +21,14 @@
   ~ <https://www.gnu.org/licenses/why-not-lgpl.html>.
   -->
 
-<resources>
-    <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#009688</color>
-</resources>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/expensePopupEdit"
+        android:title="@string/popupMenuItemExpenseEdit" />
+
+    <item
+        android:id="@+id/expensePopupDelete"
+        android:title="@string/popupMenuItemExpenseDelete" />
+
+</menu>

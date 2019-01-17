@@ -24,15 +24,19 @@
 package com.nsnik.nrs.jaron.view.fragments
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding2.view.RxView
+import com.jakewharton.rxbinding2.widget.RxPopupMenu
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
 import com.nsnik.nrs.jaron.util.ApplicationUtility
@@ -45,13 +49,15 @@ import com.nsnik.nrs.jaron.util.eventbus.RxEvent
 import com.nsnik.nrs.jaron.util.factory.MonthSummaryFactory.Companion.getMonthSummary
 import com.nsnik.nrs.jaron.view.fragments.adapters.ExpenseListAdapter
 import com.nsnik.nrs.jaron.view.fragments.dialogs.AddExpenseFragment
+import com.nsnik.nrs.jaron.view.fragments.listeners.ExpenseItemClickListener
 import com.nsnik.nrs.jaron.viewModel.ExpenseListViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_expense_list.*
+import timber.log.Timber
 import java.util.*
 
-class ExpenseListFragment : Fragment() {
+class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private lateinit var expenseListViewModel: ExpenseListViewModel
@@ -105,6 +111,46 @@ class ExpenseListFragment : Fragment() {
                 AddExpenseFragment().show(fragmentManager, "addExpense")
             }
         )
+    }
+
+    override fun onClick(expenseEntity: ExpenseEntity) {
+        Timber.d(expenseEntity.id.toString())
+    }
+
+    override fun onLongClick(expenseEntity: ExpenseEntity, view: View) {
+        inflatePopupMenu(expenseEntity, view)
+    }
+
+    private fun inflatePopupMenu(expenseEntity: ExpenseEntity, view: View) {
+        val popupMenu = PopupMenu(activity, view, Gravity.END)
+        popupMenu.inflate(R.menu.expense_item_pop_up_menu)
+        compositeDisposable.add(
+            RxPopupMenu.itemClicks(popupMenu).subscribe {
+                when (it.itemId) {
+                    R.id.expensePopupEdit -> {
+
+                    }
+                    R.id.expensePopupDelete -> {
+                        showAlertPopUpDialog(expenseEntity)
+
+                    }
+                }
+            }
+        )
+        popupMenu.show()
+    }
+
+    private fun showAlertPopUpDialog(expenseEntity: ExpenseEntity) {
+        AlertDialog.Builder(activity!!)
+            .setTitle(ApplicationUtility.getString(R.string.alertDialogDeleteTitle,activity!!))
+            .setMessage(ApplicationUtility.getString(R.string.alertDialogDeleteMessage,activity!!))
+            .setPositiveButton(ApplicationUtility.getString(R.string.alertDialogDeletePositiveText,activity!!)) { dialog, which ->
+                expenseListViewModel.deleteExpenses(listOf(expenseEntity))
+            }
+            .setNegativeButton(ApplicationUtility.getString(R.string.alertDialogDeleteNegativeText,activity!!)) { dialog, which ->
+            }
+            .create()
+            .show()
     }
 
     private fun cleanUp() {
