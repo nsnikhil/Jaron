@@ -23,12 +23,16 @@
 
 package com.nsnik.nrs.jaron.util
 
+import android.app.Activity
 import android.content.Context
 import android.text.Html
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
+import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
 import com.nsnik.nrs.jaron.data.TagEntity
 import com.nsnik.nrs.jaron.util.factory.TagEntityFactory.Companion.createTagEntity
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.stream.Collectors
@@ -126,6 +130,12 @@ class ApplicationUtility {
         fun filteredListByDate(list: List<ExpenseEntity>, date: Date): List<ExpenseEntity> = list.stream()
             .filter { t -> isSameDate(t.date!!, date) }
             .toList()
+
+        fun goToIntro(activity: Activity) {
+            Timber.d(ExpenseUtility.getTotalAmount(activity).toString())
+            if (ExpenseUtility.getTotalAmount(activity) == 0.0)
+                activity.findNavController(R.id.mainNavHost).navigate(R.id.introFragment)
+        }
 
     }
 

@@ -29,4 +29,8 @@
         android:id="@+id/expenseList"
         android:name="com.nsnik.nrs.jaron.view.fragments.ExpenseListFragment" />
 
+    <fragment
+        android:id="@+id/introFragment"
+        android:name="com.nsnik.nrs.jaron.view.fragments.IntroFragment" />
+
 </navigation>

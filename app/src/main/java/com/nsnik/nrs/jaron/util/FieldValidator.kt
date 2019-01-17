@@ -46,7 +46,7 @@ class FieldValidator {
                 validateDate(date) &&
                 validateTags(tags)
 
-        private fun validateValueString(context: Context, textView: TextView) =
+        fun validateValueString(context: Context, textView: TextView) =
             checkEmpty(context, textView, R.string.newExpenseErrorNoValue) &&
                     checkNonZero(context, textView, R.string.newExpenseErrorNegativeValue)
 

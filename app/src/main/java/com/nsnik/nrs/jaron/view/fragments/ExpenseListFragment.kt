@@ -35,9 +35,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
+import com.nsnik.nrs.jaron.util.ApplicationUtility
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.filteredListByDate
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getCurrentMonthAndYear
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getDateFromString
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.goToIntro
 import com.nsnik.nrs.jaron.util.eventbus.RxBus
 import com.nsnik.nrs.jaron.util.eventbus.RxEvent
 import com.nsnik.nrs.jaron.util.factory.MonthSummaryFactory.Companion.getMonthSummary
@@ -57,6 +59,7 @@ class ExpenseListFragment : Fragment() {
     private lateinit var dateDisposable: Disposable
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        goToIntro(activity!!)
         return inflater.inflate(R.layout.fragment_expense_list, container, false)
     }
 

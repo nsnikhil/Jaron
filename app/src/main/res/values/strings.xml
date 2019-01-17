@@ -24,6 +24,10 @@
 <resources>
     <string name="app_name">Jaron</string>
 
+    <!--Intro Fragment-->
+    <string name="introStart">Start</string>
+    <string name="introBudgetHint">Enter Monthly Budget…</string>
+
     <!--Expense Utility-->
     <string name="expenseTotalAvailable">Total</string>
     <string name="expenseTotalSpend">Spend</string>
@@ -61,7 +65,7 @@
     <string name="aboutApp">Money management application</string>
 
     <!--<string name="aboutNikhil" translatable="false">Jaron is written by Nikhil Soni\n-->
-                   <!--<a href="https://twitter.com/imnsnik">Twitter</a>|<a href="https://github.com/nsnikhil/">Github</a> </string>-->
+    <!--<a href="https://twitter.com/imnsnik">Twitter</a>|<a href="https://github.com/nsnikhil/">Github</a> </string>-->
 
     <string name="aboutNikhil">Jaron  Copyright © 2019  Nikhil Soni</string>
 
@@ -84,5 +88,8 @@
 
     <!--Shared Preferences Key-->
     <string name="sharedPreferenceKeyTotalAmount">sharedPreferenceKeyTotalAmount</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

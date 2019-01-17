@@ -40,7 +40,7 @@ class ExpenseUtility {
         fun getTotalAmount(context: Context): Double =
             (context.applicationContext as MyApplication)
                 .sharedPreferences
-                .getFloat(getString(R.string.sharedPreferenceKeyTotalAmount, context), 47000F)
+                .getFloat(getString(R.string.sharedPreferenceKeyTotalAmount, context), 0.0F)
                 .toDouble()
 
         fun getAmountLeft(context: Context, list: List<ExpenseEntity>) = getTotalAmount(context) - getAmountSpend(list)
