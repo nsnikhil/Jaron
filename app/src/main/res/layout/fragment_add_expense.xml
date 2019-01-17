@@ -36,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/eight"
         android:hint="@string/newExpenseAmount"
+        android:textColorHint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -43,7 +44,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/newExpenseValue"
             style="@style/matchParent"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:textColor="@android:color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -54,6 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/eight"
         android:hint="@string/newExpenseTitle"
+        android:textColorHint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/newExpenseValueContainer">
@@ -61,7 +64,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/newExpenseTitle"
             style="@style/matchParent"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="@android:color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,6 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/eight"
         android:hint="@string/newExpenseDescription"
+        android:textColorHint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/newExpenseTitleContainer">
@@ -79,7 +84,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/newExpenseDescription"
             style="@style/matchParent"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="@android:color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,6 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/eight"
         android:hint="@string/newExpenseTags"
+        android:textColorHint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/newExpenseDescriptionContainer">
@@ -97,7 +104,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/newExpenseTags"
             style="@style/matchParent"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="@android:color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

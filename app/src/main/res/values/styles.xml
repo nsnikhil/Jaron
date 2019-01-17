@@ -79,6 +79,7 @@
         <item name="windowNoTitle">false</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">false</item>
+        <item name="android:background">@color/colorPrimary</item>
     </style>
 
     <style name="splashTheme" parent="AppTheme">
