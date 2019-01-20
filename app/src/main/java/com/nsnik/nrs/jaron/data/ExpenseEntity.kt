@@ -24,7 +24,11 @@
 package com.nsnik.nrs.jaron.data
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.twitter.serial.serializer.*
+import com.twitter.serial.stream.SerializerInput
+import com.twitter.serial.stream.SerializerOutput
 import java.util.*
 
 @Entity
@@ -38,6 +42,39 @@ class ExpenseEntity {
     var date: Date? = null
     var tags: List<String?>? = null
     var paymentType: PaymentType = PaymentType.Paid
+
+    companion object {
+
+        @Ignore
+        val SERIALIZER: ObjectSerializer<ExpenseEntity> = ExpenseEntitySerializer()
+
+        class ExpenseEntitySerializer : ObjectSerializer<ExpenseEntity>() {
+
+            override fun serializeObject(context: SerializationContext, output: SerializerOutput<out SerializerOutput<*>>, expenseEntity: ExpenseEntity) {
+                output.writeInt(expenseEntity.id)
+                output.writeDouble(expenseEntity.value)
+                output.writeString(expenseEntity.title)
+                output.writeString(expenseEntity.description)
+                output.writeObject(SerializationContext.ALWAYS_RELEASE,expenseEntity.date,CoreSerializers.DATE)
+                output.writeObject(SerializationContext.ALWAYS_RELEASE,expenseEntity.tags,CollectionSerializers.getListSerializer(CoreSerializers.STRING))
+                output.writeObject(SerializationContext.ALWAYS_RELEASE,expenseEntity.paymentType,CoreSerializers.getEnumSerializer(PaymentType::class.java))
+            }
+
+            override fun deserializeObject(context: SerializationContext, input: SerializerInput, versionNumber: Int): ExpenseEntity? {
+                val expenseEntity = ExpenseEntity()
+                expenseEntity.id =  input.readInt()
+                expenseEntity.value = input.readDouble()
+                expenseEntity.title = input.readString()
+                expenseEntity.description = input.readString()
+                expenseEntity.date = input.readObject(SerializationContext.ALWAYS_RELEASE,CoreSerializers.DATE)
+                expenseEntity.tags = input.readObject(SerializationContext.ALWAYS_RELEASE,CollectionSerializers.getListSerializer(CoreSerializers.STRING))
+                expenseEntity.paymentType = input.readObject(SerializationContext.ALWAYS_RELEASE,CoreSerializers.getEnumSerializer(PaymentType::class.java))!!
+                return expenseEntity
+            }
+
+        }
+
+    }
 
 }
 

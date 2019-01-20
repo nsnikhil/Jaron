@@ -76,7 +76,6 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
         else bindItemHolder(holder = (holder as ItemViewHolder), position = position - 1)
     }
 
-
     private fun bindSummaryHolder(holder: SummaryViewHolder, position: Int) {
         summary.observe(expenseListFragment, Observer(function = {
             holder.total.text = formatTotal(expenseListFragment.context!!, it.total)
@@ -89,7 +88,6 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
 
     private fun bindItemHolder(holder: ItemViewHolder, position: Int) {
         val expenseEntity = getItem(position)
-        Timber.d(expenseEntity.title)
         holder.value.text = String.format(
             "%s%.2f",
             getString(R.string.expenseCurrencySymbol, expenseListFragment.context!!), expenseEntity.value

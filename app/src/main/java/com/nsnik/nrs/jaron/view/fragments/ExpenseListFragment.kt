@@ -51,6 +51,7 @@ import com.nsnik.nrs.jaron.view.fragments.adapters.ExpenseListAdapter
 import com.nsnik.nrs.jaron.view.fragments.dialogs.AddExpenseFragment
 import com.nsnik.nrs.jaron.view.fragments.listeners.ExpenseItemClickListener
 import com.nsnik.nrs.jaron.viewModel.ExpenseListViewModel
+import com.twitter.serial.stream.bytebuffer.ByteBufferSerial
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_expense_list.*
@@ -127,27 +128,42 @@ class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
         compositeDisposable.add(
             RxPopupMenu.itemClicks(popupMenu).subscribe {
                 when (it.itemId) {
-                    R.id.expensePopupEdit -> {
-
-                    }
-                    R.id.expensePopupDelete -> {
-                        showAlertPopUpDialog(expenseEntity)
-
-                    }
+                    R.id.expensePopupEdit -> showExpenseEditDialog(expenseEntity)
+                    R.id.expensePopupDelete -> showAlertPopUpDialog(expenseEntity)
                 }
             }
         )
         popupMenu.show()
     }
 
+    private fun showExpenseEditDialog(expenseEntity: ExpenseEntity) {
+        val bundle = Bundle()
+        val byteArray = ByteBufferSerial().toByteArray(expenseEntity, ExpenseEntity.SERIALIZER)
+        bundle.putByteArray(ApplicationUtility.getString(R.string.bundleExpenseEntity, activity!!), byteArray)
+        bundle.putInt(ApplicationUtility.getString(R.string.bundleExpenseEntityId, activity!!), expenseEntity.id)
+        val dialog = AddExpenseFragment()
+        dialog.arguments = bundle
+        dialog.show(fragmentManager, "editExpense")
+    }
+
     private fun showAlertPopUpDialog(expenseEntity: ExpenseEntity) {
         AlertDialog.Builder(activity!!)
-            .setTitle(ApplicationUtility.getString(R.string.alertDialogDeleteTitle,activity!!))
-            .setMessage(ApplicationUtility.getString(R.string.alertDialogDeleteMessage,activity!!))
-            .setPositiveButton(ApplicationUtility.getString(R.string.alertDialogDeletePositiveText,activity!!)) { dialog, which ->
+            .setTitle(ApplicationUtility.getString(R.string.alertDialogDeleteTitle, activity!!))
+            .setMessage(ApplicationUtility.getString(R.string.alertDialogDeleteMessage, activity!!))
+            .setPositiveButton(
+                ApplicationUtility.getString(
+                    R.string.alertDialogDeletePositiveText,
+                    activity!!
+                )
+            ) { dialog, which ->
                 expenseListViewModel.deleteExpenses(listOf(expenseEntity))
             }
-            .setNegativeButton(ApplicationUtility.getString(R.string.alertDialogDeleteNegativeText,activity!!)) { dialog, which ->
+            .setNegativeButton(
+                ApplicationUtility.getString(
+                    R.string.alertDialogDeleteNegativeText,
+                    activity!!
+                )
+            ) { dialog, which ->
             }
             .create()
             .show()

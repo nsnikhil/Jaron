@@ -35,6 +35,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.nsnik.nrs.jaron.R
+import com.nsnik.nrs.jaron.data.ExpenseEntity
 import com.nsnik.nrs.jaron.util.ApplicationUtility
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.formatTag
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getFormattedText
@@ -42,6 +43,7 @@ import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.listToTag
 import com.nsnik.nrs.jaron.util.FieldValidator.Companion.validateFrom
 import com.nsnik.nrs.jaron.util.factory.ExpenseEntityFactory.Companion.createExpenseEntity
 import com.nsnik.nrs.jaron.viewModel.ExpenseListViewModel
+import com.twitter.serial.stream.bytebuffer.ByteBufferSerial
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_add_expense.*
 import timber.log.Timber
@@ -55,6 +57,7 @@ class AddExpenseFragment : DialogFragment() {
     private lateinit var thisDialog: Dialog
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private lateinit var expenseListViewModel: ExpenseListViewModel
+    private var toUpdateExpenseEntity: ExpenseEntity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setStyle(DialogFragment.STYLE_NORMAL, R.style.dialogWithTitle)
@@ -73,8 +76,24 @@ class AddExpenseFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setFields()
         initialize()
         listeners()
+    }
+
+    private fun setFields() {
+        if (arguments != null) {
+            val byteArray =
+                arguments?.getByteArray(ApplicationUtility.getString(R.string.bundleExpenseEntity, activity!!))
+            toUpdateExpenseEntity = ByteBufferSerial().fromByteArray(byteArray, ExpenseEntity.SERIALIZER)
+            toUpdateExpenseEntity?.id =
+                    arguments?.getInt(ApplicationUtility.getString(R.string.bundleExpenseEntityId, activity!!), -1)!!
+            newExpenseCreate.text = ApplicationUtility.getString(R.string.newExpenseUpdate, activity!!)
+            newExpenseValue.setText(toUpdateExpenseEntity?.value?.toString())
+            newExpenseTitle.setText(toUpdateExpenseEntity?.title)
+            newExpenseDescription.setText(toUpdateExpenseEntity?.description)
+            newExpenseTags.setText(toUpdateExpenseEntity?.tags?.reduce { acc, s -> "$s $acc" }?.trim())
+        }
     }
 
     private fun initialize() {
@@ -100,26 +119,34 @@ class AddExpenseFragment : DialogFragment() {
 
     private fun addEntries() =
         if (validateEntries()) {
-            addExpense()
-            val strings = formatTag(newExpenseTags.text())
-            if (strings.isNotEmpty()) addTags(strings)
+            if (toUpdateExpenseEntity == null) {
+                addExpense()
+                val strings = formatTag(newExpenseTags.text())
+                if (strings.isNotEmpty()) addTags(strings)
+            } else {
+                updateExpense()
+            }
             dismiss()
         } else {
             showError()
         }
 
 
-    private fun addExpense() = expenseListViewModel.insertExpenses(
-        listOf(
-            createExpenseEntity(
-                newExpenseValue.text().toDouble(),
-                newExpenseTitle.text(),
-                newExpenseDescription.text(),
-                Calendar.getInstance().time,
-                formatTag(newExpenseTags.text())
-            )
-        )
+    private fun addExpense() = expenseListViewModel.insertExpenses(listOf(createExpense()))
+
+    private fun createExpense(date: Date = Calendar.getInstance().time) = createExpenseEntity(
+        newExpenseValue.text().toDouble(),
+        newExpenseTitle.text(),
+        newExpenseDescription.text(),
+        date,
+        formatTag(newExpenseTags.text())
     )
+
+    private fun updateExpense() {
+        val expenseEntity = createExpense(date = toUpdateExpenseEntity?.date!!)
+        expenseEntity.id = toUpdateExpenseEntity?.id!!
+        expenseListViewModel.updateExpenses(listOf(expenseEntity))
+    }
 
     private fun addTags(strings: List<String>) = expenseListViewModel.insertTag(listToTag(strings))
 

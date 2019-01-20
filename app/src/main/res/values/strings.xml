@@ -51,6 +51,7 @@
     <string name="newExpenseDialogTitle">New Expense</string>
     <string name="newExpenseCreate">Create</string>
     <string name="newExpenseCancel">Cancel</string>
+    <string name="newExpenseUpdate">Update</string>
     <string name="newExpenseErrorNoValue">Please enter the amount</string>
     <string name="newExpenseErrorNegativeValue">Amount should be greater than zero</string>
     <string name="newExpenseErrorNoTitle">Please enter the title for the expense</string>
@@ -98,6 +99,10 @@
     <string name="alertDialogDeleteMessage">Are you sure you want to delete this expense ?</string>
     <string name="alertDialogDeletePositiveText">Yes</string>
     <string name="alertDialogDeleteNegativeText">No</string>
+
+    <!--Bundle Keys-->
+    <string name="bundleExpenseEntity">bundleExpenseEntity</string>
+    <string name="bundleExpenseEntityId">bundleExpenseEntityId</string>
 
 
 </resources>
