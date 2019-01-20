@@ -104,5 +104,9 @@
     <string name="bundleExpenseEntity">bundleExpenseEntity</string>
     <string name="bundleExpenseEntityId">bundleExpenseEntityId</string>
 
+    <!--Month summary-->
+    <string name="monthSummaryTotalTitle">Total</string>
+    <string name="monthSummaryLeftTitle">Left</string>
+    <string name="monthSummarySpendTitle">Spend</string>
 
 </resources>

@@ -36,10 +36,8 @@ import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
 import com.nsnik.nrs.jaron.model.MonthSummary
+import com.nsnik.nrs.jaron.util.ApplicationUtility
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getString
-import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatTotal
-import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatTotalLeft
-import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatTotalSpend
 import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatWithPercent
 import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.toTwoDecimal
 import com.nsnik.nrs.jaron.view.fragments.ExpenseListFragment
@@ -47,7 +45,7 @@ import com.nsnik.nrs.jaron.view.fragments.listeners.ExpenseItemClickListener
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.month_summary_layout.view.*
 import kotlinx.android.synthetic.main.single_expense_item.view.*
-import timber.log.Timber
+import kotlinx.android.synthetic.main.summary_item.view.*
 
 
 class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
@@ -78,9 +76,21 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
 
     private fun bindSummaryHolder(holder: SummaryViewHolder, position: Int) {
         summary.observe(expenseListFragment, Observer(function = {
-            holder.total.text = formatTotal(expenseListFragment.context!!, it.total)
-            holder.spend.text = formatTotalSpend(expenseListFragment.context!!, it.totalSpend)
-            holder.left.text = formatTotalLeft(expenseListFragment.context!!, it.totalLeft)
+            holder.total.text = String.format(
+                "%s%.2f",
+                getString(R.string.expenseCurrencySymbol, expenseListFragment.context!!),
+                it?.total
+            )
+            holder.spend.text = String.format(
+                "%s%.2f",
+                getString(R.string.expenseCurrencySymbol, expenseListFragment.context!!),
+                it?.totalSpend
+            )
+            holder.left.text = String.format(
+                "%s%.2f",
+                getString(R.string.expenseCurrencySymbol, expenseListFragment.context!!),
+                it?.totalLeft
+            )
             holder.percentageSpend.text = formatWithPercent(toTwoDecimal(it.percentageSpend))
             holder.percentageProgress.progress = it.percentageSpend.toInt()
         }))
@@ -110,13 +120,25 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
     }
 
     inner class SummaryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val total: TextView = itemView.summaryTotalHave
-        val left: TextView = itemView.summaryTotalLeft
-        val spend: TextView = itemView.summaryTotalSpend
+        val total: TextView = itemView.summaryTotalHaveContainer.summaryTotalValue
+        val left: TextView = itemView.summaryTotalLeftContainer.summaryTotalValue
+        val spend: TextView = itemView.summaryTotalSpendContainer.summaryTotalValue
+
+        private val totalTitle: TextView = itemView.summaryTotalHaveContainer.summaryItemTitle
+        private val leftTitle: TextView = itemView.summaryTotalLeftContainer.summaryItemTitle
+        private val spendTitle: TextView = itemView.summaryTotalSpendContainer.summaryItemTitle
+
         val percentageSpend: TextView = itemView.summaryPercentageProgress
         val percentageProgress: ProgressBar = itemView.summaryPercentage
 
         init {
+
+            totalTitle.text =
+                    ApplicationUtility.getString(R.string.monthSummaryTotalTitle, expenseListFragment.context!!)
+            leftTitle.text = ApplicationUtility.getString(R.string.monthSummaryLeftTitle, expenseListFragment.context!!)
+            spendTitle.text =
+                    ApplicationUtility.getString(R.string.monthSummarySpendTitle, expenseListFragment.context!!)
+
             compositeDisposable.addAll(
                 RxView.clicks(itemView).subscribe {
 
