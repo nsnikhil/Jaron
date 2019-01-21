@@ -66,8 +66,8 @@
 
 
     <!-- aboutStrings-->
-    <string name="aboutLibraries">Third party library used</string>
-    <string name="aboutLibrariesHead">Notes is built with the help of these great libraries</string>
+    <string name="aboutLibraries">Open-source licences</string>
+    <string name="aboutLibrariesHead">Jaron is built with the help of these great libraries</string>
     <string name="aboutLicense">License Info</string>
     <string name="aboutLicenseUrl" translatable="false">https://github.com/nsnikhil/Jaron/blob/master/LICENSE</string>
     <string name="aboutApp">Money management application</string>
@@ -114,8 +114,15 @@
 
     <!--Preferences Screen-->
     <string name="preferenceCategoryGeneral">General</string>
-    <string name="preferenceTitleChangeMonthlyBudget">Change Monthly Budget</string>
+    <string name="preferenceTitleChangeMonthlyBudget">Monthly Budget</string>
     <string name="preferenceTitleChangeMonthlyBudgetKey">preferenceTitleChangeMonthlyBudgetKey</string>
+    <string name="preferenceCurrency">Currency</string>
+    <string name="preferenceCurrencyKey">preferenceCurrencyKey</string>
+    <string name="preferenceCurrencyDefaultValue">Rupee ₹</string>
 
+
+    <string-array name="currencies">
+        <item>Rupee ₹</item>
+    </string-array>
 
 </resources>
