@@ -28,6 +28,7 @@
         android:id="@+id/menuItemSearch"
         android:icon="@drawable/ic_baseline_search_24px"
         android:title="@string/menuItemSearch"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 
     <item
