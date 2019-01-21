@@ -31,8 +31,8 @@
         android:id="@+id/monthYearPickerCurrentDate"
         style="@style/horizontal"
         android:layout_height="?listPreferredItemHeight"
-        android:gravity="center_vertical"
         android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
         android:padding="@dimen/sixteen"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
@@ -42,20 +42,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatSpinner
-        android:layout_marginTop="@dimen/sixteen"
         android:id="@+id/monthYearPickerMonthList"
-        app:layout_constraintTop_toBottomOf="@id/monthYearPickerCurrentDate"
-        app:layout_constraintStart_toStartOf="parent"
+        style="@style/wrapContent"
+        android:layout_marginTop="@dimen/sixteen"
         app:layout_constraintEnd_toStartOf="@id/monthYearPickerYearList"
-        style="@style/wrapContent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/monthYearPickerCurrentDate" />
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/monthYearPickerYearList"
+        style="@style/wrapContent"
         android:layout_marginTop="@dimen/sixteen"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/monthYearPickerCurrentDate"
         app:layout_constraintStart_toEndOf="@id/monthYearPickerMonthList"
-        style="@style/wrapContent"/>
+        app:layout_constraintTop_toBottomOf="@id/monthYearPickerCurrentDate" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/monthYearPickerOk"
@@ -66,6 +66,17 @@
         android:text="@string/monthYearPickerDialogOkay"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/monthYearPickerYearList" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/monthYearPickerCancel"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/sixteen"
+        android:text="@string/monthYearPickerDialogCancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/monthYearPickerYearList" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

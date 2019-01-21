@@ -92,7 +92,7 @@ class AddExpenseFragment : DialogFragment() {
             newExpenseValue.setText(toUpdateExpenseEntity?.value?.toString())
             newExpenseTitle.setText(toUpdateExpenseEntity?.title)
             newExpenseDescription.setText(toUpdateExpenseEntity?.description)
-            newExpenseTags.setText(toUpdateExpenseEntity?.tags?.reduce { acc, s -> "$s $acc" }?.trim())
+            newExpenseTags.setText(toUpdateExpenseEntity?.tags?.reduce { acc, s -> "$acc $s" }?.trim())
         }
     }
 
@@ -117,7 +117,7 @@ class AddExpenseFragment : DialogFragment() {
     )
 
 
-    private fun addEntries() =
+    private fun addEntries() {
         if (validateEntries()) {
             if (toUpdateExpenseEntity == null) {
                 addExpense()
@@ -127,9 +127,8 @@ class AddExpenseFragment : DialogFragment() {
                 updateExpense()
             }
             dismiss()
-        } else {
-            showError()
         }
+    }
 
 
     private fun addExpense() = expenseListViewModel.insertExpenses(listOf(createExpense()))
@@ -160,10 +159,6 @@ class AddExpenseFragment : DialogFragment() {
     )
 
     private fun TextView.text() = text.toString()
-
-    private fun showError() {
-
-    }
 
     override fun onResume() {
         super.onResume()

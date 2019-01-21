@@ -96,6 +96,9 @@ class MonthYearPickerFragment : DialogFragment() {
         RxView.clicks(monthYearPickerOk).subscribe {
             RxBus.publish(RxEvent.NewDataSelectedEvent(monthYearPickerCurrentDate.text.toString()))
             dismiss()
+        },
+        RxView.clicks(monthYearPickerCancel).subscribe {
+            dismiss()
         }
     )
 

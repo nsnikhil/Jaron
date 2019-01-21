@@ -61,6 +61,8 @@
     <string name="monthYearPickerDialogOkay">Okay</string>
     <string name="monthYearPickerDialogTabMonth">Month</string>
     <string name="monthYearPickerDialogTabYear">Year</string>
+    <string name="monthYearPickerDialogCancel">Cancel</string>
+
 
     <!-- aboutStrings-->
     <string name="aboutLibraries">Third party library used</string>
