@@ -31,7 +31,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -39,6 +38,7 @@ import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.BuildConfig
 import com.nsnik.nrs.jaron.MyApplication
 import com.nsnik.nrs.jaron.R
+import com.nsnik.nrs.jaron.util.ApplicationUtility
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getFormattedCurrentDate
 import com.nsnik.nrs.jaron.view.fragments.dialogs.AboutFragment
 import com.nsnik.nrs.jaron.view.fragments.dialogs.MonthYearPickerFragment
@@ -61,8 +61,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun setToolBarDate() {
         expenseListViewModel = ViewModelProviders.of(this).get(ExpenseListViewModel::class.java)
+        changeToolBarDate()
+    }
+
+    private fun changeToolBarDate(){
         expenseListViewModel.getCurrentDate().observe(this, Observer {
-            title = String.format("%s %s", getFormattedCurrentDate(it), "▼")
+            title =  String.format("%s %s", getFormattedCurrentDate(it), "▼")
         })
     }
 
@@ -83,21 +87,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun initialize() {
 
+        setSupportActionBar(mainToolbar)
+
         controller = findNavController(R.id.mainNavHost)
 
-        controller.addOnDestinationChangedListener(object: NavController.OnDestinationChangedListener{
-            override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
-                mainToolbar.visibility = if (destination.id == R.id.introFragment) View.GONE else View.VISIBLE
+        controller.addOnDestinationChangedListener { controller, destination, arguments ->
+            mainToolbar.visibility = if (destination.id == R.id.introFragment) View.GONE else View.VISIBLE
+            if (destination.id == R.id.expenseList) {
+                changeToolBarDate()
+            } else {
+                title = ApplicationUtility.getString(R.string.Preferences, this@MainActivity)
             }
-        })
+        }
 
-        setSupportActionBar(mainToolbar)
 
         setupActionBarWithNavController(controller, AppBarConfiguration(controller.graph))
 
         compositeDisposable.addAll(
             RxView.clicks(mainToolbar).subscribe {
-                MonthYearPickerFragment().show(supportFragmentManager, "picker")
+                if (controller.currentDestination?.id == R.id.expenseList)
+                    MonthYearPickerFragment().show(supportFragmentManager, "picker")
             }
         )
     }

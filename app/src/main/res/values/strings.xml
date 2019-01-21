@@ -23,6 +23,7 @@
 
 <resources>
     <string name="app_name">Jaron</string>
+    <string name="Preferences">Preferences</string>
 
     <!--Intro Fragment-->
     <string name="introStart">Start</string>
