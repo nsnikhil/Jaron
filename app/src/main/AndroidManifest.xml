@@ -25,6 +25,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nsnik.nrs.jaron">
 
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"

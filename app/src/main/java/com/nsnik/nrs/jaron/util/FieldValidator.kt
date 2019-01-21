@@ -61,7 +61,7 @@ class FieldValidator {
             }
             return true
         }
-        
+
         private fun validateDescription(context: Context, textView: TextView): Boolean =
             checkEmpty(context, textView, R.string.newExpenseErrorNoDescription)
 
