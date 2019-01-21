@@ -21,28 +21,10 @@
  * <https://www.gnu.org/licenses/why-not-lgpl.html>.
  */
 
-package com.nsnik.nrs.jaron.util
+package com.nsnik.nrs.jaron.security
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.core.app.ActivityCompat
-import androidx.core.hardware.fingerprint.FingerprintManagerCompat
+class AuthenticationUtility {
 
 
-class BiometricUtility {
-
-    fun isBiometricPromptEnabled(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-
-    fun isHardwareSupported(context: Context): Boolean =
-        FingerprintManagerCompat.from(context).isHardwareDetected
-
-    fun isFingerprintAvailable(context: Context): Boolean =
-        FingerprintManagerCompat.from(context).hasEnrolledFingerprints()
-
-    fun isPermissionGranted(context: Context): Boolean =
-        ActivityCompat
-            .checkSelfPermission(context, Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED
 
 }
