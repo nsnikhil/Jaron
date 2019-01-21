@@ -48,12 +48,20 @@ class FieldValidator {
 
         fun validateValueString(context: Context, textView: TextView) =
             checkEmpty(context, textView, R.string.newExpenseErrorNoValue) &&
-                    checkNonZero(context, textView, R.string.newExpenseErrorNegativeValue)
+                    checkNonZero(context, textView, R.string.newExpenseErrorNegativeValue) &&
+                    validateOverFlow(context, textView)
 
 
         private fun validateTitle(context: Context, textView: TextView): Boolean =
             checkEmpty(context, textView, R.string.newExpenseErrorNoTitle)
 
+        private fun validateOverFlow(context: Context, textView: TextView): Boolean {
+            if (textView.text.toString().toDouble() > ExpenseUtility.getTotalAmount(context)) {
+                return setError(textView, getString(R.string.newExpenseErrorOverflowValue, context))
+            }
+            return true
+        }
+        
         private fun validateDescription(context: Context, textView: TextView): Boolean =
             checkEmpty(context, textView, R.string.newExpenseErrorNoDescription)
 
