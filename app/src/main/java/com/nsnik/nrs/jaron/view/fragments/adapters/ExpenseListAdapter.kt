@@ -100,7 +100,7 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
         val expenseEntity = getItem(position)
         holder.value.text = String.format(
             "%s%.2f",
-            getString(R.string.expenseCurrencySymbol, expenseListFragment.context!!), expenseEntity.value
+            getString(R.string.expenseCurrencySymbol, expenseListFragment.context!!), expenseEntity.amount?.value
         )
         holder.title.text = expenseEntity.title
         holder.description.text = expenseEntity.description

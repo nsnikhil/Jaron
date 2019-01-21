@@ -26,6 +26,7 @@ package com.nsnik.nrs.jaron.data
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.nsnik.nrs.jaron.model.Money
 import com.twitter.serial.serializer.*
 import com.twitter.serial.stream.SerializerInput
 import com.twitter.serial.stream.SerializerOutput
@@ -36,7 +37,7 @@ class ExpenseEntity {
 
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
-    var value: Double = 0.0
+    var amount: Money? = null
     var title: String? = null
     var description: String? = null
     var date: Date? = null
@@ -52,7 +53,7 @@ class ExpenseEntity {
 
             override fun serializeObject(context: SerializationContext, output: SerializerOutput<out SerializerOutput<*>>, expenseEntity: ExpenseEntity) {
                 output.writeInt(expenseEntity.id)
-                output.writeDouble(expenseEntity.value)
+                output.writeObject(SerializationContext.ALWAYS_RELEASE,expenseEntity.amount,Money.SERIALIZER)
                 output.writeString(expenseEntity.title)
                 output.writeString(expenseEntity.description)
                 output.writeObject(SerializationContext.ALWAYS_RELEASE,expenseEntity.date,CoreSerializers.DATE)
@@ -63,7 +64,7 @@ class ExpenseEntity {
             override fun deserializeObject(context: SerializationContext, input: SerializerInput, versionNumber: Int): ExpenseEntity? {
                 val expenseEntity = ExpenseEntity()
                 expenseEntity.id =  input.readInt()
-                expenseEntity.value = input.readDouble()
+                expenseEntity.amount = input.readObject(SerializationContext.ALWAYS_RELEASE,Money.SERIALIZER)
                 expenseEntity.title = input.readString()
                 expenseEntity.description = input.readString()
                 expenseEntity.date = input.readObject(SerializationContext.ALWAYS_RELEASE,CoreSerializers.DATE)

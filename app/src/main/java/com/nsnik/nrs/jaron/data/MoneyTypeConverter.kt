@@ -21,8 +21,18 @@
  * <https://www.gnu.org/licenses/why-not-lgpl.html>.
  */
 
-package com.nsnik.nrs.jaron.model
+package com.nsnik.nrs.jaron.data
 
-import com.nsnik.nrs.jaron.data.ExpenseEntity
+import androidx.room.TypeConverter
+import com.nsnik.nrs.jaron.model.Currency
+import com.nsnik.nrs.jaron.model.Money
 
-class MonthlyData(val monthSummary: MonthSummary, val list: List<ExpenseEntity>)
+class MoneyTypeConverter {
+
+    @TypeConverter
+    fun doubleToMoney(value: Double): Money? = Money(value, Currency.Rupee)
+
+    @TypeConverter
+    fun moneyToDouble(money: Money): Double = money.value
+
+}

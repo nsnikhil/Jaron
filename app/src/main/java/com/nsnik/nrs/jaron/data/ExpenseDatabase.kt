@@ -27,8 +27,8 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [ExpenseEntity::class, TagEntity::class], version = 3)
-@TypeConverters(value = [DateConverter::class, ListConverter::class, PaymentTypeConverter::class])
+@Database(entities = [ExpenseEntity::class, TagEntity::class], version = 5)
+@TypeConverters(value = [DateConverter::class, ListConverter::class, PaymentTypeConverter::class, MoneyTypeConverter::class])
 abstract class ExpenseDatabase : RoomDatabase() {
     abstract val expenseDao: ExpenseDao
     abstract val tagDao: TagDao

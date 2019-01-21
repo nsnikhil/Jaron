@@ -27,6 +27,8 @@ import android.content.Context
 import com.nsnik.nrs.jaron.MyApplication
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
+import com.nsnik.nrs.jaron.model.Currency
+import com.nsnik.nrs.jaron.model.Money
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getString
 
 class ExpenseUtility {
@@ -34,8 +36,14 @@ class ExpenseUtility {
     companion object {
 
         fun getAmountSpend(list: List<ExpenseEntity>): Double = list.stream()
-            .map { it -> it.value }
+            .map { it -> it.amount }
+            .map { it -> it?.value!! }
             .reduce(0.0) { t, u -> t + u }
+
+        //TODO CHANGE ALL FUNCTIONS TO RETURN MONEY OBJECT
+        fun getAmountSpend2(list: List<ExpenseEntity>): Money = list.stream()
+            .map { it -> it.amount }
+            .reduce(Money(0.0, Currency.Rupee)) { t, u -> t?.add(u!!) }!!
 
         fun getTotalAmount(context: Context): Double =
             (context.applicationContext as MyApplication)
@@ -52,18 +60,6 @@ class ExpenseUtility {
             (getAmountLeft(context, list) / getTotalAmount(context)) * 100
 
         fun toTwoDecimal(double: Double) = String.format("%.2f", double).toDouble()
-
-        fun formatTotal(context: Context, double: Double) =
-            formatWithTitle(context, getString(R.string.expenseTotalAvailable, context), double)
-
-        fun formatTotalSpend(context: Context, double: Double) =
-            formatWithTitle(context, getString(R.string.expenseTotalSpend, context), double)
-
-        fun formatTotalLeft(context: Context, double: Double) =
-            formatWithTitle(context, getString(R.string.expenseTotalLeft, context), double)
-
-        private fun formatWithTitle(context: Context, title: String, double: Double) =
-            String.format("%s %s%.2f", title, getString(R.string.expenseCurrencySymbol, context), double)
 
         fun formatWithPercent(double: Double) = StringBuilder(double.toString()).append("%").toString()
 

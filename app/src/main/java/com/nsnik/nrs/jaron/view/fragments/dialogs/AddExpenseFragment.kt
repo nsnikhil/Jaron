@@ -89,7 +89,7 @@ class AddExpenseFragment : DialogFragment() {
             toUpdateExpenseEntity?.id =
                     arguments?.getInt(ApplicationUtility.getString(R.string.bundleExpenseEntityId, activity!!), -1)!!
             newExpenseCreate.text = ApplicationUtility.getString(R.string.newExpenseUpdate, activity!!)
-            newExpenseValue.setText(toUpdateExpenseEntity?.value?.toString())
+            newExpenseValue.setText(toUpdateExpenseEntity?.amount?.toString())
             newExpenseTitle.setText(toUpdateExpenseEntity?.title)
             newExpenseDescription.setText(toUpdateExpenseEntity?.description)
             newExpenseTags.setText(toUpdateExpenseEntity?.tags?.reduce { acc, s -> "$acc $s" }?.trim())
