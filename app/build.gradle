@@ -27,6 +27,8 @@ apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 
 android {
@@ -51,11 +53,6 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
     buildTypes {
-        debug {
-            applicationIdSuffix '.debug'
-            versionNameSuffix '-DEBUG'
-            ext.alwaysUpdateBuildId = false
-        }
         release {
             shrinkResources false
             minifyEnabled false
@@ -162,6 +159,10 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.5'
 
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
+    implementation 'com.google.firebase:firebase-perf:16.2.3'
+
     testImplementation "junit:junit:4.12"
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
@@ -175,5 +176,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-web:3.1.1'
     implementation 'androidx.test.espresso.idling:idling-concurrent:3.1.1'
 
-
 }
+apply plugin: 'com.google.gms.google-services'
