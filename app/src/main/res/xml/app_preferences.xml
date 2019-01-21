@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~     Jaron  Copyright (C) 2019  Nikhil Soni
   ~     This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
   ~     This is free software, and you are welcome to redistribute it
@@ -21,20 +21,15 @@
   ~ <https://www.gnu.org/licenses/why-not-lgpl.html>.
   -->
 
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:startDestination="@id/expenseList">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <fragment
-        android:id="@+id/expenseList"
-        android:name="com.nsnik.nrs.jaron.view.fragments.ExpenseListFragment" />
+    <PreferenceCategory android:title="@string/preferenceCategoryGeneral">
 
-    <fragment
-        android:id="@+id/introFragment"
-        android:name="com.nsnik.nrs.jaron.view.fragments.IntroFragment" />
+        <EditTextPreference
+            android:inputType="numberDecimal"
+            android:key="@string/preferenceTitleChangeMonthlyBudgetKey"
+            android:title="@string/preferenceTitleChangeMonthlyBudget" />
 
-    <fragment
-        android:id="@+id/preferenceFragment"
-        android:name="com.nsnik.nrs.jaron.view.fragments.PreferenceFragment" />
+    </PreferenceCategory>
 
-</navigation>
+</PreferenceScreen>

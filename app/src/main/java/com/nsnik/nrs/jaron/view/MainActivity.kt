@@ -26,9 +26,15 @@ package com.nsnik.nrs.jaron.view
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.BuildConfig
 import com.nsnik.nrs.jaron.MyApplication
@@ -44,6 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private lateinit var expenseListViewModel: ExpenseListViewModel
+    private lateinit var controller: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setToolBarDate()
@@ -55,7 +62,7 @@ class MainActivity : AppCompatActivity() {
     private fun setToolBarDate() {
         expenseListViewModel = ViewModelProviders.of(this).get(ExpenseListViewModel::class.java)
         expenseListViewModel.getCurrentDate().observe(this, Observer {
-            title = String.format("%s %s",getFormattedCurrentDate(it), "▼")
+            title = String.format("%s %s", getFormattedCurrentDate(it), "▼")
         })
     }
 
@@ -68,15 +75,26 @@ class MainActivity : AppCompatActivity() {
         when (item?.itemId) {
             R.id.menuItemSearch -> {
             }
-            R.id.menuItemSettings -> {
-            }
+            R.id.menuItemSettings -> findNavController(R.id.mainNavHost).navigate(R.id.preferenceFragment)
             R.id.menuItemAbout -> AboutFragment().show(supportFragmentManager, "about")
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun initialize() {
+
+        controller = findNavController(R.id.mainNavHost)
+
+        controller.addOnDestinationChangedListener(object: NavController.OnDestinationChangedListener{
+            override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
+                mainToolbar.visibility = if (destination.id == R.id.introFragment) View.GONE else View.VISIBLE
+            }
+        })
+
         setSupportActionBar(mainToolbar)
+
+        setupActionBarWithNavController(controller, AppBarConfiguration(controller.graph))
+
         compositeDisposable.addAll(
             RxView.clicks(mainToolbar).subscribe {
                 MonthYearPickerFragment().show(supportFragmentManager, "picker")
@@ -88,6 +106,8 @@ class MainActivity : AppCompatActivity() {
         compositeDisposable.clear()
         compositeDisposable.dispose()
     }
+
+    override fun onSupportNavigateUp(): Boolean = controller.navigateUp() || super.onSupportNavigateUp()
 
     override fun onDestroy() {
         super.onDestroy()

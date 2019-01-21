@@ -111,4 +111,10 @@
     <string name="monthSummaryLeftTitle">Left</string>
     <string name="monthSummarySpendTitle">Spend</string>
 
+    <!--Preferences Screen-->
+    <string name="preferenceCategoryGeneral">General</string>
+    <string name="preferenceTitleChangeMonthlyBudget">Change Monthly Budget</string>
+    <string name="preferenceTitleChangeMonthlyBudgetKey">preferenceTitleChangeMonthlyBudgetKey</string>
+
+
 </resources>
