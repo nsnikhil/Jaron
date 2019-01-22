@@ -23,22 +23,46 @@
 
 package com.nsnik.nrs.jaron
 
+import android.content.Context
+import android.widget.TextView
 import com.nsnik.nrs.jaron.util.FieldValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import java.time.Instant
 import java.util.*
 
+
+//TODO FIX THIS
 class FieldValidatorTest {
+
+    private lateinit var context: Context
+    private lateinit var value: TextView
+    private lateinit var title: TextView
+    private lateinit var description: TextView
+
+    @Before
+    fun setUp() {
+        context = mock(Context::class.java)
+        value = mock(TextView::class.java)
+        title = mock(TextView::class.java)
+        description = mock(TextView::class.java)
+    }
 
     @Test
     fun shouldReturnTrueIfValueTitleAndDescriptionIsPresent() {
+        Mockito.`when`(value.text.toString()).thenReturn("100.00")
+        Mockito.`when`(title.text.toString()).thenReturn("Grocery")
+        Mockito.`when`(description.text.toString()).thenReturn("Daily shopping")
         assertTrue(
             FieldValidator.validateFrom(
-                "100.00",
-                "Grocery",
-                "Daily shopping",
+                context,
+                value,
+                title,
+                description,
                 Date.from(Instant.now()),
                 Collections.emptyList()
             )
@@ -47,11 +71,15 @@ class FieldValidatorTest {
 
     @Test
     fun shouldReturnFalseIfValueIsLessThanOREqualsZero() {
+        Mockito.`when`(value.text.toString()).thenReturn("0.00")
+        Mockito.`when`(title.text.toString()).thenReturn("Grocery")
+        Mockito.`when`(description.text.toString()).thenReturn("Daily shopping")
         assertFalse(
             FieldValidator.validateFrom(
-                "0.00",
-                "Grocery",
-                "Daily shopping",
+                context,
+                value,
+                title,
+                description,
                 Date.from(Instant.now()),
                 Collections.emptyList()
             )
@@ -60,11 +88,15 @@ class FieldValidatorTest {
 
     @Test
     fun shouldReturnFalseIfValueIsEmpty() {
+        Mockito.`when`(value.text.toString()).thenReturn("")
+        Mockito.`when`(title.text.toString()).thenReturn("Grocery")
+        Mockito.`when`(description.text.toString()).thenReturn("Daily shopping")
         assertFalse(
             FieldValidator.validateFrom(
-                "",
-                "Grocery",
-                "Daily shopping",
+                context,
+                value,
+                title,
+                description,
                 Date.from(Instant.now()),
                 Collections.emptyList()
             )
@@ -73,11 +105,15 @@ class FieldValidatorTest {
 
     @Test
     fun shouldReturnFalseIfTitleIsEmpty() {
+        Mockito.`when`(value.text.toString()).thenReturn("100.00")
+        Mockito.`when`(title.text.toString()).thenReturn("")
+        Mockito.`when`(description.text.toString()).thenReturn("Daily shopping")
         assertFalse(
             FieldValidator.validateFrom(
-                "100.00",
-                "",
-                "Daily shopping",
+                context,
+                value,
+                title,
+                description,
                 Date.from(Instant.now()),
                 Collections.emptyList()
             )
@@ -86,11 +122,15 @@ class FieldValidatorTest {
 
     @Test
     fun shouldReturnFalseIfDescriptionIsEmpty() {
+        Mockito.`when`(value.text.toString()).thenReturn("100.00")
+        Mockito.`when`(title.text.toString()).thenReturn("Grocery")
+        Mockito.`when`(description.text.toString()).thenReturn("")
         assertFalse(
             FieldValidator.validateFrom(
-                "100.00",
-                "Grocery",
-                "",
+                context,
+                value,
+                title,
+                description,
                 Date.from(Instant.now()),
                 Collections.emptyList()
             )

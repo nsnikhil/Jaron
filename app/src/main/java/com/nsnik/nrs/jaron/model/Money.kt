@@ -67,12 +67,41 @@ data class Money(val value: Double, val currency: Currency) {
 
     }
 
-    fun add(second: Money): Money = Money(value + second.value, Currency.Rupee)
+    fun add(second: Money): Money {
+        if (second.currency != currency) return Money(value + second.convertTo(currency).value, currency)
+        return Money(value + second.value, currency)
+    }
 
-    fun subtract(second: Money): Money = Money(value - second.value, Currency.Rupee)
+    fun subtract(second: Money): Money {
+        if (second.currency != currency) return Money(value - second.convertTo(currency).value, currency)
+        return Money(value - second.value, currency)
+    }
 
-    fun divide(second: Money): Money = Money(value / second.value, Currency.Rupee)
+    fun divide(second: Money): Money {
+        if (second.currency != currency) return Money(value / second.convertTo(currency).value, currency)
+        return Money(value / second.value, currency)
+    }
 
-    fun multiply(second: Money): Money = Money(value * second.value, Currency.Rupee)
+    fun multiply(second: Money): Money {
+        if (second.currency != currency) return Money(value * second.convertTo(currency).value, currency)
+        return Money(value * second.value, currency)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if ((other as Money).currency != currency)
+            return Math.abs(other.convertTo(currency).value - value) <= 0.5
+        return value == other.value
+    }
+
+    override fun hashCode() = value.hashCode() + currency.hashCode()
+
+    override fun toString() = currency.symbol.plus(value.toString())
+
+    private fun toBase(second: Money) = Money(second.value / second.currency.conversionFactor, Currency.Rupee)
+
+    private fun fromBase(second: Money, currency: Currency) =
+        Money(second.value * second.currency.conversionFactor, currency)
+
+    fun convertTo(currency: Currency) = fromBase(toBase(this), currency)
 
 }
