@@ -16,6 +16,7 @@ gradle.properties
 bin/
 gen/
 out/
+app/release/
 
 # Gradle files
 .gradle/*
