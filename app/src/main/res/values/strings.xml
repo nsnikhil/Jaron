@@ -45,7 +45,7 @@
     <string name="popupMenuItemExpenseDelete">Delete</string>
 
     <!--New Expense Dialog-->
-    <string name="newExpenseAmount">Amount</string>
+    <string name="newExpenseAmount">Amount…</string>
     <string name="newExpenseTitle">For…</string>
     <string name="newExpenseDescription">Description…</string>
     <string name="newExpenseTags">Tags…</string>
