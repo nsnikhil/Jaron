@@ -23,6 +23,7 @@
 
 package com.nsnik.nrs.jaron.model
 
+import com.nsnik.nrs.jaron.util.ExpenseUtility
 import com.twitter.serial.serializer.CoreSerializers
 import com.twitter.serial.serializer.ObjectSerializer
 import com.twitter.serial.serializer.SerializationContext
@@ -95,7 +96,7 @@ data class Money(val value: Double, val currency: Currency) {
 
     override fun hashCode() = value.hashCode() + currency.hashCode()
 
-    override fun toString() = currency.symbol.plus(value.toString())
+    override fun toString() = currency.symbol.plus(value.toTwoDecimal())
 
     private fun toBase(second: Money) = Money(second.value / second.currency.conversionFactor, Currency.Rupee)
 
@@ -103,5 +104,7 @@ data class Money(val value: Double, val currency: Currency) {
         Money(second.value * second.currency.conversionFactor, currency)
 
     fun convertTo(currency: Currency) = fromBase(toBase(this), currency)
+
+    private fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
 
 }

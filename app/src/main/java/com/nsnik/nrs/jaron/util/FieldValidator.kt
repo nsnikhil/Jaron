@@ -57,8 +57,8 @@ class FieldValidator {
 
         private fun validateOverFlow(context: Context, textView: TextView): Boolean {
             val total = ExpenseUtility.getTotalAmount(context)
-            if (total == 0.0) return true
-            if (textView.text.toString().toDouble() > total) {
+            if (total.value == 0.0) return true
+            if (textView.text.toString().toDouble() > total.value) {
                 return setError(textView, getString(R.string.newExpenseErrorOverflowValue, context))
             }
             return true

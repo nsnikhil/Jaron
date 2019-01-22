@@ -132,8 +132,7 @@ class ApplicationUtility {
             .toList()
 
         fun goToIntro(activity: Activity) {
-            Timber.d(ExpenseUtility.getTotalAmount(activity).toString())
-            if (ExpenseUtility.getTotalAmount(activity) == 0.0)
+            if (ExpenseUtility.getTotalAmount(activity).value == 0.0)
                 activity.findNavController(R.id.mainNavHost).navigate(R.id.introFragment)
         }
 

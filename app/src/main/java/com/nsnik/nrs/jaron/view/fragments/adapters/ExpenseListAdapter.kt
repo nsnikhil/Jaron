@@ -37,9 +37,7 @@ import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
 import com.nsnik.nrs.jaron.model.MonthSummary
 import com.nsnik.nrs.jaron.util.ApplicationUtility
-import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getString
 import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatWithPercent
-import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.toTwoDecimal
 import com.nsnik.nrs.jaron.view.fragments.ExpenseListFragment
 import com.nsnik.nrs.jaron.view.fragments.listeners.ExpenseItemClickListener
 import io.reactivex.disposables.CompositeDisposable
@@ -76,32 +74,19 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
 
     private fun bindSummaryHolder(holder: SummaryViewHolder, position: Int) {
         summary.observe(expenseListFragment, Observer(function = {
-            holder.total.text = String.format(
-                "%s%.2f",
-                getString(R.string.expenseCurrencySymbol, expenseListFragment.context!!),
-                it?.total
-            )
-            holder.spend.text = String.format(
-                "%s%.2f",
-                getString(R.string.expenseCurrencySymbol, expenseListFragment.context!!),
-                it?.totalSpend
-            )
-            holder.left.text = String.format(
-                "%s%.2f",
-                getString(R.string.expenseCurrencySymbol, expenseListFragment.context!!),
-                it?.totalLeft
-            )
-            holder.percentageSpend.text = formatWithPercent(toTwoDecimal(it.percentageSpend))
+            holder.total.text = it?.total?.toString()
+            holder.spend.text = it?.totalSpend?.toString()
+            holder.left.text = it?.totalLeft?.toString()
+            holder.percentageSpend.text = formatWithPercent(it.percentageSpend.toTwoDecimal())
             holder.percentageProgress.progress = it.percentageSpend.toInt()
         }))
     }
 
+    private fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
+
     private fun bindItemHolder(holder: ItemViewHolder, position: Int) {
         val expenseEntity = getItem(position)
-        holder.value.text = String.format(
-            "%s%.2f",
-            getString(R.string.expenseCurrencySymbol, expenseListFragment.context!!), expenseEntity.amount?.value
-        )
+        holder.value.text = expenseEntity.amount.toString()
         holder.title.text = expenseEntity.title
         holder.description.text = expenseEntity.description
     }

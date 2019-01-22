@@ -35,31 +35,34 @@ class ExpenseUtility {
 
     companion object {
 
-        fun getAmountSpend(list: List<ExpenseEntity>): Double = list.stream()
-            .map { it -> it.amount }
-            .map { it -> it?.value!! }
-            .reduce(0.0) { t, u -> t + u }
+//        fun getAmountSpend(list: List<ExpenseEntity>): Double = list.stream()
+//            .map { it -> it.amount }
+//            .map { it -> it?.value!! }
+//            .reduce(0.0) { t, u -> t + u }
 
         //TODO CHANGE ALL FUNCTIONS TO RETURN MONEY OBJECT
-        fun getAmountSpend2(list: List<ExpenseEntity>): Money = list.stream()
+        fun getAmountSpend(list: List<ExpenseEntity>): Money = list.stream()
             .map { it -> it.amount }
             .reduce(Money(0.0, Currency.Rupee)) { t, u -> t?.add(u!!) }!!
 
-        fun getTotalAmount(context: Context): Double =
-            (context.applicationContext as MyApplication)
-                .sharedPreferences
-                .getFloat(getString(R.string.sharedPreferenceKeyTotalAmount, context), 0.0F)
-                .toDouble()
+        fun getTotalAmount(context: Context): Money =
+            Money(
+                (context.applicationContext as MyApplication)
+                    .sharedPreferences
+                    .getFloat(getString(R.string.sharedPreferenceKeyTotalAmount, context), 0.0F)
+                    .toDouble(), Currency.Rupee
+            )
 
-        fun getAmountLeft(context: Context, list: List<ExpenseEntity>) = getTotalAmount(context) - getAmountSpend(list)
+        fun getAmountLeft(context: Context, list: List<ExpenseEntity>) =
+            getTotalAmount(context).subtract(getAmountSpend(list))
 
         fun getPercentageSpend(context: Context, list: List<ExpenseEntity>) =
-            (getAmountSpend(list) / getTotalAmount(context)) * 100
+            (getAmountSpend(list).divide(getTotalAmount(context))).value.toTwoDecimal() * 100
 
         fun getPercentageLeft(context: Context, list: List<ExpenseEntity>) =
-            (getAmountLeft(context, list) / getTotalAmount(context)) * 100
+            (getAmountLeft(context, list).divide(getTotalAmount(context))).value.toTwoDecimal() * 100
 
-        fun toTwoDecimal(double: Double) = String.format("%.2f", double).toDouble()
+        fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
 
         fun formatWithPercent(double: Double) = StringBuilder(double.toString()).append("%").toString()
 

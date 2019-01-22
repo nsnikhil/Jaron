@@ -24,9 +24,9 @@
 package com.nsnik.nrs.jaron.model
 
 data class MonthSummary(
-    val total: Double,
-    val totalSpend: Double,
-    val totalLeft: Double,
+    val total: Money,
+    val totalSpend: Money,
+    val totalLeft: Money,
     val percentageSpend: Double,
     val percentageLeft: Double
 )
