@@ -83,13 +83,11 @@ class AddExpenseFragment : DialogFragment() {
 
     private fun setFields() {
         if (arguments != null) {
-            val byteArray =
-                arguments?.getByteArray(ApplicationUtility.getString(R.string.bundleExpenseEntity, activity!!))
+            val byteArray = arguments?.getByteArray(ApplicationUtility.getString(R.string.bundleExpenseEntity, activity!!))
             toUpdateExpenseEntity = ByteBufferSerial().fromByteArray(byteArray, ExpenseEntity.SERIALIZER)
-            toUpdateExpenseEntity?.id =
-                    arguments?.getInt(ApplicationUtility.getString(R.string.bundleExpenseEntityId, activity!!), -1)!!
+            toUpdateExpenseEntity?.id = arguments?.getInt(ApplicationUtility.getString(R.string.bundleExpenseEntityId, activity!!), -1)!!
             newExpenseCreate.text = ApplicationUtility.getString(R.string.newExpenseUpdate, activity!!)
-            newExpenseValue.setText(toUpdateExpenseEntity?.amount?.toString())
+            newExpenseValue.setText(toUpdateExpenseEntity?.amount?.value?.toString())
             newExpenseTitle.setText(toUpdateExpenseEntity?.title)
             newExpenseDescription.setText(toUpdateExpenseEntity?.description)
             newExpenseTags.setText(toUpdateExpenseEntity?.tags?.reduce { acc, s -> "$acc $s" }?.trim())
