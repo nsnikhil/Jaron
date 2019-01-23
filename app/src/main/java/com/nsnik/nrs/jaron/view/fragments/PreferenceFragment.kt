@@ -24,6 +24,7 @@
 package com.nsnik.nrs.jaron.view.fragments
 
 import android.os.Bundle
+import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceFragmentCompat
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.util.ApplicationUtility

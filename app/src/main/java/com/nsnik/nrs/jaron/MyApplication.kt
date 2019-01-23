@@ -32,6 +32,7 @@ import com.nsnik.nrs.jaron.dagger.components.DaggerDatabaseComponent
 import com.nsnik.nrs.jaron.dagger.components.DaggerSharedPreferencesComponent
 import com.nsnik.nrs.jaron.dagger.modules.ContextModule
 import com.nsnik.nrs.jaron.util.DatabaseUtility
+import com.rollbar.android.Rollbar
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 import timber.log.Timber
@@ -60,6 +61,8 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         if (LeakCanary.isInAnalyzerProcess(this)) return
+        Rollbar.init(this)
+        Rollbar.instance().error(Exception("This is a new test error")) //remove this after initial testing
         if (BuildConfig.DEBUG) {
             Timber.plant(object : Timber.DebugTree() {
                 override fun createStackElementTag(element: StackTraceElement): String {
@@ -83,7 +86,8 @@ class MyApplication : Application() {
     }
 
     private fun setSharedPrefComponent() {
-        sharedPreferences = DaggerSharedPreferencesComponent.builder().contextModule(contextModule).build().sharedPreferences
+        sharedPreferences =
+                DaggerSharedPreferencesComponent.builder().contextModule(contextModule).build().sharedPreferences
     }
 
 }

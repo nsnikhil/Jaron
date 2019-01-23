@@ -45,6 +45,8 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+        resValue "string", "ROLLBAR_ACCESS_TOKEN", ROLLBAR_ACCESS_TOKEN
+
     }
     sourceSets {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
@@ -163,6 +165,9 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
     implementation 'com.google.firebase:firebase-perf:16.2.3'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
+    implementation 'com.rollbar:rollbar-java:1.4.0'
+    implementation 'com.rollbar:rollbar-android:1.4.0@aar'
 
     testImplementation "junit:junit:4.12"
 

@@ -62,6 +62,9 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <meta-data android:name="com.rollbar.android.ACCESS_TOKEN"
+            android:value="@string/ROLLBAR_ACCESS_TOKEN" />
+
     </application>
 
 </manifest>
