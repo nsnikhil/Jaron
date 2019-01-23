@@ -28,7 +28,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -45,10 +44,8 @@ import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getFormattedCurrent
 import com.nsnik.nrs.jaron.view.fragments.dialogs.AboutFragment
 import com.nsnik.nrs.jaron.view.fragments.dialogs.MonthYearPickerFragment
 import com.nsnik.nrs.jaron.viewModel.ExpenseListViewModel
-import com.rollbar.android.Rollbar
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
