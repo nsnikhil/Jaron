@@ -84,7 +84,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/newExpenseDescription"
             style="@style/matchParent"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:textColor="@android:color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>

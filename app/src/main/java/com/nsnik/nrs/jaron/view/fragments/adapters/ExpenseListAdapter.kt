@@ -30,7 +30,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.R
@@ -44,16 +43,17 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.month_summary_layout.view.*
 import kotlinx.android.synthetic.main.single_expense_item.view.*
 import kotlinx.android.synthetic.main.summary_item.view.*
+import java.util.*
 
 
-class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
-    ListAdapter<ExpenseEntity, RecyclerView.ViewHolder>(ExpenseEntityDiffUtil()) {
+class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val summaryViewType = 0
     private val itemViewType = 1
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val summary: MutableLiveData<MonthSummary> = MutableLiveData()
     private val expenseItemClickListener: ExpenseItemClickListener = expenseListFragment
+    private var expenseEntities: List<ExpenseEntity> = Collections.emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == summaryViewType)
@@ -85,7 +85,7 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
     private fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
 
     private fun bindItemHolder(holder: ItemViewHolder, position: Int) {
-        val expenseEntity = getItem(position)
+        val expenseEntity = expenseEntities[position]
         holder.value.text = expenseEntity.amount.toString()
         holder.title.text = expenseEntity.title
         holder.description.text = expenseEntity.description
@@ -97,7 +97,12 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
     }
 
     override fun getItemCount(): Int {
-        return super.getItemCount() + 1
+        return expenseEntities.size + 1
+    }
+
+    fun submitList(expenseEntities: List<ExpenseEntity>){
+        this.expenseEntities = expenseEntities
+        notifyDataSetChanged()
     }
 
     fun submitSummary(summary: MonthSummary) {
@@ -119,10 +124,10 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
         init {
 
             totalTitle.text =
-                    ApplicationUtility.getString(R.string.monthSummaryTotalTitle, expenseListFragment.context!!)
+                ApplicationUtility.getString(R.string.monthSummaryTotalTitle, expenseListFragment.context!!)
             leftTitle.text = ApplicationUtility.getString(R.string.monthSummaryLeftTitle, expenseListFragment.context!!)
             spendTitle.text =
-                    ApplicationUtility.getString(R.string.monthSummarySpendTitle, expenseListFragment.context!!)
+                ApplicationUtility.getString(R.string.monthSummarySpendTitle, expenseListFragment.context!!)
 
             compositeDisposable.addAll(
                 RxView.clicks(itemView).subscribe {
@@ -141,10 +146,10 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
 
             compositeDisposable.addAll(
                 RxView.clicks(itemView).subscribe {
-                    expenseItemClickListener.onClick(getItem(adapterPosition - 1))
+                    expenseItemClickListener.onClick(expenseEntities[adapterPosition - 1])
                 },
                 RxView.longClicks(itemView).subscribe {
-                    expenseItemClickListener.onLongClick(getItem(adapterPosition - 1), itemView)
+                    expenseItemClickListener.onLongClick(expenseEntities[adapterPosition - 1], itemView)
                 }
             )
         }
