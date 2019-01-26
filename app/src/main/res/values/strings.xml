@@ -121,6 +121,11 @@
     <string name="preferenceCurrencyKey">preferenceCurrencyKey</string>
     <string name="preferenceCurrencyDefaultValue">Rupee ₹</string>
 
+    <!--Notification String-->
+    <string name="notificationExpenseAdded">Added new expense</string>
+    <string name="notificationExpenseUpdated">Expense Updated</string>
+    <string name="notificationExpenseDeleted">Expense deleted</string>
+
 
     <string-array name="currencies">
         <item>Rupee ₹</item>

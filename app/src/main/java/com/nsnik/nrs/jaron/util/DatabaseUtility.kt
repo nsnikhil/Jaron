@@ -44,7 +44,10 @@ class DatabaseUtility @Inject constructor(private val expenseDatabase: ExpenseDa
 
     fun getAllExpenses(): LiveData<List<ExpenseEntity>> = expenseDatabase.expenseDao.getAllExpenses()
 
-    fun getExpenseForDate(date: Date): LiveData<List<ExpenseEntity>> =
+    fun getAllExpensesSortLatest(): LiveData<List<ExpenseEntity>> =
+        expenseDatabase.expenseDao.getAllExpensesSortLatest()
+
+    fun getExpenseForDate(date: Date) =
         expenseDatabase.expenseDao.getExpenseForDate(date)
 
     fun getAllTags(): LiveData<List<TagEntity>> = expenseDatabase.tagDao.getAllTags()

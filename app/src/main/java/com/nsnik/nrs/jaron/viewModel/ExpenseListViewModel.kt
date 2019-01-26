@@ -46,6 +46,8 @@ class ExpenseListViewModel(application: Application) : AndroidViewModel(applicat
 
     fun getAllExpenses() = databaseUtility.getAllExpenses()
 
+    fun getAllExpensesSortLatest() = databaseUtility.getAllExpensesSortLatest()
+
     fun getAllTags(): LiveData<List<TagEntity>> = databaseUtility.getAllTags()
 
     fun getExpenseForDate(date: Date) = databaseUtility.getExpenseForDate(date)

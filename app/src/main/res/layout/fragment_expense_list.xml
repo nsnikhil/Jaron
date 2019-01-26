@@ -31,6 +31,9 @@
         android:id="@+id/expenseFragmentExpenseList"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:scrollbars="vertical"
+        android:clipToPadding="false"
+        android:paddingBottom="88dp"
         style="@style/matchParent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

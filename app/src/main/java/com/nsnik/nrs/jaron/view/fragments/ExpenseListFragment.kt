@@ -95,7 +95,7 @@ class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
     }
 
     private fun observeViewModel(date: Date) =
-        expenseListViewModel.getAllExpenses().observe(this, Observer { modifyList(it, date) })
+        expenseListViewModel.getAllExpensesSortLatest().observe(this, Observer { modifyList(it, date) })
 
     private fun modifyList(list: List<ExpenseEntity>, date: Date) {
         val filteredList = filteredListByDate(list, date)
@@ -157,6 +157,8 @@ class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
                 )
             ) { dialog, which ->
                 expenseListViewModel.deleteExpenses(listOf(expenseEntity))
+                ApplicationUtility.showNotification(activity!!, R.string.notificationExpenseDeleted)
+
             }
             .setNegativeButton(
                 ApplicationUtility.getString(

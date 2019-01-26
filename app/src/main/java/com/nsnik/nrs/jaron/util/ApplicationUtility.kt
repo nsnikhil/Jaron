@@ -26,6 +26,7 @@ package com.nsnik.nrs.jaron.util
 import android.app.Activity
 import android.content.Context
 import android.text.Html
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import com.nsnik.nrs.jaron.R
@@ -135,6 +136,8 @@ class ApplicationUtility {
             if (ExpenseUtility.getTotalAmount(activity).value == 0.0)
                 activity.findNavController(R.id.mainNavHost).navigate(R.id.introFragment)
         }
+
+        fun showNotification(activity: Activity,stringId: Int) = Toast.makeText(activity, stringId, Toast.LENGTH_SHORT).show()
 
     }
 
