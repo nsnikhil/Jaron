@@ -39,7 +39,7 @@ class MonthSummaryFactory {
         fun getMonthSummary(context: Context, list: List<ExpenseEntity>): MonthSummary {
             return MonthSummary(
                 total = getTotalAmount(context),
-                totalSpend = getAmountSpend(list),
+                totalSpend = getAmountSpend(context,list)!!,
                 totalLeft = getAmountLeft(context, list),
                 percentageSpend = getPercentageSpend(context, list),
                 percentageLeft = getPercentageLeft(context, list)

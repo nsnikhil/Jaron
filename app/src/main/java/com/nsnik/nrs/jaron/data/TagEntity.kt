@@ -24,12 +24,36 @@
 package com.nsnik.nrs.jaron.data
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.twitter.serial.serializer.ObjectSerializer
+import com.twitter.serial.serializer.SerializationContext
+import com.twitter.serial.stream.SerializerInput
+import com.twitter.serial.stream.SerializerOutput
 
 @Entity
 class TagEntity {
 
     @PrimaryKey
     var tagValue: String = ""
+
+    companion object {
+
+        @Ignore
+        val SERIALIZER: ObjectSerializer<TagEntity> = TagEntitySerializer()
+
+        class TagEntitySerializer : ObjectSerializer<TagEntity>(){
+
+            override fun serializeObject(context: SerializationContext, output: SerializerOutput<out SerializerOutput<*>>, tagEntity: TagEntity) {
+                output.writeString(tagEntity.tagValue)
+            }
+
+            override fun deserializeObject(context: SerializationContext, input: SerializerInput, versionNumber: Int): TagEntity? {
+                val tagEntity = TagEntity()
+                tagEntity.tagValue = input.readNotNullString()
+                return tagEntity
+            }
+        }
+    }
 
 }

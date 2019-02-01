@@ -21,25 +21,18 @@
  * <https://www.gnu.org/licenses/why-not-lgpl.html>.
  */
 
-package com.nsnik.nrs.jaron.model
+package com.nsnik.nrs.jaron.util.factory
 
-import java.util.*
-import kotlin.streams.toList
+import android.content.Context
+import com.nsnik.nrs.jaron.model.Money
+import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.getDefaultCurrency
 
-enum class Currency(val symbol: String, val acronym: String, val conversionFactor: Double) {
+class MoneyFactory {
 
-    Rupee("₹", "INR", 1.0),
+    companion object {
 
-    UnitedStatesDollar("$", "USD", 0.0140283),
+        fun createMoney(value: Double, context: Context) = Money(value, getDefaultCurrency(context)).toBase()
 
-    AustralianDollar("$", "AUD", 0.0196842),
-
-    Pound("£", "Pound", 0.0108356),
-
-    Euro("€", "Euro", 0.0123597);
-
-    fun getFormattedCurrencies() = Arrays.stream(Currency.values())
-        .map { c -> String.format("%s%s", c.symbol, c.acronym) }
-        .toList()
+    }
 
 }

@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
             if (destination.id == R.id.expenseList) {
                 changeToolBarDate()
             } else {
-                title = ApplicationUtility.getString(R.string.Preferences, this@MainActivity)
+                title = ApplicationUtility.getStringRes(R.string.Preferences, this@MainActivity)
             }
         }
 

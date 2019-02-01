@@ -23,37 +23,68 @@
 
 package com.nsnik.nrs.jaron.view.fragments
 
+import android.content.Context
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
+import android.widget.Toast
+import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.nsnik.nrs.jaron.R
+import com.nsnik.nrs.jaron.model.Currency
+import com.nsnik.nrs.jaron.model.Money
 import com.nsnik.nrs.jaron.util.ApplicationUtility
-import com.nsnik.nrs.jaron.util.ExpenseUtility
+import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.getDefaultCurrency
+import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.getTotalAmount
+import com.nsnik.nrs.jaron.util.factory.MoneyFactory.Companion.createMoney
 
 class PreferenceFragment : PreferenceFragmentCompat() {
 
+    private lateinit var monthlyBudgetSummary: EditTextPreference
+    private lateinit var defaultCurrency: ListPreference
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.app_preferences)
-        val monthlyBudgetSummary =
-            preferenceManager.findPreference(
-                ApplicationUtility.getString(
-                    R.string.preferenceTitleChangeMonthlyBudgetKey,
-                    activity!!
-                )
-            )
+        initializeBudgetPreference()
+        initializeCurrencyPreference()
+    }
 
-        monthlyBudgetSummary.summary = ExpenseUtility.getTotalAmount(activity!!).toString()
-
+    private fun initializeBudgetPreference() {
+        monthlyBudgetSummary = preferenceManager.findPreference(stringRes(R.string.preferenceTitleChangeMonthlyBudgetKey, activity!!)) as EditTextPreference
         monthlyBudgetSummary.setOnPreferenceChangeListener { _, newValue ->
-            monthlyBudgetSummary.summary = newValue.toString()
-            preferenceManager.sharedPreferences.edit().putFloat(
-                ApplicationUtility.getString(
-                    R.string.sharedPreferenceKeyTotalAmount,
-                    activity!!
-                ), newValue.toString().toFloat()
-            ).apply()
+            saveNewBudget(newValue.toString().toFloat())
+            setBudgetSummary(monthlyBudgetSummary)
             true
         }
+        setBudgetSummary(monthlyBudgetSummary)
     }
+
+    private fun initializeCurrencyPreference() {
+        defaultCurrency = preferenceManager.findPreference(stringRes(R.string.preferenceCurrencyKey, activity!!)) as ListPreference
+        defaultCurrency.setOnPreferenceChangeListener { _, newValue ->
+            defaultCurrency.summary = newValue.toString()
+            Toast.makeText(activity!!,"Go back to see the changes take effect not doing so may cause unusual effects",Toast.LENGTH_LONG).show()
+            true
+        }
+        defaultCurrency.summary = defaultCurrency.value
+    }
+
+    private fun setBudgetSummary(editTextPreference: EditTextPreference) {
+        val currency = getDefaultCurrency(activity!!)
+        val amount = getTotalAmount(activity!!)
+        editTextPreference.summary = appendMoneyWithCurrency(currency, amount)
+        editTextPreference.text = amount.value.toString()
+    }
+
+    private fun appendMoneyWithCurrency(defaultCurrency: Currency, amount: Money) =
+        defaultCurrency.symbol.plus(amount.value.toTwoDecimal())
+
+    private fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
+
+    private fun saveNewBudget(newBudget: Float) = preferenceManager.sharedPreferences
+        .edit()
+        .putFloat(stringRes(R.string.sharedPreferenceKeyTotalAmount, activity!!), createMoney(newBudget.toDouble(), activity!!).toBase().value.toFloat())
+        .apply()
+
+    private fun stringRes(stringId: Int, context: Context) = ApplicationUtility.getStringRes(stringId, context)
 
 }

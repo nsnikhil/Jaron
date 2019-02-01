@@ -24,6 +24,8 @@
 <resources>
     <string name="app_name">Jaron</string>
     <string name="Preferences">Preferences</string>
+    <string name="na">NA</string>
+    <string name="empty" />
 
     <!--Intro Fragment-->
     <string name="introStart">Start</string>
@@ -119,7 +121,7 @@
     <string name="preferenceTitleChangeMonthlyBudgetKey">preferenceTitleChangeMonthlyBudgetKey</string>
     <string name="preferenceCurrency">Currency</string>
     <string name="preferenceCurrencyKey">preferenceCurrencyKey</string>
-    <string name="preferenceCurrencyDefaultValue">Rupee ₹</string>
+    <string name="preferenceCurrencyDefaultValue">INR</string>
 
     <!--Notification String-->
     <string name="notificationExpenseAdded">Added new expense</string>
@@ -128,7 +130,11 @@
 
 
     <string-array name="currencies">
-        <item>Rupee ₹</item>
+        <item>INR</item>
+        <item>USD</item>
+        <item>AUD</item>
+        <item>Pound</item>
+        <item>Euro</item>
     </string-array>
 
 </resources>

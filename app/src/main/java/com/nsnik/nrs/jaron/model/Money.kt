@@ -21,9 +21,12 @@
  * <https://www.gnu.org/licenses/why-not-lgpl.html>.
  */
 
+@file:Suppress("FunctionName")
+
 package com.nsnik.nrs.jaron.model
 
-import com.nsnik.nrs.jaron.util.ExpenseUtility
+import android.content.Context
+import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.getDefaultCurrency
 import com.twitter.serial.serializer.CoreSerializers
 import com.twitter.serial.serializer.ObjectSerializer
 import com.twitter.serial.serializer.SerializationContext
@@ -37,34 +40,29 @@ data class Money(val value: Double, val currency: Currency) {
         val SERIALIZER: ObjectSerializer<Money> = MoneySerializer()
 
         class MoneySerializer : ObjectSerializer<Money>() {
-            override fun serializeObject(
-                context: SerializationContext,
-                output: SerializerOutput<out SerializerOutput<*>>,
-                money: Money
-            ) {
+            override fun serializeObject(context: SerializationContext, output: SerializerOutput<out SerializerOutput<*>>, money: Money) {
                 output.writeDouble(money.value)
-                output.writeObject(
-                    SerializationContext.ALWAYS_RELEASE,
-                    money.currency,
-                    CoreSerializers.getEnumSerializer(Currency::class.java)
-                )
+                output.writeObject(SerializationContext.ALWAYS_RELEASE, money.currency, CoreSerializers.getEnumSerializer(Currency::class.java))
             }
 
-            override fun deserializeObject(
-                context: SerializationContext,
-                input: SerializerInput,
-                versionNumber: Int
-            ): Money? {
+            override fun deserializeObject(context: SerializationContext, input: SerializerInput, versionNumber: Int): Money? {
                 return Money(
                     input.readDouble(),
-                    input.readObject(
-                        SerializationContext.ALWAYS_RELEASE,
-                        CoreSerializers.getEnumSerializer(Currency::class.java)
-                    )!!
+                    input.readObject(SerializationContext.ALWAYS_RELEASE, CoreSerializers.getEnumSerializer(Currency::class.java))!!
                 )
             }
 
         }
+
+        fun Inr(value: Double) = Money(value, Currency.Rupee)
+
+        fun Usd(value: Double) = Money(value, Currency.UnitedStatesDollar)
+
+        fun Aud(value: Double) = Money(value, Currency.AustralianDollar)
+
+        fun Pounds(value: Double) = Money(value, Currency.Pound)
+
+        fun Euro(value: Double) = Money(value, Currency.Euro)
 
     }
 
@@ -98,12 +96,17 @@ data class Money(val value: Double, val currency: Currency) {
 
     override fun toString() = currency.symbol.plus(value.toTwoDecimal())
 
-    private fun toBase(second: Money) = Money(second.value / second.currency.conversionFactor, Currency.Rupee)
+    fun toBase() = Inr(this.value / this.currency.conversionFactor)
 
-    private fun fromBase(second: Money, currency: Currency) =
-        Money(second.value * second.currency.conversionFactor, currency)
+    fun fromBase(currency: Currency) =
+        Money(this.value * currency.conversionFactor, currency)
 
-    fun convertTo(currency: Currency) = fromBase(toBase(this), currency)
+    fun fromBase(second: Money, currency: Currency) =
+        Money(second.value * currency.conversionFactor, currency)
+
+    fun convertTo(currency: Currency) = fromBase(toBase(), currency)
+
+    fun toDefault(context: Context) = fromBase(getDefaultCurrency(context))
 
     private fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
 

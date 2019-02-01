@@ -69,7 +69,7 @@ class IntroFragment : Fragment() {
         (activity?.application as MyApplication).sharedPreferences
             .edit()
             .putFloat(
-                ApplicationUtility.getString(R.string.sharedPreferenceKeyTotalAmount, activity!!),
+                ApplicationUtility.getStringRes(R.string.sharedPreferenceKeyTotalAmount, activity!!),
                 introBudget.text.toString().toFloat()
             )
             .apply()

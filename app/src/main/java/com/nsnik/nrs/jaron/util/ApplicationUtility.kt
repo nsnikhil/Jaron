@@ -33,7 +33,6 @@ import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
 import com.nsnik.nrs.jaron.data.TagEntity
 import com.nsnik.nrs.jaron.util.factory.TagEntityFactory.Companion.createTagEntity
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.stream.Collectors
@@ -43,9 +42,12 @@ class ApplicationUtility {
 
     companion object {
 
-        fun getCurrentMonth(): String = getSimpleDateFormatter("MMMM").format(getDate())
+        private const val monthFormat: String = "MMMM"
+        private const val yearFormat: String = "YYYY"
 
-        fun getCurrentYear(): String = getSimpleDateFormatter("YYYY").format(getDate())
+        fun getCurrentMonth(): String = getSimpleDateFormatter(monthFormat).format(getDate())
+
+        fun getCurrentYear(): String = getSimpleDateFormatter(yearFormat).format(getDate())
 
         private fun getSimpleDateFormatter(format: String) = SimpleDateFormat(format, Locale.ENGLISH)
 
@@ -55,11 +57,10 @@ class ApplicationUtility {
 
         fun getFormattedCurrentDate() = getFormattedCurrentDate(getDate())
 
-        fun getFormattedCurrentDate(date: Date) = StringBuilder(getSimpleDateFormatter("MMMM").format(date))
+        fun getFormattedCurrentDate(date: Date) = StringBuilder(getSimpleDateFormatter(monthFormat).format(date))
             .append(", ")
-            .append(getSimpleDateFormatter("YYYY").format(date))
+            .append(getSimpleDateFormatter(yearFormat).format(date))
             .toString()
-
 
         fun getFormattedText(text: String?) =
             Html.fromHtml("<font color='#009688'>$text</font>", Html.FROM_HTML_MODE_LEGACY)!!
@@ -96,7 +97,7 @@ class ApplicationUtility {
 
         private fun getMonthNumberFromName(value: String): Int {
             val calendar = getCalendar()
-            calendar.time = SimpleDateFormat("MMMM", Locale.ENGLISH).parse(value)
+            calendar.time = SimpleDateFormat(monthFormat, Locale.ENGLISH).parse(value)
             return calendar.get(Calendar.MONTH)
         }
 
@@ -109,7 +110,7 @@ class ApplicationUtility {
             return calendar.time
         }
 
-        fun getString(id: Int, context: Context) = context.resources.getString(id)
+        fun getStringRes(id: Int, context: Context): String = context.resources.getString(id)
 
         fun getColor(id: Int, context: Context) = ContextCompat.getColor(context, id)
 
@@ -126,7 +127,6 @@ class ApplicationUtility {
             calendar.time = date
             return calendar.get(Calendar.MONTH)
         }
-
 
         fun filteredListByDate(list: List<ExpenseEntity>, date: Date): List<ExpenseEntity> = list.stream()
             .filter { t -> isSameDate(t.date!!, date) }

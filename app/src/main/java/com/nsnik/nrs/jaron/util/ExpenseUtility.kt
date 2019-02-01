@@ -24,48 +24,92 @@
 package com.nsnik.nrs.jaron.util
 
 import android.content.Context
+import androidx.preference.PreferenceManager
 import com.nsnik.nrs.jaron.MyApplication
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
 import com.nsnik.nrs.jaron.model.Currency
 import com.nsnik.nrs.jaron.model.Money
-import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getString
+import com.nsnik.nrs.jaron.model.Money.Companion.Inr
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getStringRes
+import com.nsnik.nrs.jaron.util.factory.MoneyFactory.Companion.createMoney
+import timber.log.Timber
 
 class ExpenseUtility {
 
     companion object {
 
-//        fun getAmountSpend(list: List<ExpenseEntity>): Double = list.stream()
-//            .map { it -> it.amount }
-//            .map { it -> it?.value!! }
-//            .reduce(0.0) { t, u -> t + u }
+//        fun getAmountSpend(context: Context, list: List<ExpenseEntity>): Money = list.stream()
+//            .map { it.amount }
+//            .reduce(createMoney(0.0, context)) { t, u -> t?.add(u!!) }!!
 
-        //TODO CHANGE ALL FUNCTIONS TO RETURN MONEY OBJECT
-        fun getAmountSpend(list: List<ExpenseEntity>): Money = list.stream()
-            .map { it -> it.amount }
-            .reduce(Money(0.0, Currency.Rupee)) { t, u -> t?.add(u!!) }!!
+        fun getAmountSpend(context: Context, list: List<ExpenseEntity>) = list.stream()
+            .map { it.amount }
+            .reduce { t: Money?, u: Money? -> t?.add(u!!) }
+            .orElse(createMoney(0.0,context))
+            ?.toDefault(context)
 
-        fun getTotalAmount(context: Context): Money =
-            Money(
-                (context.applicationContext as MyApplication)
-                    .sharedPreferences
-                    .getFloat(getString(R.string.sharedPreferenceKeyTotalAmount, context), 0.0F)
-                    .toDouble(), Currency.Rupee
-            )
+//        fun getTotalAmount(context: Context): Money =
+//            createMoney(
+//                (context.applicationContext as MyApplication)
+//                    .sharedPreferences.getFloat(getStringRes(R.string.sharedPreferenceKeyTotalAmount, context), 0.0F)
+//                    .toDouble(), context)
+//                .toDefault(context)
 
-        fun getAmountLeft(context: Context, list: List<ExpenseEntity>) =
-            getTotalAmount(context).subtract(getAmountSpend(list))
+        fun getTotalAmount(context: Context): Money {
+            val value = (context.applicationContext as MyApplication)
+                .sharedPreferences.getFloat(getStringRes(R.string.sharedPreferenceKeyTotalAmount, context), 0.0F)
+
+            Timber.d(value.toString())
+
+            var money = Inr(value.toDouble())
+
+            Timber.d(money.currency.name)
+            Timber.d(money.value.toString())
+
+            money = money.toDefault(context)
+
+            Timber.d(money.currency.name)
+            Timber.d(money.value.toString())
+
+
+            return money
+        }
+
+        fun getAmountLeft(context: Context, list: List<ExpenseEntity>): Money {
+
+            Timber.d(getDefaultCurrency(context).name)
+
+            Timber.d(getTotalAmount(context).value.toString())
+            Timber.d(getAmountSpend(context,list)?.value?.toString())
+
+            Timber.d(getAmountSpend(context,list)?.currency?.name)
+            Timber.d(getAmountSpend(context,list)?.currency?.name)
+
+            Timber.d(getTotalAmount(context).subtract(getAmountSpend(context, list)!!).value.toString())
+            Timber.d(getTotalAmount(context).subtract(getAmountSpend(context, list)!!).currency.name)
+
+            return getTotalAmount(context).subtract(getAmountSpend(context, list)!!)
+        }
 
         fun getPercentageSpend(context: Context, list: List<ExpenseEntity>) =
-            (getAmountSpend(list).divide(getTotalAmount(context))).value.toTwoDecimal() * 100
+            (getAmountSpend(context, list)?.divide(getTotalAmount(context)))?.value?.toTwoDecimal()!! * 100
 
         fun getPercentageLeft(context: Context, list: List<ExpenseEntity>) =
             (getAmountLeft(context, list).divide(getTotalAmount(context))).value.toTwoDecimal() * 100
 
-        fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
+        private fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
 
         fun formatWithPercent(double: Double) = StringBuilder(double.toString()).append("%").toString()
 
+        fun getDefaultCurrency(context: Context) = Currency.values().first {
+            it.acronym == PreferenceManager
+                .getDefaultSharedPreferences(context)
+                .getString(
+                    getStringRes(R.string.preferenceCurrencyKey, context),
+                    getStringRes(R.string.preferenceCurrencyDefaultValue, context)
+                )!!
+        }
     }
 
 }

@@ -43,7 +43,9 @@ import com.nsnik.nrs.jaron.util.ApplicationUtility
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.filteredListByDate
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getCurrentMonthAndYear
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getDateFromString
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getStringRes
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.goToIntro
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.showNotification
 import com.nsnik.nrs.jaron.util.eventbus.RxBus
 import com.nsnik.nrs.jaron.util.eventbus.RxEvent
 import com.nsnik.nrs.jaron.util.factory.MonthSummaryFactory.Companion.getMonthSummary
@@ -105,7 +107,6 @@ class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
         expenseListAdapter.notifyDataSetChanged()
     }
 
-
     private fun listeners() {
         compositeDisposable.addAll(
             RxView.clicks(expenseFragmentAddExpense).subscribe {
@@ -139,8 +140,8 @@ class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
     private fun showExpenseEditDialog(expenseEntity: ExpenseEntity) {
         val bundle = Bundle()
         val byteArray = ByteBufferSerial().toByteArray(expenseEntity, ExpenseEntity.SERIALIZER)
-        bundle.putByteArray(ApplicationUtility.getString(R.string.bundleExpenseEntity, activity!!), byteArray)
-        bundle.putInt(ApplicationUtility.getString(R.string.bundleExpenseEntityId, activity!!), expenseEntity.id)
+        bundle.putByteArray(ApplicationUtility.getStringRes(R.string.bundleExpenseEntity, activity!!), byteArray)
+        bundle.putInt(ApplicationUtility.getStringRes(R.string.bundleExpenseEntityId, activity!!), expenseEntity.id)
         val dialog = AddExpenseFragment()
         dialog.arguments = bundle
         dialog.show(fragmentManager, "editExpense")
@@ -148,25 +149,12 @@ class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
 
     private fun showAlertPopUpDialog(expenseEntity: ExpenseEntity) {
         AlertDialog.Builder(activity!!)
-            .setTitle(ApplicationUtility.getString(R.string.alertDialogDeleteTitle, activity!!))
-            .setMessage(ApplicationUtility.getString(R.string.alertDialogDeleteMessage, activity!!))
-            .setPositiveButton(
-                ApplicationUtility.getString(
-                    R.string.alertDialogDeletePositiveText,
-                    activity!!
-                )
-            ) { dialog, which ->
+            .setTitle(ApplicationUtility.getStringRes(R.string.alertDialogDeleteTitle, activity!!))
+            .setMessage(ApplicationUtility.getStringRes(R.string.alertDialogDeleteMessage, activity!!))
+            .setPositiveButton(getStringRes(R.string.alertDialogDeletePositiveText, activity!!)) { _, _ ->
                 expenseListViewModel.deleteExpenses(listOf(expenseEntity))
-                ApplicationUtility.showNotification(activity!!, R.string.notificationExpenseDeleted)
-
-            }
-            .setNegativeButton(
-                ApplicationUtility.getString(
-                    R.string.alertDialogDeleteNegativeText,
-                    activity!!
-                )
-            ) { dialog, which ->
-            }
+                showNotification(activity!!, R.string.notificationExpenseDeleted) }
+            .setNegativeButton(getStringRes(R.string.alertDialogDeleteNegativeText, activity!!)) { _, _ -> }
             .create()
             .show()
     }

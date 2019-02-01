@@ -23,23 +23,21 @@
 
 package com.nsnik.nrs.jaron.view.fragments.dialogs
 
-
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
-import com.nsnik.nrs.jaron.util.ApplicationUtility
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.formatTag
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getFormattedText
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getStringRes
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.listToTag
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.showNotification
 import com.nsnik.nrs.jaron.util.FieldValidator.Companion.validateFrom
@@ -52,7 +50,6 @@ import timber.log.Timber
 import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.function.Consumer
-
 
 class AddExpenseFragment : DialogFragment() {
 
@@ -85,12 +82,10 @@ class AddExpenseFragment : DialogFragment() {
 
     private fun setFields() {
         if (arguments != null) {
-            val byteArray =
-                arguments?.getByteArray(ApplicationUtility.getString(R.string.bundleExpenseEntity, activity!!))
+            val byteArray = arguments?.getByteArray(getStringRes(R.string.bundleExpenseEntity, activity!!))
             toUpdateExpenseEntity = ByteBufferSerial().fromByteArray(byteArray, ExpenseEntity.SERIALIZER)
-            toUpdateExpenseEntity?.id =
-                arguments?.getInt(ApplicationUtility.getString(R.string.bundleExpenseEntityId, activity!!), -1)!!
-            newExpenseCreate.text = ApplicationUtility.getString(R.string.newExpenseUpdate, activity!!)
+            toUpdateExpenseEntity?.id = arguments?.getInt(getStringRes(R.string.bundleExpenseEntityId, activity!!), -1)!!
+            newExpenseCreate.text = getStringRes(R.string.newExpenseUpdate, activity!!)
             newExpenseValue.setText(toUpdateExpenseEntity?.amount?.value?.toString())
             newExpenseTitle.setText(toUpdateExpenseEntity?.title)
             newExpenseDescription.setText(toUpdateExpenseEntity?.description)
@@ -111,13 +106,11 @@ class AddExpenseFragment : DialogFragment() {
         },
         RxTextView.textChanges(newExpenseTags)
             .debounce(2, TimeUnit.SECONDS)
-            .subscribe {
-                ApplicationUtility.formatTag(it.toString()).forEach(Consumer { s ->
+            .subscribe { formatTag(it.toString()).forEach(Consumer { s ->
                     Timber.d(s)
                 })
             }
     )
-
 
     private fun addEntries() {
         if (validateEntries()) {
@@ -136,6 +129,7 @@ class AddExpenseFragment : DialogFragment() {
     private fun addExpense() = expenseListViewModel.insertExpenses(listOf(createExpense()))
 
     private fun createExpense(date: Date = Calendar.getInstance().time) = createExpenseEntity(
+        activity!!,
         newExpenseValue.text().toDouble(),
         newExpenseTitle.text(),
         newExpenseDescription.text(),
@@ -144,7 +138,7 @@ class AddExpenseFragment : DialogFragment() {
     )
 
     private fun updateExpense() {
-        val expenseEntity = createExpense(date = toUpdateExpenseEntity?.date!!)
+        val expenseEntity = createExpense(toUpdateExpenseEntity?.date!!)
         expenseEntity.id = toUpdateExpenseEntity?.id!!
         expenseListViewModel.updateExpenses(listOf(expenseEntity))
     }

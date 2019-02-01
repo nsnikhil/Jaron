@@ -34,8 +34,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
+import com.nsnik.nrs.jaron.model.Currency
+import com.nsnik.nrs.jaron.model.Money
 import com.nsnik.nrs.jaron.model.MonthSummary
-import com.nsnik.nrs.jaron.util.ApplicationUtility
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getStringRes
+import com.nsnik.nrs.jaron.util.ExpenseUtility
 import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatWithPercent
 import com.nsnik.nrs.jaron.view.fragments.ExpenseListFragment
 import com.nsnik.nrs.jaron.view.fragments.listeners.ExpenseItemClickListener
@@ -57,57 +60,52 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == summaryViewType)
-            return SummaryViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.month_summary_layout,
-                    parent,
-                    false
-                )
-            )
+            return SummaryViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.month_summary_layout, parent, false))
         return ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_expense_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (position == 0) bindSummaryHolder(holder = (holder as SummaryViewHolder), position = position)
-        else bindItemHolder(holder = (holder as ItemViewHolder), position = position - 1)
+        if (position == 0) bindSummaryHolder((holder as SummaryViewHolder), position)
+        else bindItemHolder((holder as ItemViewHolder), position - 1)
     }
 
-    private fun bindSummaryHolder(holder: SummaryViewHolder, position: Int) {
-        summary.observe(expenseListFragment, Observer(function = {
-            holder.total.text = it?.total?.toString()
-            holder.spend.text = it?.totalSpend?.toString()
-            holder.left.text = it?.totalLeft?.toString()
+    private fun bindSummaryHolder(holder: SummaryViewHolder, position: Int) =
+        summary.observe(expenseListFragment, Observer {
+            holder.total.text = appendWithCurrency(it.total)
+            holder.spend.text = appendWithCurrency(it.totalSpend)
+            holder.left.text = appendWithCurrency(it.totalLeft)
             holder.percentageSpend.text = formatWithPercent(it.percentageSpend.toTwoDecimal())
             holder.percentageProgress.progress = it.percentageSpend.toInt()
-        }))
-    }
+        })
 
     private fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
 
     private fun bindItemHolder(holder: ItemViewHolder, position: Int) {
         val expenseEntity = expenseEntities[position]
-        holder.value.text = expenseEntity.amount.toString()
+        holder.value.text = appendMoneyWithCurrency(holder.defaultCurrency, expenseEntity.amount!!)
         holder.title.text = expenseEntity.title
         holder.description.text = expenseEntity.description
     }
+
+    private fun appendWithCurrency(amount: Money) =
+        amount.currency.symbol.plus(amount.value.toTwoDecimal())
+
+    private fun appendMoneyWithCurrency(defaultCurrency: Currency, amount: Money) =
+        defaultCurrency.symbol.plus(amount.toDefault(expenseListFragment.requireContext()).value.toTwoDecimal())
 
     override fun getItemViewType(position: Int): Int {
         if (position == 0) return summaryViewType
         return itemViewType
     }
 
-    override fun getItemCount(): Int {
-        return expenseEntities.size + 1
-    }
+    override fun getItemCount() = expenseEntities.size + 1
 
-    fun submitList(expenseEntities: List<ExpenseEntity>){
+    fun submitList(expenseEntities: List<ExpenseEntity>) {
         this.expenseEntities = expenseEntities
         notifyDataSetChanged()
     }
 
-    fun submitSummary(summary: MonthSummary) {
-        this.summary.postValue(summary)
-    }
+    fun submitSummary(summary: MonthSummary) = this.summary.postValue(summary)
 
     inner class SummaryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val total: TextView = itemView.summaryTotalHaveContainer.summaryTotalValue
@@ -121,17 +119,16 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
         val percentageSpend: TextView = itemView.summaryPercentageProgress
         val percentageProgress: ProgressBar = itemView.summaryPercentage
 
+        var defaultCurrency: Currency = ExpenseUtility.getDefaultCurrency(expenseListFragment.context!!)
+
         init {
 
-            totalTitle.text =
-                ApplicationUtility.getString(R.string.monthSummaryTotalTitle, expenseListFragment.context!!)
-            leftTitle.text = ApplicationUtility.getString(R.string.monthSummaryLeftTitle, expenseListFragment.context!!)
-            spendTitle.text =
-                ApplicationUtility.getString(R.string.monthSummarySpendTitle, expenseListFragment.context!!)
+            totalTitle.text = getStringRes(R.string.monthSummaryTotalTitle, expenseListFragment.context!!)
+            leftTitle.text = getStringRes(R.string.monthSummaryLeftTitle, expenseListFragment.context!!)
+            spendTitle.text = getStringRes(R.string.monthSummarySpendTitle, expenseListFragment.context!!)
 
             compositeDisposable.addAll(
                 RxView.clicks(itemView).subscribe {
-
                 }
             )
         }
@@ -141,9 +138,9 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
         val value: TextView = itemView.singleExpenseValue
         val title: TextView = itemView.singleExpenseTitle
         val description: TextView = itemView.singleExpenseDescription
+        var defaultCurrency: Currency = ExpenseUtility.getDefaultCurrency(expenseListFragment.context!!)
 
         init {
-
             compositeDisposable.addAll(
                 RxView.clicks(itemView).subscribe {
                     expenseItemClickListener.onClick(expenseEntities[adapterPosition - 1])
@@ -154,7 +151,6 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
             )
         }
     }
-
 
     private fun cleanUp() {
         compositeDisposable.clear()

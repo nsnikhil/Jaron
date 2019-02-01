@@ -26,25 +26,19 @@ package com.nsnik.nrs.jaron.util
 import android.content.Context
 import android.widget.TextView
 import com.nsnik.nrs.jaron.R
-import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getString
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getStringRes
 import java.util.*
 
 class FieldValidator {
 
     companion object {
 
-        fun validateFrom(
-            context: Context,
-            value: TextView,
-            title: TextView,
-            description: TextView,
-            date: Date,
-            tags: List<String>
-        ): Boolean = validateValueString(context, value) &&
-                validateTitle(context, title) &&
-                validateDescription(context, description) &&
-                validateDate(date) &&
-                validateTags(tags)
+        fun validateFrom(context: Context, value: TextView, title: TextView, description: TextView, date: Date, tags: List<String>): Boolean =
+            validateValueString(context, value) &&
+                    validateTitle(context, title) &&
+                    validateDescription(context, description) &&
+                    validateDate(date) &&
+                    validateTags(tags)
 
         fun validateValueString(context: Context, textView: TextView) =
             checkEmpty(context, textView, R.string.newExpenseErrorNoValue) &&
@@ -58,9 +52,7 @@ class FieldValidator {
         private fun validateOverFlow(context: Context, textView: TextView): Boolean {
             val total = ExpenseUtility.getTotalAmount(context)
             if (total.value == 0.0) return true
-            if (textView.text.toString().toDouble() > total.value) {
-                return setError(textView, getString(R.string.newExpenseErrorOverflowValue, context))
-            }
+            if (textView.text.toString().toDouble() > total.value) return setError(textView, getStringRes(R.string.newExpenseErrorOverflowValue, context))
             return true
         }
 
@@ -78,7 +70,7 @@ class FieldValidator {
             checkCondition(context, textView, stringId, textView.text.toString().toDouble() <= 0)
 
         private fun checkCondition(context: Context, textView: TextView, stringId: Int, condition: Boolean): Boolean {
-            if (condition) return setError(textView, getString(stringId, context))
+            if (condition) return setError(textView, getStringRes(stringId, context))
             return true
         }
 

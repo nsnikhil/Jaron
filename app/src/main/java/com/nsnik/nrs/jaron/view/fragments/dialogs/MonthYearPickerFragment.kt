@@ -31,16 +31,12 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.R
-import com.nsnik.nrs.jaron.util.ApplicationUtility
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.formatText
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getFormattedCurrentDate
 import com.nsnik.nrs.jaron.util.eventbus.RxBus
 import com.nsnik.nrs.jaron.util.eventbus.RxEvent
-import com.nsnik.nrs.jaron.viewModel.ExpenseListViewModel
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_month_year_picker.*
 
