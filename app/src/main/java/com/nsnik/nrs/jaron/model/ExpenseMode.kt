@@ -23,23 +23,9 @@
 
 package com.nsnik.nrs.jaron.model
 
-import java.util.*
-import kotlin.streams.toList
-
-enum class Currency(val symbol: String, val acronym: String, val conversionFactor: Double) {
-
-    Rupee("₹", "INR", 1.0),
-
-    UnitedStatesDollar("$", "USD", 0.0140283),
-
-    AustralianDollar("$", "AUD", 0.0196842),
-
-    Pound("£", "Pound", 0.0108356),
-
-    Euro("€", "Euro", 0.0123597);
-
-    fun getFormattedCurrencies() = Arrays.stream(Currency.values())
-        .map { c -> String.format("%s%s", c.symbol, c.acronym) }
-        .toList()
-
+class ExpenseMode private constructor() {
+    companion object {
+        const val DEBIT: Int = 1
+        const val CREDIT: Int = 2
+    }
 }

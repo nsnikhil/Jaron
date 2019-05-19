@@ -25,15 +25,12 @@
 
 package com.nsnik.nrs.jaron.model
 
-import android.content.Context
-import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.getDefaultCurrency
-import com.twitter.serial.serializer.CoreSerializers
 import com.twitter.serial.serializer.ObjectSerializer
 import com.twitter.serial.serializer.SerializationContext
 import com.twitter.serial.stream.SerializerInput
 import com.twitter.serial.stream.SerializerOutput
 
-data class Money(val value: Double, val currency: Currency) {
+data class Money(val value: Double) {
 
     companion object {
 
@@ -42,72 +39,26 @@ data class Money(val value: Double, val currency: Currency) {
         class MoneySerializer : ObjectSerializer<Money>() {
             override fun serializeObject(context: SerializationContext, output: SerializerOutput<out SerializerOutput<*>>, money: Money) {
                 output.writeDouble(money.value)
-                output.writeObject(SerializationContext.ALWAYS_RELEASE, money.currency, CoreSerializers.getEnumSerializer(Currency::class.java))
             }
 
             override fun deserializeObject(context: SerializationContext, input: SerializerInput, versionNumber: Int): Money? {
-                return Money(
-                    input.readDouble(),
-                    input.readObject(SerializationContext.ALWAYS_RELEASE, CoreSerializers.getEnumSerializer(Currency::class.java))!!
-                )
+                return Money(input.readDouble())
             }
 
         }
 
-        fun Inr(value: Double) = Money(value, Currency.Rupee)
-
-        fun Usd(value: Double) = Money(value, Currency.UnitedStatesDollar)
-
-        fun Aud(value: Double) = Money(value, Currency.AustralianDollar)
-
-        fun Pounds(value: Double) = Money(value, Currency.Pound)
-
-        fun Euro(value: Double) = Money(value, Currency.Euro)
-
     }
 
-    fun add(second: Money): Money {
-        if (second.currency != currency) return Money(value + second.convertTo(currency).value, currency)
-        return Money(value + second.value, currency)
+    fun add(second: Money) = Money(value + second.value)
+
+    fun subtract(second: Money) = Money(value - second.value)
+
+    fun divide(second: Money) = Money(value / second.value)
+
+    fun multiply(second: Money) = Money(value * second.value)
+
+    override fun toString(): String {
+        return String.format("%.2f", value)
     }
-
-    fun subtract(second: Money): Money {
-        if (second.currency != currency) return Money(value - second.convertTo(currency).value, currency)
-        return Money(value - second.value, currency)
-    }
-
-    fun divide(second: Money): Money {
-        if (second.currency != currency) return Money(value / second.convertTo(currency).value, currency)
-        return Money(value / second.value, currency)
-    }
-
-    fun multiply(second: Money): Money {
-        if (second.currency != currency) return Money(value * second.convertTo(currency).value, currency)
-        return Money(value * second.value, currency)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if ((other as Money).currency != currency)
-            return Math.abs(other.convertTo(currency).value - value) <= 0.5
-        return value == other.value
-    }
-
-    override fun hashCode() = value.hashCode() + currency.hashCode()
-
-    override fun toString() = currency.symbol.plus(value.toTwoDecimal())
-
-    fun toBase() = Inr(this.value / this.currency.conversionFactor)
-
-    fun fromBase(currency: Currency) =
-        Money(this.value * currency.conversionFactor, currency)
-
-    fun fromBase(second: Money, currency: Currency) =
-        Money(second.value * currency.conversionFactor, currency)
-
-    fun convertTo(currency: Currency) = fromBase(toBase(), currency)
-
-    fun toDefault(context: Context) = fromBase(getDefaultCurrency(context))
-
-    private fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
 
 }

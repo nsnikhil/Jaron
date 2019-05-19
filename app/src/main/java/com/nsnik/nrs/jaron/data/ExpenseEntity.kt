@@ -26,8 +26,12 @@ package com.nsnik.nrs.jaron.data
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.nsnik.nrs.jaron.model.ExpenseMode
 import com.nsnik.nrs.jaron.model.Money
-import com.twitter.serial.serializer.*
+import com.twitter.serial.serializer.CollectionSerializers
+import com.twitter.serial.serializer.CoreSerializers
+import com.twitter.serial.serializer.ObjectSerializer
+import com.twitter.serial.serializer.SerializationContext
 import com.twitter.serial.stream.SerializerInput
 import com.twitter.serial.stream.SerializerOutput
 import java.util.*
@@ -42,7 +46,7 @@ class ExpenseEntity {
     var description: String? = null
     var date: Date? = null
     var tags: List<String?>? = null
-    var paymentType: PaymentType = PaymentType.Paid
+    var paymentType: Int = ExpenseMode.CREDIT
 
     companion object {
 
@@ -53,23 +57,23 @@ class ExpenseEntity {
 
             override fun serializeObject(context: SerializationContext, output: SerializerOutput<out SerializerOutput<*>>, expenseEntity: ExpenseEntity) {
                 output.writeInt(expenseEntity.id)
-                output.writeObject(SerializationContext.ALWAYS_RELEASE,expenseEntity.amount,Money.SERIALIZER)
+                output.writeObject(SerializationContext.ALWAYS_RELEASE, expenseEntity.amount, Money.SERIALIZER)
                 output.writeString(expenseEntity.title)
                 output.writeString(expenseEntity.description)
-                output.writeObject(SerializationContext.ALWAYS_RELEASE,expenseEntity.date,CoreSerializers.DATE)
-                output.writeObject(SerializationContext.ALWAYS_RELEASE,expenseEntity.tags,CollectionSerializers.getListSerializer(CoreSerializers.STRING))
-                output.writeObject(SerializationContext.ALWAYS_RELEASE,expenseEntity.paymentType,CoreSerializers.getEnumSerializer(PaymentType::class.java))
+                output.writeObject(SerializationContext.ALWAYS_RELEASE, expenseEntity.date, CoreSerializers.DATE)
+                output.writeObject(SerializationContext.ALWAYS_RELEASE, expenseEntity.tags, CollectionSerializers.getListSerializer(CoreSerializers.STRING))
+                output.writeInt(expenseEntity.paymentType)
             }
 
             override fun deserializeObject(context: SerializationContext, input: SerializerInput, versionNumber: Int): ExpenseEntity? {
                 val expenseEntity = ExpenseEntity()
-                expenseEntity.id =  input.readInt()
-                expenseEntity.amount = input.readObject(SerializationContext.ALWAYS_RELEASE,Money.SERIALIZER)
+                expenseEntity.id = input.readInt()
+                expenseEntity.amount = input.readObject(SerializationContext.ALWAYS_RELEASE, Money.SERIALIZER)
                 expenseEntity.title = input.readString()
                 expenseEntity.description = input.readString()
-                expenseEntity.date = input.readObject(SerializationContext.ALWAYS_RELEASE,CoreSerializers.DATE)
-                expenseEntity.tags = input.readObject(SerializationContext.ALWAYS_RELEASE,CollectionSerializers.getListSerializer(CoreSerializers.STRING))
-                expenseEntity.paymentType = input.readObject(SerializationContext.ALWAYS_RELEASE,CoreSerializers.getEnumSerializer(PaymentType::class.java))!!
+                expenseEntity.date = input.readObject(SerializationContext.ALWAYS_RELEASE, CoreSerializers.DATE)
+                expenseEntity.tags = input.readObject(SerializationContext.ALWAYS_RELEASE, CollectionSerializers.getListSerializer(CoreSerializers.STRING))
+                expenseEntity.paymentType = input.readInt()
                 return expenseEntity
             }
 
@@ -77,8 +81,4 @@ class ExpenseEntity {
 
     }
 
-}
-
-enum class PaymentType {
-    Received, Paid
 }

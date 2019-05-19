@@ -35,17 +35,13 @@ import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.getTotalAmount
 class MonthSummaryFactory {
 
     companion object {
-
-        fun getMonthSummary(context: Context, list: List<ExpenseEntity>): MonthSummary {
-            return MonthSummary(
-                total = getTotalAmount(context),
-                totalSpend = getAmountSpend(context,list)!!,
-                totalLeft = getAmountLeft(context, list),
-                percentageSpend = getPercentageSpend(context, list),
-                percentageLeft = getPercentageLeft(context, list)
-            )
-        }
-
+        fun getMonthSummary(context: Context, list: List<ExpenseEntity>): MonthSummary = MonthSummary(
+            total = getTotalAmount(context),
+            totalSpend = getAmountSpend(list),
+            totalLeft = getAmountLeft(context, list),
+            percentageSpend = getPercentageSpend(context, list),
+            percentageLeft = getPercentageLeft(context, list)
+        )
     }
 
 }

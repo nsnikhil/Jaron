@@ -34,11 +34,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
-import com.nsnik.nrs.jaron.model.Currency
-import com.nsnik.nrs.jaron.model.Money
 import com.nsnik.nrs.jaron.model.MonthSummary
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getStringRes
-import com.nsnik.nrs.jaron.util.ExpenseUtility
 import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatWithPercent
 import com.nsnik.nrs.jaron.view.fragments.ExpenseListFragment
 import com.nsnik.nrs.jaron.view.fragments.listeners.ExpenseItemClickListener
@@ -71,27 +68,19 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
 
     private fun bindSummaryHolder(holder: SummaryViewHolder, position: Int) =
         summary.observe(expenseListFragment, Observer {
-            holder.total.text = appendWithCurrency(it.total)
-            holder.spend.text = appendWithCurrency(it.totalSpend)
-            holder.left.text = appendWithCurrency(it.totalLeft)
-            holder.percentageSpend.text = formatWithPercent(it.percentageSpend.toTwoDecimal())
+            holder.total.text = it.total.value.toString()
+            holder.spend.text = it.totalSpend.value.toString()
+            holder.left.text = it.totalLeft.value.toString()
+            holder.percentageSpend.text = StringBuilder(it.percentageSpend.toString()).append("%").toString()
             holder.percentageProgress.progress = it.percentageSpend.toInt()
         })
 
-    private fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
-
     private fun bindItemHolder(holder: ItemViewHolder, position: Int) {
         val expenseEntity = expenseEntities[position]
-        holder.value.text = appendMoneyWithCurrency(holder.defaultCurrency, expenseEntity.amount!!)
+        holder.value.text = expenseEntity.amount.toString()
         holder.title.text = expenseEntity.title
         holder.description.text = expenseEntity.description
     }
-
-    private fun appendWithCurrency(amount: Money) =
-        amount.currency.symbol.plus(amount.value.toTwoDecimal())
-
-    private fun appendMoneyWithCurrency(defaultCurrency: Currency, amount: Money) =
-        defaultCurrency.symbol.plus(amount.toDefault(expenseListFragment.requireContext()).value.toTwoDecimal())
 
     override fun getItemViewType(position: Int): Int {
         if (position == 0) return summaryViewType
@@ -119,8 +108,6 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
         val percentageSpend: TextView = itemView.summaryPercentageProgress
         val percentageProgress: ProgressBar = itemView.summaryPercentage
 
-        var defaultCurrency: Currency = ExpenseUtility.getDefaultCurrency(expenseListFragment.context!!)
-
         init {
 
             totalTitle.text = getStringRes(R.string.monthSummaryTotalTitle, expenseListFragment.context!!)
@@ -138,7 +125,6 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
         val value: TextView = itemView.singleExpenseValue
         val title: TextView = itemView.singleExpenseTitle
         val description: TextView = itemView.singleExpenseDescription
-        var defaultCurrency: Currency = ExpenseUtility.getDefaultCurrency(expenseListFragment.context!!)
 
         init {
             compositeDisposable.addAll(

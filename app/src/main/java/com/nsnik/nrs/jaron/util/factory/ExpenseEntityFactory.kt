@@ -25,8 +25,8 @@ package com.nsnik.nrs.jaron.util.factory
 
 import android.content.Context
 import com.nsnik.nrs.jaron.data.ExpenseEntity
-import com.nsnik.nrs.jaron.data.PaymentType
-import com.nsnik.nrs.jaron.util.factory.MoneyFactory.Companion.createMoney
+import com.nsnik.nrs.jaron.model.ExpenseMode
+import com.nsnik.nrs.jaron.model.Money
 import java.util.*
 
 class ExpenseEntityFactory {
@@ -34,9 +34,9 @@ class ExpenseEntityFactory {
     companion object {
 
         fun createExpenseEntity(context: Context, value: Double, title: String, description: String,
-                                date: Date, tags: List<String>, paymentType: PaymentType = PaymentType.Paid): ExpenseEntity {
+                                date: Date, tags: List<String>, paymentType: Int = ExpenseMode.CREDIT): ExpenseEntity {
             val expenseEntity = ExpenseEntity()
-            expenseEntity.amount = createMoney(value, context)
+            expenseEntity.amount = Money(value)
             expenseEntity.title = title
             expenseEntity.description = description
             expenseEntity.date = date

@@ -36,7 +36,6 @@ import java.util.*
 class ExpenseListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val databaseUtility = (application as MyApplication).databaseUtility
-
     private val currentDate: MutableLiveData<Date> = MutableLiveData()
 
     fun getCurrentDate(): MutableLiveData<Date> {

@@ -27,12 +27,6 @@
     style="@style/matchParent"
     tools:context="com.nsnik.nrs.jaron.view.fragments.IntroFragment">
 
-    <!--<androidx.recyclerview.widget.RecyclerView-->
-    <!--android:id="@+id/introList"-->
-    <!--style="@style/matchParent"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toTopOf="parent" />-->
-
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/introBudget"
         style="@style/horizontal"
@@ -48,9 +42,9 @@
         android:id="@+id/introStart"
         style="@style/wrapContent"
         android:layout_margin="@dimen/sixteen"
+        android:fontFamily="@font/open_sans_semibold"
         android:text="@string/introStart"
         android:textSize="20sp"
-        android:fontFamily="@font/open_sans_semibold"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

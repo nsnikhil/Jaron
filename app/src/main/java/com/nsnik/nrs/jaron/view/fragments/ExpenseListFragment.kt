@@ -110,7 +110,7 @@ class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
     private fun listeners() {
         compositeDisposable.addAll(
             RxView.clicks(expenseFragmentAddExpense).subscribe {
-                AddExpenseFragment().show(fragmentManager, "addExpense")
+                AddExpenseFragment().show(fragmentManager!!, "addExpense")
             }
         )
     }
@@ -144,15 +144,14 @@ class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
         bundle.putInt(ApplicationUtility.getStringRes(R.string.bundleExpenseEntityId, activity!!), expenseEntity.id)
         val dialog = AddExpenseFragment()
         dialog.arguments = bundle
-        dialog.show(fragmentManager, "editExpense")
+        dialog.show(fragmentManager!!, "editExpense")
     }
 
     private fun showAlertPopUpDialog(expenseEntity: ExpenseEntity) {
         AlertDialog.Builder(activity!!)
             .setTitle(ApplicationUtility.getStringRes(R.string.alertDialogDeleteTitle, activity!!))
             .setMessage(ApplicationUtility.getStringRes(R.string.alertDialogDeleteMessage, activity!!))
-            .setPositiveButton(getStringRes(R.string.alertDialogDeletePositiveText, activity!!)) { _, _ ->
-                expenseListViewModel.deleteExpenses(listOf(expenseEntity))
+            .setPositiveButton(getStringRes(R.string.alertDialogDeletePositiveText, activity!!)) { _, _ -> expenseListViewModel.deleteExpenses(listOf(expenseEntity))
                 showNotification(activity!!, R.string.notificationExpenseDeleted) }
             .setNegativeButton(getStringRes(R.string.alertDialogDeleteNegativeText, activity!!)) { _, _ -> }
             .create()

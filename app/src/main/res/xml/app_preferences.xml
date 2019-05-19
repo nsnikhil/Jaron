@@ -30,14 +30,6 @@
             android:key="@string/preferenceTitleChangeMonthlyBudgetKey"
             android:title="@string/preferenceTitleChangeMonthlyBudget" />
 
-        <ListPreference
-            android:defaultValue="@string/preferenceCurrencyDefaultValue"
-            android:entries="@array/currencies"
-            android:entryValues="@array/currencies"
-            android:key="@string/preferenceCurrencyKey"
-            android:summary="@string/preferenceCurrencyDefaultValue"
-            android:title="@string/preferenceCurrency" />
-
     </PreferenceCategory>
 
 </PreferenceScreen>

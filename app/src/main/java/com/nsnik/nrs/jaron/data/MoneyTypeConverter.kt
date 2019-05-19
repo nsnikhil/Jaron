@@ -24,13 +24,12 @@
 package com.nsnik.nrs.jaron.data
 
 import androidx.room.TypeConverter
-import com.nsnik.nrs.jaron.model.Currency
 import com.nsnik.nrs.jaron.model.Money
 
 class MoneyTypeConverter {
 
     @TypeConverter
-    fun doubleToMoney(value: Double): Money? = Money(value, Currency.Rupee)
+    fun doubleToMoney(value: Double): Money? = Money(value)
 
     @TypeConverter
     fun moneyToDouble(money: Money): Double = money.value

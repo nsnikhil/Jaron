@@ -34,7 +34,6 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.BuildConfig
 import com.nsnik.nrs.jaron.MyApplication
@@ -87,8 +86,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initialize() {
-
-        FirebaseAnalytics.getInstance(this).logEvent(FirebaseAnalytics.Event.APP_OPEN, null)
 
         setSupportActionBar(mainToolbar)
 

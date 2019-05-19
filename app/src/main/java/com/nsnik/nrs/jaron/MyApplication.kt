@@ -32,7 +32,6 @@ import com.nsnik.nrs.jaron.dagger.components.DaggerDatabaseComponent
 import com.nsnik.nrs.jaron.dagger.components.DaggerSharedPreferencesComponent
 import com.nsnik.nrs.jaron.dagger.modules.ContextModule
 import com.nsnik.nrs.jaron.util.DatabaseUtility
-import com.rollbar.android.Rollbar
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 import timber.log.Timber
@@ -57,12 +56,9 @@ class MyApplication : Application() {
     lateinit var databaseUtility: DatabaseUtility
     lateinit var sharedPreferences: SharedPreferences
 
-
     override fun onCreate() {
         super.onCreate()
         if (LeakCanary.isInAnalyzerProcess(this)) return
-        Rollbar.init(this)
-        Rollbar.instance().error(Exception("This is a new test error")) //remove this after initial testing
         if (BuildConfig.DEBUG) {
             Timber.plant(object : Timber.DebugTree() {
                 override fun createStackElementTag(element: StackTraceElement): String {
@@ -73,21 +69,9 @@ class MyApplication : Application() {
             StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build())
             StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build())
         }
-        moduleSetter()
-    }
-
-    private fun moduleSetter() {
-        setDatabaseComponent()
-        setSharedPrefComponent()
-    }
-
-    private fun setDatabaseComponent() {
         databaseUtility = DaggerDatabaseComponent.builder().contextModule(contextModule).build().databaseUtility
-    }
+        sharedPreferences = DaggerSharedPreferencesComponent.builder().contextModule(contextModule).build().sharedPreferences
 
-    private fun setSharedPrefComponent() {
-        sharedPreferences =
-                DaggerSharedPreferencesComponent.builder().contextModule(contextModule).build().sharedPreferences
     }
 
 }

@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 5,
-    "identityHash": "467053b541a523b0dfc5fd686cd0e94a",
+    "identityHash": "11b352128765dcf828691d21411de8d1",
     "entities": [
       {
         "tableName": "ExpenseEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `amount` REAL, `title` TEXT, `description` TEXT, `date` INTEGER, `tags` TEXT, `paymentType` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `amount` REAL, `title` TEXT, `description` TEXT, `date` INTEGER, `tags` TEXT, `paymentType` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -47,7 +47,7 @@
           {
             "fieldPath": "paymentType",
             "columnName": "paymentType",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -83,7 +83,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"467053b541a523b0dfc5fd686cd0e94a\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"11b352128765dcf828691d21411de8d1\")"
     ]
   }
 }

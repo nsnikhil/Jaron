@@ -25,11 +25,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nsnik.nrs.jaron">
 
-    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
-    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -52,18 +47,15 @@
 
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
+            android:theme="@style/Theme.MaterialComponents" />
 
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
+            android:theme="@style/Theme.MaterialComponents" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
-        <meta-data android:name="com.rollbar.android.ACCESS_TOKEN"
-            android:value="@string/ROLLBAR_ACCESS_TOKEN" />
 
     </application>
 

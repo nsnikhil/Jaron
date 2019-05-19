@@ -43,7 +43,7 @@ class DatabaseModule {
 
     @Provides
     @ApplicationScope
-    internal fun getNoteDatabase(@ApplicationQualifier context: Context, @DatabaseName @ApplicationScope databaseName: String): ExpenseDatabase =
+    internal fun expenseDatabase(@ApplicationQualifier context: Context, @DatabaseName @ApplicationScope databaseName: String): ExpenseDatabase =
         Room.databaseBuilder(context, ExpenseDatabase::class.java, databaseName)
             .fallbackToDestructiveMigration()
             .build()

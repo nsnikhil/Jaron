@@ -128,13 +128,4 @@
     <string name="notificationExpenseUpdated">Expense Updated</string>
     <string name="notificationExpenseDeleted">Expense deleted</string>
 
-
-    <string-array name="currencies">
-        <item>INR</item>
-        <item>USD</item>
-        <item>AUD</item>
-        <item>Pound</item>
-        <item>Euro</item>
-    </string-array>
-
 </resources>

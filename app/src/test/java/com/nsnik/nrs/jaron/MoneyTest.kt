@@ -23,55 +23,8 @@
 
 package com.nsnik.nrs.jaron
 
-import com.nsnik.nrs.jaron.model.Currency.*
-import com.nsnik.nrs.jaron.model.Money
-import com.nsnik.nrs.jaron.model.Money.Companion.Inr
-import com.nsnik.nrs.jaron.model.Money.Companion.Usd
-import junit.framework.Assert.*
-import org.junit.Before
-import org.junit.Test
-
 class MoneyTest {
 
-    private lateinit var hundredRupee: Money
-    private lateinit var oneDollarFortyCentsUsd: Money
-    private lateinit var hundredDollars: Money
 
-    @Before
-    fun setUp() {
-        hundredRupee = Inr(100.0)
-        oneDollarFortyCentsUsd = Usd(1.40)
-        hundredDollars = Usd(100.0)
-    }
-
-    @Test
-    fun shouldReturnTrueForMoneyWithSameValue() {
-        assertTrue(hundredRupee == Money(100.0, Rupee))
-    }
-
-    @Test
-    fun shouldTrueForHundredRupeeAndOneDollarFortyCents(){
-        assertTrue(hundredRupee == oneDollarFortyCentsUsd)
-    }
-
-    @Test
-    fun shouldReturnFalseForMoneyWithDifferentValue() {
-        assertFalse(hundredRupee == Money(99.0, UnitedStatesDollar))
-    }
-
-    @Test
-    fun shouldAddHundredAndTwoHundredRupeeToGiveThreeHundredRupee() {
-        assertTrue(hundredRupee.add(Money(200.00, Rupee)) == Money(300.00, Rupee))
-    }
-
-    @Test
-    fun shouldAddHundredRupeeAndThreeDollarToGiveThreeHundredRupee() {
-        assertEquals(hundredRupee.add(Money(3.0, UnitedStatesDollar)).value, Money(313.88, Rupee).value,0.1)
-    }
-
-    @Test
-    fun shouldConvertHundredDollarsToHundredDollars(){
-        assertTrue(hundredDollars.convertTo(UnitedStatesDollar) == hundredDollars)
-    }
 
 }
