@@ -60,6 +60,7 @@
     <string name="newExpenseErrorOverflowValue">Amount should be less than monthly budget</string>
     <string name="newExpenseErrorNoTitle">Please enter the title for the expense</string>
     <string name="newExpenseErrorNoDescription">Please enter the description for the expense</string>
+    <string name="newExpenseUpdatedDate">Updated on: %s</string>
 
     <!--Month Year Picker Dialog-->
     <string name="monthYearPickerDialogOkay">Okay</string>
@@ -109,6 +110,7 @@
     <!--Bundle Keys-->
     <string name="bundleExpenseEntity">bundleExpenseEntity</string>
     <string name="bundleExpenseEntityId">bundleExpenseEntityId</string>
+    <string name="bundleEditorIsReadOnly">bundleEditorIsReadOnly</string>
 
     <!--Month summary-->
     <string name="monthSummaryTotalTitle">Total</string>

@@ -110,9 +110,9 @@ class MonthYearPickerFragment : DialogFragment() {
         dialog?.window!!.attributes = params as android.view.WindowManager.LayoutParams
     }
 
-    private fun cleanUp() {
-        compositeDisposable.clear()
-        compositeDisposable.dispose()
+    private fun cleanUp() = compositeDisposable.apply {
+        clear()
+        dispose()
     }
 
     override fun onDestroy() {

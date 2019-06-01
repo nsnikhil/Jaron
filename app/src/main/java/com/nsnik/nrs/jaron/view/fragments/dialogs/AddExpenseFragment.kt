@@ -47,19 +47,22 @@ import com.twitter.serial.stream.bytebuffer.ByteBufferSerial
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_add_expense.*
 import timber.log.Timber
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.function.Consumer
 
+@Suppress("SENSELESS_COMPARISON", "UNNECESSARY_SAFE_CALL")
 class AddExpenseFragment : DialogFragment() {
 
+    private val dateFormat = "EEE, d MMM yyyy HH:mm:ss"
     private lateinit var thisDialog: Dialog
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private lateinit var expenseListViewModel: ExpenseListViewModel
     private var toUpdateExpenseEntity: ExpenseEntity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.dialogWithTitle)
+        setStyle(STYLE_NORMAL, R.style.dialogWithTitle)
         super.onCreate(savedInstanceState)
     }
 
@@ -80,17 +83,36 @@ class AddExpenseFragment : DialogFragment() {
         listeners()
     }
 
-    private fun setFields() {
-        if (arguments != null) {
-            val byteArray = arguments?.getByteArray(getStringRes(R.string.bundleExpenseEntity, activity!!))
-            toUpdateExpenseEntity = ByteBufferSerial().fromByteArray(byteArray, ExpenseEntity.SERIALIZER)
-            toUpdateExpenseEntity?.id = arguments?.getInt(getStringRes(R.string.bundleExpenseEntityId, activity!!), -1)!!
-            newExpenseCreate.text = getStringRes(R.string.newExpenseUpdate, activity!!)
-            newExpenseValue.setText(toUpdateExpenseEntity?.amount?.value?.toString())
-            newExpenseTitle.setText(toUpdateExpenseEntity?.title)
-            newExpenseDescription.setText(toUpdateExpenseEntity?.description)
-            newExpenseTags.setText(toUpdateExpenseEntity?.tags?.reduce { acc, s -> "$acc $s" }?.trim())
+    private fun setFields() = arguments.let {
+        toUpdateExpenseEntity =
+            ByteBufferSerial().fromByteArray(it?.getByteArray(getStringRes(R.string.bundleExpenseEntity, activity!!)), ExpenseEntity.SERIALIZER)
+
+        toUpdateExpenseEntity?.id = it?.getInt(getStringRes(R.string.bundleExpenseEntityId, activity!!), -1)!!
+
+        if (it?.getBoolean(getStringRes(R.string.bundleEditorIsReadOnly, activity!!)) != null)
+            if (it.getBoolean(getStringRes(R.string.bundleEditorIsReadOnly, activity!!), false)) disableFields()
+
+        if (it != null) setViewFields()
+    }
+
+    private fun setViewFields() {
+        newExpenseCreate.text = getStringRes(R.string.newExpenseUpdate, activity!!)
+        toUpdateExpenseEntity.apply {
+            newExpenseValue.setText(this?.amount?.value?.toString())
+            newExpenseTitle.setText(this?.title)
+            newExpenseDescription.setText(this?.description)
+            newExpenseTags.setText(this?.tags?.reduce { acc, s -> "$acc $s" }?.trim())
         }
+    }
+
+    private fun disableFields() {
+        listOf(newExpenseValue, newExpenseTitle, newExpenseDescription, newExpenseTags).forEach { it.isEnabled = false }
+        listOf(newExpenseCreate, newExpenseCancel).forEach { it.visibility = View.GONE }
+        newExpenseDate.visibility = View.VISIBLE
+        newExpenseDate.text = String.format(
+            getStringRes(R.string.newExpenseUpdatedDate, activity!!),
+            SimpleDateFormat(dateFormat, Locale.ENGLISH).format(toUpdateExpenseEntity?.date)
+        )
     }
 
     private fun initialize() {
@@ -106,7 +128,8 @@ class AddExpenseFragment : DialogFragment() {
         },
         RxTextView.textChanges(newExpenseTags)
             .debounce(2, TimeUnit.SECONDS)
-            .subscribe { formatTag(it.toString()).forEach(Consumer { s ->
+            .subscribe {
+                formatTag(it.toString()).forEach(Consumer { s ->
                     Timber.d(s)
                 })
             }
@@ -118,14 +141,15 @@ class AddExpenseFragment : DialogFragment() {
                 addExpense()
                 val strings = formatTag(newExpenseTags.text())
                 if (strings.isNotEmpty()) addTags(strings)
-                showNotification(activity!!,R.string.notificationExpenseAdded)
+                showNotification(activity!!, R.string.notificationExpenseAdded)
             } else {
                 updateExpense()
-                showNotification(activity!!,R.string.notificationExpenseUpdated)
+                showNotification(activity!!, R.string.notificationExpenseUpdated)
             }
             dismiss()
         }
     }
+
     private fun addExpense() = expenseListViewModel.insertExpenses(listOf(createExpense()))
 
     private fun createExpense(date: Date = Calendar.getInstance().time) = createExpenseEntity(
@@ -164,9 +188,9 @@ class AddExpenseFragment : DialogFragment() {
         dialog?.window!!.attributes = params as android.view.WindowManager.LayoutParams
     }
 
-    private fun cleanUp() {
-        compositeDisposable.clear()
-        compositeDisposable.dispose()
+    private fun cleanUp() = compositeDisposable.apply {
+        clear()
+        dispose()
     }
 
     override fun onDestroy() {

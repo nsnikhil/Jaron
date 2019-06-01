@@ -75,9 +75,9 @@ class IntroFragment : Fragment() {
             .apply()
     }
 
-    private fun cleanUp() {
-        compositeDisposable.clear()
-        compositeDisposable.dispose()
+    private fun cleanUp() = compositeDisposable.apply {
+        clear()
+        dispose()
     }
 
     override fun onDestroy() {

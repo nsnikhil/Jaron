@@ -77,8 +77,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.menuItemSearch -> {
-            }
+            R.id.menuItemSearch -> { }
             R.id.menuItemSettings -> findNavController(R.id.mainNavHost).navigate(R.id.preferenceFragment)
             R.id.menuItemAbout -> AboutFragment().show(supportFragmentManager, "about")
         }
@@ -93,13 +92,9 @@ class MainActivity : AppCompatActivity() {
 
         controller.addOnDestinationChangedListener { controller, destination, arguments ->
             mainToolbar.visibility = if (destination.id == R.id.introFragment) View.GONE else View.VISIBLE
-            if (destination.id == R.id.expenseList) {
-                changeToolBarDate()
-            } else {
-                title = ApplicationUtility.getStringRes(R.string.Preferences, this@MainActivity)
-            }
+            if (destination.id == R.id.expenseList) changeToolBarDate()
+            else title = ApplicationUtility.getStringRes(R.string.Preferences, this@MainActivity)
         }
-
 
         setupActionBarWithNavController(controller, AppBarConfiguration(controller.graph))
 
@@ -111,9 +106,9 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun cleanUp() {
-        compositeDisposable.clear()
-        compositeDisposable.dispose()
+    private fun cleanUp() = compositeDisposable.apply {
+        clear()
+        dispose()
     }
 
     override fun onSupportNavigateUp(): Boolean = controller.navigateUp() || super.onSupportNavigateUp()

@@ -39,7 +39,6 @@ import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxPopupMenu
 import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
-import com.nsnik.nrs.jaron.util.ApplicationUtility
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.filteredListByDate
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getCurrentMonthAndYear
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getDateFromString
@@ -57,7 +56,6 @@ import com.twitter.serial.stream.bytebuffer.ByteBufferSerial
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_expense_list.*
-import timber.log.Timber
 import java.util.*
 
 class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
@@ -115,13 +113,9 @@ class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
         )
     }
 
-    override fun onClick(expenseEntity: ExpenseEntity) {
-        Timber.d(expenseEntity.id.toString())
-    }
+    override fun onClick(expenseEntity: ExpenseEntity) = showExpenseEditDialog(expenseEntity, true)
 
-    override fun onLongClick(expenseEntity: ExpenseEntity, view: View) {
-        inflatePopupMenu(expenseEntity, view)
-    }
+    override fun onLongClick(expenseEntity: ExpenseEntity, view: View) = inflatePopupMenu(expenseEntity, view)
 
     private fun inflatePopupMenu(expenseEntity: ExpenseEntity, view: View) {
         val popupMenu = PopupMenu(activity, view, Gravity.END)
@@ -137,22 +131,29 @@ class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
         popupMenu.show()
     }
 
-    private fun showExpenseEditDialog(expenseEntity: ExpenseEntity) {
+    private fun showExpenseEditDialog(expenseEntity: ExpenseEntity, isEditable: Boolean = false) {
         val bundle = Bundle()
         val byteArray = ByteBufferSerial().toByteArray(expenseEntity, ExpenseEntity.SERIALIZER)
-        bundle.putByteArray(ApplicationUtility.getStringRes(R.string.bundleExpenseEntity, activity!!), byteArray)
-        bundle.putInt(ApplicationUtility.getStringRes(R.string.bundleExpenseEntityId, activity!!), expenseEntity.id)
+        bundle.putBoolean(getStringRes(R.string.bundleEditorIsReadOnly, activity!!), isEditable)
+        bundle.putByteArray(getStringRes(R.string.bundleExpenseEntity, activity!!), byteArray)
+        bundle.putInt(getStringRes(R.string.bundleExpenseEntityId, activity!!), expenseEntity.id)
+        showExpenseEditor(bundle, "editExpense")
+    }
+
+    private fun showExpenseEditor(bundle: Bundle, tag: String) {
         val dialog = AddExpenseFragment()
         dialog.arguments = bundle
-        dialog.show(fragmentManager!!, "editExpense")
+        dialog.show(fragmentManager!!, tag)
     }
 
     private fun showAlertPopUpDialog(expenseEntity: ExpenseEntity) {
         AlertDialog.Builder(activity!!)
-            .setTitle(ApplicationUtility.getStringRes(R.string.alertDialogDeleteTitle, activity!!))
-            .setMessage(ApplicationUtility.getStringRes(R.string.alertDialogDeleteMessage, activity!!))
-            .setPositiveButton(getStringRes(R.string.alertDialogDeletePositiveText, activity!!)) { _, _ -> expenseListViewModel.deleteExpenses(listOf(expenseEntity))
-                showNotification(activity!!, R.string.notificationExpenseDeleted) }
+            .setTitle(getStringRes(R.string.alertDialogDeleteTitle, activity!!))
+            .setMessage(getStringRes(R.string.alertDialogDeleteMessage, activity!!))
+            .setPositiveButton(getStringRes(R.string.alertDialogDeletePositiveText, activity!!)) { _, _ ->
+                expenseListViewModel.deleteExpenses(listOf(expenseEntity))
+                showNotification(activity!!, R.string.notificationExpenseDeleted)
+            }
             .setNegativeButton(getStringRes(R.string.alertDialogDeleteNegativeText, activity!!)) { _, _ -> }
             .create()
             .show()
