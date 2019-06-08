@@ -56,24 +56,28 @@ class ExpenseEntity {
         class ExpenseEntitySerializer : ObjectSerializer<ExpenseEntity>() {
 
             override fun serializeObject(context: SerializationContext, output: SerializerOutput<out SerializerOutput<*>>, expenseEntity: ExpenseEntity) {
-                output.writeInt(expenseEntity.id)
-                output.writeObject(SerializationContext.ALWAYS_RELEASE, expenseEntity.amount, Money.SERIALIZER)
-                output.writeString(expenseEntity.title)
-                output.writeString(expenseEntity.description)
-                output.writeObject(SerializationContext.ALWAYS_RELEASE, expenseEntity.date, CoreSerializers.DATE)
-                output.writeObject(SerializationContext.ALWAYS_RELEASE, expenseEntity.tags, CollectionSerializers.getListSerializer(CoreSerializers.STRING))
-                output.writeInt(expenseEntity.paymentType)
+                output.apply {
+                    writeInt(expenseEntity.id)
+                    writeObject(SerializationContext.ALWAYS_RELEASE, expenseEntity.amount, Money.SERIALIZER)
+                    writeString(expenseEntity.title)
+                    writeString(expenseEntity.description)
+                    writeObject(SerializationContext.ALWAYS_RELEASE, expenseEntity.date, CoreSerializers.DATE)
+                    writeObject(SerializationContext.ALWAYS_RELEASE, expenseEntity.tags, CollectionSerializers.getListSerializer(CoreSerializers.STRING))
+                    writeInt(expenseEntity.paymentType)
+                }
             }
 
             override fun deserializeObject(context: SerializationContext, input: SerializerInput, versionNumber: Int): ExpenseEntity? {
                 val expenseEntity = ExpenseEntity()
-                expenseEntity.id = input.readInt()
-                expenseEntity.amount = input.readObject(SerializationContext.ALWAYS_RELEASE, Money.SERIALIZER)
-                expenseEntity.title = input.readString()
-                expenseEntity.description = input.readString()
-                expenseEntity.date = input.readObject(SerializationContext.ALWAYS_RELEASE, CoreSerializers.DATE)
-                expenseEntity.tags = input.readObject(SerializationContext.ALWAYS_RELEASE, CollectionSerializers.getListSerializer(CoreSerializers.STRING))
-                expenseEntity.paymentType = input.readInt()
+                expenseEntity.apply {
+                    id = input.readInt()
+                    amount = input.readObject(SerializationContext.ALWAYS_RELEASE, Money.SERIALIZER)
+                    title = input.readString()
+                    description = input.readString()
+                    date = input.readObject(SerializationContext.ALWAYS_RELEASE, CoreSerializers.DATE)
+                    tags = input.readObject(SerializationContext.ALWAYS_RELEASE, CollectionSerializers.getListSerializer(CoreSerializers.STRING))
+                    paymentType = input.readInt()
+                }
                 return expenseEntity
             }
 

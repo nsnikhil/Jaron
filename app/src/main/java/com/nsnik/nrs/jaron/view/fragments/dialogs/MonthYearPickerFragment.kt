@@ -56,37 +56,24 @@ class MonthYearPickerFragment : DialogFragment() {
     }
 
     private fun initialize() {
-
-        monthYearPickerMonthList.apply {
-            adapter = getAdapter(getMonthList()!!)
-        }
-
-        monthYearPickerYearList.apply {
-            adapter = getAdapter(getYearList())
-        }
-
+        monthYearPickerMonthList.apply { adapter = getAdapter(getMonthList()!!) }
+        monthYearPickerYearList.apply { adapter = getAdapter(getYearList()) }
         monthYearPickerMonthList?.onItemSelectedListener = onItemSelectedListener
         monthYearPickerYearList?.onItemSelectedListener = onItemSelectedListener
-
         monthYearPickerCurrentDate.text = getFormattedCurrentDate()
-
     }
 
     private val onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-        override fun onNothingSelected(parent: AdapterView<*>?) {
-
-        }
-
+        override fun onNothingSelected(parent: AdapterView<*>?) {}
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             monthYearPickerCurrentDate.text = formatText(
                 monthYearPickerCurrentDate.text.toString(),
                 parent?.getItemAtPosition(position).toString()
             )
         }
-
     }
 
-    private fun getAdapter(list: List<String>) = ArrayAdapter(activity, android.R.layout.simple_list_item_1, list)
+    private fun getAdapter(list: List<String>) = ArrayAdapter(activity!!, android.R.layout.simple_list_item_1, list)
 
     private fun listeners() = compositeDisposable.addAll(
         RxView.clicks(monthYearPickerOk).subscribe {

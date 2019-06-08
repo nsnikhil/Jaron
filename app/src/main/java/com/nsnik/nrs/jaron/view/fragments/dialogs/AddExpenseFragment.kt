@@ -169,14 +169,7 @@ class AddExpenseFragment : DialogFragment() {
 
     private fun addTags(strings: List<String>) = expenseListViewModel.insertTag(listToTag(strings))
 
-    private fun validateEntries(): Boolean = validateFrom(
-        activity!!,
-        newExpenseValue,
-        newExpenseTitle,
-        newExpenseDescription,
-        Calendar.getInstance().time,
-        formatTag(newExpenseTags.text())
-    )
+    private fun validateEntries(): Boolean = validateFrom(activity!!, newExpenseValue, newExpenseTitle)
 
     private fun TextView.text() = text.toString()
 

@@ -38,12 +38,11 @@ class ExpenseUtility {
             .map { it.amount }
             .reduce(Money(0.0)) { t, u -> t?.add(u!!) }!!
 
-        fun getTotalAmount(context: Context): Money =
-            Money(
-                (context.applicationContext as MyApplication)
-                    .sharedPreferences.getFloat(getStringRes(R.string.sharedPreferenceKeyTotalAmount, context), 0.0F)
-                    .toDouble()
-            )
+        fun getTotalAmount(context: Context): Money = Money(
+            (context.applicationContext as MyApplication)
+                .sharedPreferences.getFloat(getStringRes(R.string.sharedPreferenceKeyTotalAmount, context), 0.0F)
+                .toDouble()
+        )
 
         fun getAmountLeft(context: Context, list: List<ExpenseEntity>): Money =
             getTotalAmount(context).subtract(getAmountSpend(list))
@@ -55,8 +54,6 @@ class ExpenseUtility {
             (getAmountLeft(context, list).divide(getTotalAmount(context))).value.toTwoDecimal() * 100
 
         private fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
-
-        fun formatWithPercent(value: String) = StringBuilder(value).append("%").toString()
 
     }
 

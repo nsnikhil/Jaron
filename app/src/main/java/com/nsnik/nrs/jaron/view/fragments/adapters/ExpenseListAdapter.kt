@@ -36,7 +36,6 @@ import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
 import com.nsnik.nrs.jaron.model.MonthSummary
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getStringRes
-import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.formatWithPercent
 import com.nsnik.nrs.jaron.view.fragments.ExpenseListFragment
 import com.nsnik.nrs.jaron.view.fragments.listeners.ExpenseItemClickListener
 import io.reactivex.disposables.CompositeDisposable
@@ -66,26 +65,26 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
         else bindItemHolder((holder as ItemViewHolder), position - 1)
     }
 
-    private fun bindSummaryHolder(holder: SummaryViewHolder, position: Int) =
-        summary.observe(expenseListFragment, Observer {
-            holder.total.text = it.total.value.toString()
-            holder.spend.text = it.totalSpend.value.toString()
-            holder.left.text = it.totalLeft.value.toString()
-            holder.percentageSpend.text = StringBuilder(it.percentageSpend.toString()).append("%").toString()
-            holder.percentageProgress.progress = it.percentageSpend.toInt()
-        })
+    private fun bindSummaryHolder(holder: SummaryViewHolder, position: Int) = summary.observe(expenseListFragment, Observer {
+        holder.apply {
+            total.text = it.total.value.toString()
+            spend.text = it.totalSpend.value.toString()
+            left.text = it.totalLeft.value.toString()
+            percentageSpend.text = StringBuilder(it.percentageSpend.toString()).append("%").toString()
+            percentageProgress.progress = it.percentageSpend.toInt()
+        }
+    })
 
     private fun bindItemHolder(holder: ItemViewHolder, position: Int) {
         val expenseEntity = expenseEntities[position]
-        holder.value.text = expenseEntity.amount.toString()
-        holder.title.text = expenseEntity.title
-        holder.description.text = expenseEntity.description
+        holder.apply {
+            value.text = expenseEntity.amount.toString()
+            title.text = expenseEntity.title
+            description.text = expenseEntity.description
+        }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        if (position == 0) return summaryViewType
-        return itemViewType
-    }
+    override fun getItemViewType(position: Int): Int = if (position == 0) summaryViewType else itemViewType
 
     override fun getItemCount() = expenseEntities.size + 1
 

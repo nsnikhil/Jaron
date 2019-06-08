@@ -64,11 +64,9 @@ class MainActivity : AppCompatActivity() {
         changeToolBarDate()
     }
 
-    private fun changeToolBarDate() {
-        expenseListViewModel.getCurrentDate().observe(this, Observer {
-            title = String.format("%s %s", getFormattedCurrentDate(it), "▼")
-        })
-    }
+    private fun changeToolBarDate() = expenseListViewModel.getCurrentDate().observe(this, Observer {
+        title = String.format("%s %s", getFormattedCurrentDate(it), "▼")
+    })
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -77,11 +75,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.menuItemSearch -> { }
+            R.id.menuItemSearch -> {
+            }
             R.id.menuItemSettings -> findNavController(R.id.mainNavHost).navigate(R.id.preferenceFragment)
             R.id.menuItemAbout -> AboutFragment().show(supportFragmentManager, "about")
         }
-        return super.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item!!)
     }
 
     private fun initialize() {

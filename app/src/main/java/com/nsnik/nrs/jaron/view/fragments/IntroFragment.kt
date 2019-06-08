@@ -33,7 +33,7 @@ import androidx.navigation.findNavController
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.jaron.MyApplication
 import com.nsnik.nrs.jaron.R
-import com.nsnik.nrs.jaron.util.ApplicationUtility
+import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getStringRes
 import com.nsnik.nrs.jaron.util.FieldValidator.Companion.validateValueString
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_intro.*
@@ -48,12 +48,7 @@ class IntroFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initialize()
         listeners()
-    }
-
-    private fun initialize() {
-
     }
 
     private fun listeners() = compositeDisposable.addAll(
@@ -68,10 +63,7 @@ class IntroFragment : Fragment() {
     private fun saveValue() {
         (activity?.application as MyApplication).sharedPreferences
             .edit()
-            .putFloat(
-                ApplicationUtility.getStringRes(R.string.sharedPreferenceKeyTotalAmount, activity!!),
-                introBudget.text.toString().toFloat()
-            )
+            .putFloat(getStringRes(R.string.sharedPreferenceKeyTotalAmount, activity!!), introBudget.text.toString().toFloat())
             .apply()
     }
 

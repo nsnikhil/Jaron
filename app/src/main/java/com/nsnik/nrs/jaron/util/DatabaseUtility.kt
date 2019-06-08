@@ -37,6 +37,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.util.*
+import java.util.concurrent.Callable
 import javax.inject.Inject
 
 @ApplicationScope
@@ -59,7 +60,6 @@ class DatabaseUtility @Inject constructor(private val expenseDatabase: ExpenseDa
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(getSingleInsertObserver())
-
 
     fun insertTag(tagEntity: List<TagEntity>) =
         Single.fromCallable { expenseDatabase.tagDao.insertTags(tagEntity) }

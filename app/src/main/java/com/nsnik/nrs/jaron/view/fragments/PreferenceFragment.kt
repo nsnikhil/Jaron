@@ -59,7 +59,6 @@ class PreferenceFragment : PreferenceFragmentCompat() {
         editTextPreference.text = amount.value.toString()
     }
 
-
     private fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
 
     private fun saveNewBudget(newBudget: Float) = preferenceManager.sharedPreferences

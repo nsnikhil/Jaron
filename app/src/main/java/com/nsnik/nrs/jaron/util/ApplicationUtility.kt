@@ -97,7 +97,7 @@ class ApplicationUtility {
 
         private fun getMonthNumberFromName(value: String): Int {
             val calendar = getCalendar()
-            calendar.time = SimpleDateFormat(monthFormat, Locale.ENGLISH).parse(value)
+            calendar.time = SimpleDateFormat(monthFormat, Locale.ENGLISH).parse(value)!!
             return calendar.get(Calendar.MONTH)
         }
 
@@ -111,22 +111,6 @@ class ApplicationUtility {
         }
 
         fun getStringRes(id: Int, context: Context): String = context.resources.getString(id)
-
-        fun getColor(id: Int, context: Context) = ContextCompat.getColor(context, id)
-
-        fun getDrawable(id: Int, context: Context) = ContextCompat.getDrawable(context, id)
-
-        fun getYear(date: Date): Int {
-            val calendar = getCalendar()
-            calendar.time = date
-            return calendar.get(Calendar.YEAR)
-        }
-
-        fun getMonth(date: Date): Int {
-            val calendar = getCalendar()
-            calendar.time = date
-            return calendar.get(Calendar.MONTH)
-        }
 
         fun filteredListByDate(list: List<ExpenseEntity>, date: Date): List<ExpenseEntity> = list.stream()
             .filter { t -> isSameDate(t.date!!, date) }

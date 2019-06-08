@@ -105,13 +105,10 @@ class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
         expenseListAdapter.notifyDataSetChanged()
     }
 
-    private fun listeners() {
-        compositeDisposable.addAll(
-            RxView.clicks(expenseFragmentAddExpense).subscribe {
-                AddExpenseFragment().show(fragmentManager!!, "addExpense")
-            }
-        )
-    }
+    private fun listeners() = compositeDisposable.addAll(
+        RxView.clicks(expenseFragmentAddExpense).subscribe {
+            AddExpenseFragment().show(fragmentManager!!, "addExpense")
+        })
 
     override fun onClick(expenseEntity: ExpenseEntity) = showExpenseEditDialog(expenseEntity, true)
 
@@ -133,10 +130,11 @@ class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
 
     private fun showExpenseEditDialog(expenseEntity: ExpenseEntity, isEditable: Boolean = false) {
         val bundle = Bundle()
-        val byteArray = ByteBufferSerial().toByteArray(expenseEntity, ExpenseEntity.SERIALIZER)
-        bundle.putBoolean(getStringRes(R.string.bundleEditorIsReadOnly, activity!!), isEditable)
-        bundle.putByteArray(getStringRes(R.string.bundleExpenseEntity, activity!!), byteArray)
-        bundle.putInt(getStringRes(R.string.bundleExpenseEntityId, activity!!), expenseEntity.id)
+        bundle.apply {
+            putBoolean(getStringRes(R.string.bundleEditorIsReadOnly, activity!!), isEditable)
+            putByteArray(getStringRes(R.string.bundleExpenseEntity, activity!!), ByteBufferSerial().toByteArray(expenseEntity, ExpenseEntity.SERIALIZER))
+            putInt(getStringRes(R.string.bundleExpenseEntityId, activity!!), expenseEntity.id)
+        }
         showExpenseEditor(bundle, "editExpense")
     }
 
@@ -146,22 +144,23 @@ class ExpenseListFragment : Fragment(), ExpenseItemClickListener {
         dialog.show(fragmentManager!!, tag)
     }
 
-    private fun showAlertPopUpDialog(expenseEntity: ExpenseEntity) {
-        AlertDialog.Builder(activity!!)
-            .setTitle(getStringRes(R.string.alertDialogDeleteTitle, activity!!))
-            .setMessage(getStringRes(R.string.alertDialogDeleteMessage, activity!!))
-            .setPositiveButton(getStringRes(R.string.alertDialogDeletePositiveText, activity!!)) { _, _ ->
-                expenseListViewModel.deleteExpenses(listOf(expenseEntity))
-                showNotification(activity!!, R.string.notificationExpenseDeleted)
-            }
-            .setNegativeButton(getStringRes(R.string.alertDialogDeleteNegativeText, activity!!)) { _, _ -> }
-            .create()
-            .show()
-    }
+    private fun showAlertPopUpDialog(expenseEntity: ExpenseEntity) = AlertDialog.Builder(activity!!)
+        .setTitle(getStringRes(R.string.alertDialogDeleteTitle, activity!!))
+        .setMessage(getStringRes(R.string.alertDialogDeleteMessage, activity!!))
+        .setPositiveButton(getStringRes(R.string.alertDialogDeletePositiveText, activity!!)) { _, _ ->
+            expenseListViewModel.deleteExpenses(listOf(expenseEntity))
+            showNotification(activity!!, R.string.notificationExpenseDeleted)
+        }
+        .setNegativeButton(getStringRes(R.string.alertDialogDeleteNegativeText, activity!!)) { _, _ -> }
+        .create()
+        .show()
+
 
     private fun cleanUp() {
-        compositeDisposable.clear()
-        compositeDisposable.dispose()
+        compositeDisposable.apply {
+            clear()
+            dispose()
+        }
         if (!dateDisposable.isDisposed) dateDisposable.dispose()
     }
 
