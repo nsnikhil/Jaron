@@ -25,6 +25,8 @@ package com.nsnik.nrs.jaron.view.fragments.adapters
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -81,6 +83,7 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
             value.text = expenseEntity.amount.toString()
             title.text = expenseEntity.title
             description.text = expenseEntity.description
+            description.visibility = if (expenseEntity.description.isNullOrEmpty()) GONE else VISIBLE
         }
     }
 
