@@ -38,6 +38,7 @@ import com.nsnik.nrs.jaron.R
 import com.nsnik.nrs.jaron.data.ExpenseEntity
 import com.nsnik.nrs.jaron.model.MonthSummary
 import com.nsnik.nrs.jaron.util.ApplicationUtility.Companion.getStringRes
+import com.nsnik.nrs.jaron.util.ExpenseUtility.Companion.toTwoDecimal
 import com.nsnik.nrs.jaron.view.fragments.ExpenseListFragment
 import com.nsnik.nrs.jaron.view.fragments.listeners.ExpenseItemClickListener
 import io.reactivex.disposables.CompositeDisposable
@@ -72,7 +73,7 @@ class ExpenseListAdapter(private val expenseListFragment: ExpenseListFragment) :
             total.text = it.total.value.toString()
             spend.text = it.totalSpend.value.toString()
             left.text = it.totalLeft.value.toString()
-            percentageSpend.text = StringBuilder(it.percentageSpend.toString()).append("%").toString()
+            percentageSpend.text = StringBuilder(it.percentageSpend.toTwoDecimal().toString()).append("%").toString()
             percentageProgress.progress = it.percentageSpend.toInt()
         }
     })

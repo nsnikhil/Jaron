@@ -2,7 +2,18 @@
 
 ### Introduction
 
-Jaron is a money management tool for android.
+Jaron is a expense tracker tool.
+
+### Screenshots
+
+<img src="screenshots/home_screen_main.png" width="30%" />
+<img src="screenshots/intro_screen.png" width="30%" />
+<img src="screenshots/first_expense.png" width="30%" />
+<img src="screenshots/second_expense.png" width="30%" />
+<img src="screenshots/home_screen.png" width="30%" />
+<img src="screenshots/date_picker.png" width="30%" />
+<img src="screenshots/date_picker_two.png" width="30%" />
+<img src="screenshots/home_screen.png" width="30%" />
 
 ### Getting Started
 

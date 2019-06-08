@@ -53,7 +53,7 @@ class ExpenseUtility {
         fun getPercentageLeft(context: Context, list: List<ExpenseEntity>) =
             (getAmountLeft(context, list).divide(getTotalAmount(context))).value.toTwoDecimal() * 100
 
-        private fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
+        fun Double.toTwoDecimal() = String.format("%.2f", this).toDouble()
 
     }
 
